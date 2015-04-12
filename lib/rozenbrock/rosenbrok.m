@@ -1,75 +1,75 @@
-function res = rosenbrok(x0,N,a,b,xmax,xmin,e1,dx0)
+function result = rosenbrok( x0, N, a, b, xmax, xmin, threshold, dx0 )
 global PROPERTIES;    
         
 ansysRunner = AnsysRunner(PROPERTIES.ansysExeFullPath, ...
                           fullfile(PROPERTIES.scriptPath, PROPERTIES.scriptName), ...
                           fullfile(PROPERTIES.ansysProjectPath, PROPERTIES.ansysProjectName));   
-
-%x0 - оптим. знач. N-макс. кол. неудач.
-%a,b - коэф. сжатия и растяж. xmin, xmax - границы поиска, dx - шаги по направлениям
-k=0;l=0;isEndWhile=0;
-dx=dx0;
-d1=[1 0 0];%начальные направления
-d2=[0 1 0];
-d3=[0 0 1];
-lambda=[0 0 0];
-d=[d1; d2; d3];
-xk=x0;
-% yk= myFunc(x0); 
+                      
+k = 0; failCount = 0; isEndWhile = 0;
+directions = [1 0 0; 0 1 0; 0 0 1];
+lambda = [0 0 0];
+dx = dx0; 
+xCur = x0;
+xk = x0; 
 yk = ansysRunner.run(x0);
-vy=[x0 yk];
+vy = [xk yk];
 
-disp('RESULT______________');
-disp(yk);
-disp(vy);
-
-
-
-
-% while isEndWhile==0  
-%     yn=myFunc(x0);
-%        for i=1:1:3
-%         x1=x0;
-%         x1(1)=x1(1)+d(i,1)*dx(i);
-%         x1(2)=x1(2)+d(i,2)*dx(i);
-%         x1(3)=x1(3)+d(i,3)*dx(i);
-%         if((x1(1)>xmin(1))&&(x1(2)>xmin(2))&&(x1(3)>xmin(3))&&(x1(1)<xmax(1))&&(x1(2)<xmax(2))&&(x1(3)<xmax(3)))           
-%         y1=myFunc(x1);
-%         k=k+1;
-%         y0=myFunc(x0);
-%         if(y1<y0)
-%             x0=x1;
-%             lambda(i)=lambda(i)+dx(i);
-%             dx(i)=dx(i)*a; 
-%             vy=[vy;x0 y1];
-%         else
-%             dx(i)=dx(i)*b;
-%         end
-%         else
-%             dx(i)=dx(i)*b;
-%         end
-%        end
-%         yn1=myFunc(x0);
-%         if(yn1==yn)  
-%             l=l+1;
-%             if(l==N)
-%                    yk=yn1;
-%                    if(sqrt((xk(1)-x0(1))^2+(xk(2)-x0(2))^2+(xk(3)-x0(3))^2)<e1)
-%                        isEndWhile=1; 
-%                    else
-%                        xk=x0;
-%                    end
-%                    d=GramSmit(d,lambda);
-%                    lambda=[0 0 0];
-%                    dx=dx0;
-%                    l=0;
+% while isEndWhile == 0  
+%     yPrev = myFunc(xCur);
+%     for i = 1:1:3         
+%         xNext = xCur;
+%         xNext(1) = xNext(1) + directions(i,1) * dx(i);
+%         xNext(2) = xNext(2) + directions(i,2) * dx(i);
+%         xNext(3) = xNext(3) + directions(i,3) * dx(i);
+%         if((xNext(1) > xmin(1)) && (xNext(2) > xmin(2)) && (xNext(3) > xmin(3)) && (xNext(1) < xmax(1)) && (xNext(2) < xmax(2)) && (xNext(3) < xmax(3)))              
+%             yNext = myFunc(xNext);
+%             yCur = myFunc(xCur);
+%             k = k + 2; %счётчик вызова ansys
+%             if(yNext < yCur)
+%                 xCur = xNext;
+%                 yCur = yNext;
+%                 lambda(i) = lambda(i) + dx(i);
+%                 dx(i) = dx(i) * a; 
+%                 vy = [vy; xCur yCur];
 %             else
-%                 if(abs(dx)<e1)
-%                     isEndWhile=1; 
+%                 dx(i) = dx(i) * b;
 %             end
+%         else
+%             dx(i) = dx(i) * b;
+%         end
+%     end
+%     if(yCur == yPrev)
+%         failCount = failCount + 1;
+%         if(yCur < yk)        
+%             if(sqrt((xk(1) - xCur(1))^2 + (xk(2) - xCur(2))^2 + (xk(3) - xCur(3))^2) < threshold)
+%                 isEndWhile = 1; 
+%             else
+%                 xk = xCur;
+%                 yk = yCur;
+%             end
+%             directions = GramSmit(directions, lambda);
+%             lambda = [0 0 0];
+%             dx = dx0;
+%             failCount = 0;
+%         else
+%             if(failCount >= N)              
+%                 if(sqrt((xk(1) - xCur(1))^2 + (xk(2) - xCur(2))^2 + (xk(3) - xCur(3))^2) < threshold)
+%                     isEndWhile = 1; 
+%                 else
+%                     xk = xCur;
+%                     yk = yCur;
+%                 end
+%                 directions = GramSmit(directions, lambda);
+%                 lambda = [0 0 0];
+%                 dx = dx0;
+%                 failCount = 0;
+%             else
+%                 if(abs(dx) < threshold)
+%                     isEndWhile = 1; 
+%                 end
+%             end  
 %         end       
-% end
-% %res=[x0 y];
+%      end
 % end
 k
-res=vy;
+result = vy;

@@ -1,0 +1,76 @@
+
+ ===================================
+ = sparse eigenanalysis statistics =
+ ===================================
+
+     number of equations                     =            6192
+     no. of nonzeroes in lower triangle of a =          405679
+     number of compressed nodes              =            1560
+     no. of compressed nonzeroes in l. tri.  =           26890
+     amount of workspace currently in use    =         1707113
+     b has general form.
+     no. of nonzeroes in lower triangle of b =          133710
+     max. amt. of workspace used             =        10052473
+     no. of nonzeroes in the factor l        =         1636362.
+     number of super nodes                   =             372
+     number of compressed subscripts         =           50391
+     size of stack storage                   =          295113
+     maximum order of a front matrix         =             600
+     maximum size of a front matrix          =          180300
+     maximum size of a front trapezoid       =           36320
+     no. of flt. pt. ops for a single factor =    5.586376D+08
+     no. of flt. pt. ops for a block solve   =    4.823892D+06
+     no. of flt. pt. ops for block mtx mult. =    4.328256D+06
+     total no. of flt. pt. ops for factor    =    1.117275D+09
+     total no. of flt. pt. ops for solve     =    4.630936D+08
+     total no. of flt. pt. ops for mtx mult. =    1.211912D+08
+     actual no. of nonzeroes in the factor l =         1636362.
+     actual number of compressed subscripts  =           50391
+     actual size of stack storage used       =          345444
+     pivot tolerance used for factorization  =        0.000000
+     factorization panel size                =              64
+     factorization update panel size         =              32
+     solution block size                     =               8
+     lanczos block size                      =               8
+     number of cores used                    =               2
+     total number of factorizations          =               2
+     total number of lanczos runs            =               1
+     total number of lanczos steps           =              11
+     total number of block solves            =              12
+     time (cpu & wall) for structure input   =        0.124801        0.205605
+     time (cpu & wall) for ordering          =        0.062400        0.098762
+     time (cpu & wall) for symbolic factor   =        0.000000        0.036618
+     time (cpu & wall) for value input       =        0.093600        0.143233
+
+     time (cpu & wall) for numeric factor    =        1.419609        1.437463
+     computational rate (mflops) for factor  =      787.030155      777.254745
+     time (cpu & wall) for numeric solve     =        0.733206        0.517780
+     computational rate (mflops) for solve   =      631.601162      894.383677
+     time (cpu & wall) for matrix multiply   =        0.124801        0.118651
+     computational rate (mflops) for mult.   =      971.077770     1021.410073
+
+     cost (elapsed time) for sparse eigenanalysis
+     -----------------------------
+     lanczos run start up cost               =        0.123942
+     lanczos run recurrence cost             =        0.480617
+     lanczos run reorthogonalization cost    =        0.255830
+     lanczos run internal eigenanalysis cost =        0.007048
+     lanczos eigenvector computation cost    =        0.182272
+     lanczos run overhead cost               =        0.065198
+
+     total lanczos run cost                  =        1.114908
+     total factorization cost                =        1.437485
+     shift strategy and overhead  cost       =        0.117129
+
+     total sparse eigenanalysis cost         =        2.669522
+
+     i/o stats:    unit           file length              amount transferred
+                                words     mbytes            words     mbytes
+                  ----          -----     ------            -----     ------
+
+                    21        100782.        1. Mb        302346.        2. Mb
+                    25        594432.        5. Mb       3071232.       23. Mb
+                    28        544896.        4. Mb       1882368.       14. Mb
+                    11         68112.        1. Mb         68112.        1. Mb
+
+                Total:       1308222.       10. Mb       5324058.       41. Mb

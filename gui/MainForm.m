@@ -135,6 +135,26 @@ function applyInputParameters()
     
     Logger.info('success!');    
     
+function writeOutput()
+    Logger.info('Main: write output pararmeters...');
+    
+    global PROPERTIES;
+    
+    handles = guihandles();  
+    
+    excel = Excel(fullfile(PROPERTIES.excelSheetPath, PROPERTIES.excelSheetName));
+    set(handles.totalDeformationEdit, 'String', excel.getValueOfParameter('Deformation'));
+    set(handles.mode1Edit, 'String', excel.getValueOfParameter('Mode 1'));
+    set(handles.mode2Edit, 'String', excel.getValueOfParameter('Mode 2'));
+    set(handles.mode3Edit, 'String', excel.getValueOfParameter('Mode 3'));
+    set(handles.mode4Edit, 'String', excel.getValueOfParameter('Mode 4'));
+    set(handles.mode5Edit, 'String', excel.getValueOfParameter('Mode 5'));
+    set(handles.mode6Edit, 'String', excel.getValueOfParameter('Mode 6'));
+    set(handles.mode7Edit, 'String', excel.getValueOfParameter('Mode 7'));
+    set(handles.mode8Edit, 'String', excel.getValueOfParameter('Mode 8'));
+    set(handles.mode9Edit, 'String', excel.getValueOfParameter('Mode 9'));
+    set(handles.mode10Edit, 'String', excel.getValueOfParameter('Mode 10'));
+    
 function runButton_Callback(hObject, eventdata, handles)   
     Logger.info('Main: runButton_Callback...');   
     
@@ -153,5 +173,7 @@ function runButton_Callback(hObject, eventdata, handles)
                      fullfile(PROPERTIES.ansysProjectPath, PROPERTIES.ansysProjectName));
     
     ansysRunner.rosenbrok(x0,3,2,-0.5,xmax,xmin,0.05,dx);       
+    
+    writeOutput();
     
     Logger.info('success!');
