@@ -65,7 +65,7 @@ function ansysExePathButton_Callback(hObject, eventdata, handles)
     [fileName, filePath] = FileChooser.getFile('*.exe', 'Picked ansys exe file');
     set(handles.ansysExePathEdit, 'String', fullfile(filePath, fileName));  
     
-    global PROPERTIES;
+    global PROPERTIES
     PROPERTIES.ansysExeFullPath = fullfile(filePath, fileName);
     
 % set path to ansys project file
@@ -89,11 +89,11 @@ function excelSheetPathButton_Callback(hObject, eventdata, handles)
     PROPERTIES.excelSheetPath = filePath;  
     PROPERTIES.excelSheetName = fileName;  
            
-    excel = Excel(fullfile(PROPERTIES.excelSheetPath, PROPERTIES.excelSheetName));
-    set(handles.lengthEdit, 'String', excel.getValueOfParameter('Length'));
-    set(handles.widthEdit, 'String', excel.getValueOfParameter('Width'));
-    set(handles.heightEdit, 'String', excel.getValueOfParameter('Height'));
-    set(handles.pressureEdit, 'String', excel.getValueOfParameter('Pressure'));
+%     excel = Excel(fullfile(PROPERTIES.excelSheetPath, PROPERTIES.excelSheetName));
+%     set(handles.lengthEdit, 'String', excel.getValueOfParameter('Length'));
+%     set(handles.widthEdit, 'String', excel.getValueOfParameter('Width'));
+%     set(handles.heightEdit, 'String', excel.getValueOfParameter('Height'));
+%     set(handles.pressureEdit, 'String', excel.getValueOfParameter('Pressure'));
    
 function scriptPathButton_Callback(hObject, eventdata, handles)
     Logger.info('Main: choose script...');
@@ -108,7 +108,7 @@ function scriptPathButton_Callback(hObject, eventdata, handles)
 function propertiesPathButton_Callback(hObject, eventdata, handles)
     % TODO: implement load propertie file
     
-function applyInputParameters()
+function applyInputParametersButton_Callback(hObject, eventdata, handles)
     Logger.info('Main: apply input pararmeters...');
     
     global PROPERTIES;
@@ -161,19 +161,29 @@ function runButton_Callback(hObject, eventdata, handles)
     global PROPERTIES;    
     
     % read all parameters from ui to properties
-    applyInputParameters();
+%     applyInputParameters();
     
     x0 = [PROPERTIES.length, PROPERTIES.width, PROPERTIES.height];
     xmin = [PROPERTIES.lengthMin, PROPERTIES.widthMin, PROPERTIES.heightMin];
     xmax = [PROPERTIES.lengthMax, PROPERTIES.widthMax, PROPERTIES.heightMax];    
     dx = [1, 1, 1];
-
-    ansysRunner = AnsysRunner(PROPERTIES.ansysExeFullPath, ...
-                     fullfile(PROPERTIES.scriptPath, PROPERTIES.scriptName), ...
-                     fullfile(PROPERTIES.ansysProjectPath, PROPERTIES.ansysProjectName));
     
-    ansysRunner.rosenbrok(x0,3,2,-0.5,xmax,xmin,0.05,dx);       
+    global ansysRunner
+    ansysRunner = AnsysRunner(PROPERTIES.ansysExeFullPath, ...
+                              fullfile(PROPERTIES.scriptPath, PROPERTIES.scriptName), ...
+                              fullfile(PROPERTIES.ansysProjectPath, PROPERTIES.ansysProjectName));
+    
+    ansysRunner.run();
+%     ansysRunner.Update([10, 15, 10]);
+                          
+%   ansysRunner.rosenbrok(x0,3,2,-0.5,xmax,xmin,0.05,dx);    
+    Logger.info('success!');
+    
+function makeStepButton_Callback(hObject, eventdata, handles)
+    global ansysRunner
+    td = ansysRunner.Update([15, 15, 10]);
+    disp(td);
     
     writeOutput();
     
-    Logger.info('success!');
+

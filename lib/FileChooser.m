@@ -10,7 +10,13 @@ classdef FileChooser
             end            
         end
         function [fileName, filePath] = getFile(filter, title)
-            [fileName, filePath, ~] = uigetfile(filter, title);
+            global PROPERTIES;
+            
+            if ( PROPERTIES.workDirectoryPath )
+                [fileName, filePath, ~] = uigetfile(filter, title, PROPERTIES.workDirectoryPath);
+            else
+                [fileName, filePath, ~] = uigetfile(filter, title);
+            end
             if ( isequal(fileName, 0) )
                 Logger.info('cancel');
                 return;

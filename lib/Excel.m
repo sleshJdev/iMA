@@ -8,7 +8,7 @@ classdef Excel
     methods
         function this = Excel(path)
             this.path = path;
-        end
+        end       
         
         function setValueOfParameter(this, parameterName, parameterValue)
             SHIFT = 2; % dependency from excel schema structure

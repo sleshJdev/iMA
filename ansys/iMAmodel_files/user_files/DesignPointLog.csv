@@ -1,0 +1,12 @@
+﻿# 
+# This file is written by the ANSYS DesignXplorer add-in and contains the parameter values of the Design Points successfully updated by ANSYS Workbench.
+# Project name: iMAmodel
+# Creation date: 20.04.2015 0:33:27
+# 
+# 20.04.2015 0:33:27
+# The parameters defined in the project are:
+# P1 - W1, P2 - W2, P3 - Len, P4 - Total Deformation Maximum [in], P5 - Pressure Magnitude [Pa], P15 - Total Deformation - Mode 10 - 6700.1 Hz Reported Frequency [Hz], P6 - Total Deformation - Mode 1 - 222.75 Hz Reported Frequency [Hz], P7 - Total Deformation - Mode 2 - 222.76 Hz Reported Frequency [Hz], P8 - Total Deformation - Mode 3 - 1353.5 Hz Reported Frequency [Hz], P9 - Total Deformation - Mode 4 - 1353.5 Hz Reported Frequency [Hz], P10 - Total Deformation - Mode 5 - 2364.2 Hz Reported Frequency [Hz], P11 - Total Deformation - Mode 6 - 3622.8 Hz Reported Frequency [Hz], P13 - Total Deformation - Mode 8 - 4151.4 Hz Reported Frequency [Hz], P12 - Total Deformation - Mode 7 - 3622.8 Hz Reported Frequency [Hz], P14 - Total Deformation - Mode 9 - 6700. Hz Reported Frequency [Hz]
+# 
+# The following header line defines the name of the columns by reference to the parameters.
+Name, P1, P2, P3, P4, P5, P15, P6, P7, P8, P9, P10, P11, P13, P12, P14
+DP 0, 99, 2, 15, 5.5719482831232948E-06, 125, 1711.207117646298, 295.17346151734955, 309.61266148279685, 354.67087404598482, 429.01211775247265, 534.0620545629049, 676.79146281078715, 1090.7346660048149, 875.779112122785, 1466.0451796695215
