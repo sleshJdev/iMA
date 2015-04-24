@@ -3,7 +3,7 @@ function varargout = MainForm(varargin)
     
     % settings path
     addpath ..\lib;  
-    addpath ..\lib\rozenbrock    
+    addpath ..\lib\Rosenbrock    
     
     % MAINFORM MATLAB code for MainForm.fig
     gui_Singleton = 1;
@@ -88,7 +88,7 @@ function excelSheetPathButton_Callback(hObject, eventdata, handles)
     global PROPERTIES;
     PROPERTIES.excelSheetPath = filePath;  
     PROPERTIES.excelSheetName = fileName;  
-           
+    
 %     excel = Excel(fullfile(PROPERTIES.excelSheetPath, PROPERTIES.excelSheetName));
 %     set(handles.lengthEdit, 'String', excel.getValueOfParameter('Length'));
 %     set(handles.widthEdit, 'String', excel.getValueOfParameter('Width'));
@@ -143,17 +143,18 @@ function writeOutput()
     handles = guihandles();  
     
     excel = Excel(fullfile(PROPERTIES.excelSheetPath, PROPERTIES.excelSheetName));
-    set(handles.totalDeformationEdit, 'String', excel.getValueOfParameter('Deformation'));
-    set(handles.mode1Edit, 'String', excel.getValueOfParameter('Mode 1'));
-    set(handles.mode2Edit, 'String', excel.getValueOfParameter('Mode 2'));
-    set(handles.mode3Edit, 'String', excel.getValueOfParameter('Mode 3'));
-    set(handles.mode4Edit, 'String', excel.getValueOfParameter('Mode 4'));
-    set(handles.mode5Edit, 'String', excel.getValueOfParameter('Mode 5'));
-    set(handles.mode6Edit, 'String', excel.getValueOfParameter('Mode 6'));
-    set(handles.mode7Edit, 'String', excel.getValueOfParameter('Mode 7'));
-    set(handles.mode8Edit, 'String', excel.getValueOfParameter('Mode 8'));
-    set(handles.mode9Edit, 'String', excel.getValueOfParameter('Mode 9'));
-    set(handles.mode10Edit, 'String', excel.getValueOfParameter('Mode 10'));
+    outVector = excel.readParameters();
+    set(handles.totalDeformationEdit, 'String', outVector(1));
+    set(handles.mode1Edit, 'String', outVector(2));
+    set(handles.mode2Edit, 'String', outVector(3));
+    set(handles.mode3Edit, 'String', outVector(4));
+    set(handles.mode4Edit, 'String', outVector(5));
+    set(handles.mode5Edit, 'String', outVector(6));
+    set(handles.mode6Edit, 'String', outVector(7));
+    set(handles.mode7Edit, 'String', outVector(8));
+    set(handles.mode8Edit, 'String', outVector(9));
+    set(handles.mode9Edit, 'String', outVector(10));
+    set(handles.mode10Edit, 'String', outVector(11));
     
 function runButton_Callback(hObject, eventdata, handles)   
     Logger.info('Main: runButton_Callback...');   
@@ -180,10 +181,17 @@ function runButton_Callback(hObject, eventdata, handles)
     Logger.info('success!');
     
 function makeStepButton_Callback(hObject, eventdata, handles)
-    global ansysRunner
-    td = ansysRunner.Update([15, 15, 10]);
-    disp(td);
+    global PROPERTIES       
     
+    inVector = [PROPERTIES.length; PROPERTIES.width; PROPERTIES.height];
+    lowBorder = [PROPERTIES.lengthMin; PROPERTIES.widthMin; PROPERTIES.heightMin];
+    upBorder = [PROPERTIES.lengthMax; PROPERTIES.widthMax; PROPERTIES.heightMax];
+    disp('inVector in makeStep method');       
+    parameters = rosenbrok(inVector, 3, 3, -0.5, upBorder, lowBorder, 0.5, [1; 1; 1]);
+    disp('parameters');
+    disp(parameters);
+    
+    Logger.info(sprintf('step result %d', totalDeformation));
     writeOutput();
     
 
