@@ -41,12 +41,10 @@ def watchListener(sender, args):
 		start = DateTime.Now.Ticks
 	elif (DateTime.Now.Ticks - start < WAIT_TIME):
 		print "slip"
-		start = DateTime.Now.Ticks
+		start = 0
 		return
 	
-	print "begin read"
 	reader = StreamReader(args.FullPath)
-	print "init reader ok"
 	command = reader.ReadLine().Trim().ToLower()
 	print "command ", command
 	if (command == "close"):		 
@@ -64,6 +62,7 @@ def watchListener(sender, args):
 		logFile.write("Saving Project\n")
 		Save()
 	reader.Close()
+	start = DateTime.Now.Ticks
 	
 watcher = FileSystemWatcher(projDir + "\listenme")
 watcher.Changed += watchListener
@@ -136,21 +135,18 @@ def makeStep():
 	excelSheet.Range["Mode_9"](1,1).Value2 = Parameters.GetParameter(Name="P14").Value.Value
 	excelSheet.Range["Mode_10"](1,1).Value2 = Parameters.GetParameter(Name="P15").Value.Value
 	
-	print "close excel"
-	
 	# Close excel
 	Marshal.ReleaseComObject(excelSheet)
-	excelBook.Close(False)
+	excelBook.Close(True)
 	Marshal.ReleaseComObject(excelBook)
 	excelApp.Quit()
 	Marshal.ReleaseComObject(excelApp)
-	
-	print "set None"
-	
 	excelSheet = None
 	excelBook = None
-	excelApp = None
-
-	print "collect"
-	
+	excelApp = None	
 	System.GC.Collect()
+	
+	# Notify matlab to it begin optimization
+	matlabCommand = open(projDir + "\listenme\matlab_command.txt", "w");
+	matlabCommand.write('end')
+	matlabCommand.close();

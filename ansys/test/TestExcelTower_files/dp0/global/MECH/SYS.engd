@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<EngineeringData version="14.0.0.367" versiondate="12.10.2011 14:46:00">
-  <Notes>
-  </Notes>
+<EngineeringData version="13.0.0.474" versiondate="3/9/2011 7:43:00 PM">
+  <Notes />
   <Materials>
     <MatML_Doc>
-      <Material>
+      <Material DefaultSolidMaterial="True">
         <BulkDetails>
-          <Name>Structural Steel</Name>
+          <Name>Structural Steel::NameInSource::4337e029-89dd-4e90-b13f-e5f86ae6d360</Name>
           <Description>Fatigue Data at zero mean stress comes from 1998 ASME BPV Code, Section 8, Div 2, Table 5-110.1</Description>
           <PropertyData property="pr0">
             <Data format="float">0</Data>
@@ -40,7 +39,7 @@
           </PropertyData>
           <PropertyData property="pr5">
             <Data format="string">-</Data>
-            <Qualifier name="Definition">Secant</Qualifier>
+            <Qualifier name="Definition Method">Secant</Qualifier>
             <Qualifier name="Behavior">Isotropic</Qualifier>
             <Qualifier name="Localized Name">Isotropic Secant Coefficient of Thermal Expansion</Qualifier>
             <ParameterValue parameter="pa1" format="float">
@@ -56,7 +55,7 @@
           </PropertyData>
           <PropertyData property="pr6">
             <Data format="string">-</Data>
-            <Qualifier name="Definition">Secant</Qualifier>
+            <Qualifier name="Definition Method">Secant</Qualifier>
             <Qualifier name="Behavior">Isotropic</Qualifier>
             <Qualifier name="Localized Name">Isotropic Reference Temperature Secant</Qualifier>
             <ParameterValue parameter="pa2" format="float">
@@ -95,7 +94,7 @@
           </PropertyData>
           <PropertyData property="pr9">
             <Data format="string">-</Data>
-            <Qualifier name="Definition">Mean Stress</Qualifier>
+            <Qualifier name="Definition Method">Mean Stress</Qualifier>
             <Qualifier name="Interpolation">Log-Log</Qualifier>
             <Qualifier name="Localized Name">Alternating Stress Mean Stress</Qualifier>
             <ParameterValue parameter="pa5" format="float">
@@ -443,12 +442,6 @@
       </Metadata>
     </MatML_Doc>
   </Materials>
-  <ANSYSWBTransferData>
-    <Materials>
-      <Material>
-        <Name>Structural Steel</Name>
-        <DataTransferID>5eef4bcb-af35-4bc8-ad23-09aa051917ab</DataTransferID>
-      </Material>
-    </Materials>
-  </ANSYSWBTransferData>
+  <Loads />
+  <BeamSections />
 </EngineeringData>

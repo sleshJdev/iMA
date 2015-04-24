@@ -2,7 +2,9 @@ classdef Excel
     %EXCEL Represent util class to read/write excel sheet
     %    
     properties (SetAccess = private)
-        path% path to specific excel file
+        path;% path to specific excel file
+        rangeIn = 'B2';% represent rectange for writing parameters
+        rangeOut = 'B9:B19';% represent rectange for reading parameters
     end
     
     methods
@@ -10,6 +12,13 @@ classdef Excel
             this.path = path;
         end       
         
+        function writeParameters(this, inVector)
+             xlswrite(this.path, inVector, 1, this.rangeIn);  
+        end
+        
+        function [outVector] = readParameters(this)
+            [outVector, ~, ~] = xlsread(this.path, 1, this.rangeOut);      
+        end
         function setValueOfParameter(this, parameterName, parameterValue)
             SHIFT = 2; % dependency from excel schema structure
             % TODO: need improve this, remove dependency       
