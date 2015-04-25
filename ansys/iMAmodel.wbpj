@@ -345,18 +345,23 @@
 "55114b5c-decd-4b2d-b73a-1e90a3b4661b": "/Results 1/ParameterAdapter18:859e3a88-8d50-4aca-a353-bac98a30fc59",
 "d73cda4b-5369-4107-b071-e67317506a8c": "/Results 1/ParameterAdapter20:5445cac3-06ac-4160-804e-f326becb2ecb",
 "27a23d21-ba08-4d22-bbce-5260c8d0bfbd": "/Results 1/ParameterAdapter19:de3d8f63-30fa-49e5-b118-42b46c2f3802",
-"695a4386-be58-4901-a911-36c0fd0fbbc2": "/Results 1/ParameterAdapter21:b48ffc65-3bf8-4b83-b979-02e60dd7ae3e"
+"695a4386-be58-4901-a911-36c0fd0fbbc2": "/Results 1/ParameterAdapter21:b48ffc65-3bf8-4b83-b979-02e60dd7ae3e",
+"3ab26a41-a552-4cd5-b24e-08b89d7f5260": "/Parameters/Parameter:P16",
+"377448d3-1f0e-4552-b36d-5a0a71e3c28e": "/Model/ParameterAdapter1:3fe1c274-309b-4b7d-aa9c-dcf7ee167562"
 }</ReferenceList>
     </ReferenceCache>
-    <timestamp-max valType="Int64">15041</timestamp-max>
+    <timestamp-max valType="Int64">15894</timestamp-max>
     <active-designpoint-dirname valType="String">dp0</active-designpoint-dirname>
     <framework-build-version valType="String">14.0.250.0</framework-build-version>
-    <last-saved-utc valType="String">04/19/2015 22:34:01</last-saved-utc>
+    <last-saved-utc valType="String">04/25/2015 18:06:40</last-saved-utc>
     <logHistory valType="StringArray">
       <ArrayEntry Index="0">eric@CHATO:C:\Users\eric\AppData\Local\Temp\WorkbenchLogs\CoreEvents8388.log</ArrayEntry>
       <ArrayEntry Index="1">eric@CHATO:C:\Users\eric\AppData\Local\Temp\WorkbenchLogs\CoreEvents5968.log</ArrayEntry>
       <ArrayEntry Index="2">eric@CHATO:C:\Users\eric\AppData\Local\Temp\WorkbenchLogs\CoreEvents7960.log</ArrayEntry>
       <ArrayEntry Index="3">slesh@SLESH-PC:C:\Users\slesh\AppData\Local\Temp\WorkbenchLogs\CoreEvents4196.log</ArrayEntry>
+      <ArrayEntry Index="4">slesh@SLESH-PC:C:\Users\slesh\AppData\Local\Temp\WorkbenchLogs\CoreEvents5648.log</ArrayEntry>
+      <ArrayEntry Index="5">slesh@SLESH-PC:C:\Users\slesh\AppData\Local\Temp\WorkbenchLogs\CoreEvents6436.log</ArrayEntry>
+      <ArrayEntry Index="6">slesh@SLESH-PC:C:\Users\slesh\AppData\Local\Temp\WorkbenchLogs\CoreEvents1516.log</ArrayEntry>
     </logHistory>
     <expression-scope-container valType="String">Parameters</expression-scope-container>
   </Project>
@@ -442,11 +447,17 @@
 21. C:\Users\slesh\Documents\MATLAB\Workspace\iMA\ansys\iMAmodel_files\dp0\SYS-1\MECH\solve.out
 """, "Association": "", "DateTimeStamp": 04/20/2015 00:33:27, "Visibility": "Error", "MessageSourceContainer": None, "MessageSourceEntity": None}</member-data>
       </Object>
+      <Object Name="/Messages/StoredMessage:Message 2" Version="1.0">
+        <class-type valType="String">StoredMessage</class-type>
+        <object-name valType="String">Message 2</object-name>
+        <member-data valType="String">{"DisplayText": "Message", "MessageType": "Information", "Summary": """ANSYS news messages could not be loaded because no external internet connection was found.
+http://www.ansys.com/rss/ansys-news.rss""", "Details": None, "Association": "", "DateTimeStamp": 04/25/2015 01:16:14, "Visibility": "Information", "MessageSourceContainer": None, "MessageSourceEntity": None}</member-data>
+      </Object>
       <container-type valType="String">Project:Messages</container-type>
       <storage-scheme-id valType="String">version-1-format</storage-scheme-id>
       <deleted-sources valType="String">[]</deleted-sources>
       <last-updated valType="Int64">0</last-updated>
-      <last-modified-by-usage valType="String">{Extrinsic: 14841, Input: 11911, Output: 11911}</last-modified-by-usage>
+      <last-modified-by-usage valType="String">{Extrinsic: 15045, Input: 11911, Output: 11911}</last-modified-by-usage>
       <outputs-generated-by-type valType="String">{}</outputs-generated-by-type>
       <last-update-regen-times valType="String">{}</last-update-regen-times>
       <contains-significant-data valType="Boolean">false</contains-significant-data>
@@ -455,7 +466,7 @@
       <Object Name="/Parameters/DesignPoint:0" Version="1.0">
         <class-type valType="String">DesignPoint</class-type>
         <object-name valType="String">0</object-name>
-        <member-data valType="String">{"DisplayText": "DP 0", "JustDuplicated": False, "ErrorsOnLastUpdate": {}, "Parameters": {$$029b75d8-24d2-4751-8470-bd029241fddc: "99", $$1b4ec955-7b6c-48a7-8d46-86d618ef274c: "2", $$a893f5aa-8e95-4b45-ba09-1c257427fb43: "15", $$1cc56c6e-68ff-47e2-9b35-68df7e9a0ce4: "125 [Pa]"}, "ParameterErrors": {}, "CurrentValues": {$$029b75d8-24d2-4751-8470-bd029241fddc: 99, $$1b4ec955-7b6c-48a7-8d46-86d618ef274c: 2, $$a893f5aa-8e95-4b45-ba09-1c257427fb43: 15, $$c66a67c1-74d3-4187-98af-f2f314b90e05: 5.5719482831232948E-06 [in], $$1cc56c6e-68ff-47e2-9b35-68df7e9a0ce4: 125 [Pa], $$a6bd5add-d035-4cf5-b7d3-791963fc1ca8: 1711.207117646298 [Hz], $$02591947-e3b4-4d63-ace6-b395425d2f95: 295.17346151734955 [Hz], $$4bf175ae-3219-4f0b-b623-109175b0bf38: 309.61266148279685 [Hz], $$0abe40b2-4c5f-49fa-b9f2-1991defbba04: 354.67087404598482 [Hz], $$fcb7a85b-f1d3-4584-b291-87bec8431eb2: 429.01211775247265 [Hz], $$cd5a526d-fb48-4be0-bf01-6bca7e86cdbf: 534.0620545629049 [Hz], $$3cd354b9-1aa4-4b20-beea-804508023e2c: 676.79146281078715 [Hz], $$97b4709e-75a9-48aa-8ec3-afb9829c88df: 1090.7346660048149 [Hz], $$adea7ede-2bac-4fed-a7ae-fb686b9ec379: 875.779112122785 [Hz], $$f51a67ee-830f-4df5-bd1b-f4c8bc46079b: 1466.0451796695215 [Hz]}, "ParameterStatus": {$$029b75d8-24d2-4751-8470-bd029241fddc: "UpToDate", $$1b4ec955-7b6c-48a7-8d46-86d618ef274c: "UpToDate", $$a893f5aa-8e95-4b45-ba09-1c257427fb43: "UpToDate", $$c66a67c1-74d3-4187-98af-f2f314b90e05: "UpToDate", $$1cc56c6e-68ff-47e2-9b35-68df7e9a0ce4: "UpToDate", $$a6bd5add-d035-4cf5-b7d3-791963fc1ca8: "UpToDate", $$02591947-e3b4-4d63-ace6-b395425d2f95: "UpToDate", $$4bf175ae-3219-4f0b-b623-109175b0bf38: "UpToDate", $$0abe40b2-4c5f-49fa-b9f2-1991defbba04: "UpToDate", $$fcb7a85b-f1d3-4584-b291-87bec8431eb2: "UpToDate", $$cd5a526d-fb48-4be0-bf01-6bca7e86cdbf: "UpToDate", $$3cd354b9-1aa4-4b20-beea-804508023e2c: "UpToDate", $$97b4709e-75a9-48aa-8ec3-afb9829c88df: "UpToDate", $$adea7ede-2bac-4fed-a7ae-fb686b9ec379: "UpToDate", $$f51a67ee-830f-4df5-bd1b-f4c8bc46079b: "UpToDate"}, "Note": None, "IsUpToDate": True, "IsRetained": True, "HasBeenSolved": True, "UpdateOrder": 1}</member-data>
+        <member-data valType="String">{"DisplayText": "DP 0", "JustDuplicated": False, "ErrorsOnLastUpdate": {}, "Parameters": {$$029b75d8-24d2-4751-8470-bd029241fddc: "99", $$1b4ec955-7b6c-48a7-8d46-86d618ef274c: "2", $$a893f5aa-8e95-4b45-ba09-1c257427fb43: "15", $$1cc56c6e-68ff-47e2-9b35-68df7e9a0ce4: "125 [Pa]"}, "ParameterErrors": {}, "CurrentValues": {$$029b75d8-24d2-4751-8470-bd029241fddc: 99, $$1b4ec955-7b6c-48a7-8d46-86d618ef274c: 2, $$a893f5aa-8e95-4b45-ba09-1c257427fb43: 15, $$c66a67c1-74d3-4187-98af-f2f314b90e05: 5.5719476222116923E-06 [in], $$1cc56c6e-68ff-47e2-9b35-68df7e9a0ce4: 125 [Pa], $$a6bd5add-d035-4cf5-b7d3-791963fc1ca8: 1711.20711764249 [Hz], $$02591947-e3b4-4d63-ace6-b395425d2f95: 295.17346151848886 [Hz], $$4bf175ae-3219-4f0b-b623-109175b0bf38: 309.61266148429451 [Hz], $$0abe40b2-4c5f-49fa-b9f2-1991defbba04: 354.670874048134 [Hz], $$fcb7a85b-f1d3-4584-b291-87bec8431eb2: 429.012117764201 [Hz], $$cd5a526d-fb48-4be0-bf01-6bca7e86cdbf: 534.06205450737252 [Hz], $$3cd354b9-1aa4-4b20-beea-804508023e2c: 676.7914630582992 [Hz], $$97b4709e-75a9-48aa-8ec3-afb9829c88df: 1090.7346657939481 [Hz], $$adea7ede-2bac-4fed-a7ae-fb686b9ec379: 875.77911161952818 [Hz], $$f51a67ee-830f-4df5-bd1b-f4c8bc46079b: 1466.0451794193541 [Hz], $$3ab26a41-a552-4cd5-b24e-08b89d7f5260: 382.056203628001 [kg]}, "ParameterStatus": {$$029b75d8-24d2-4751-8470-bd029241fddc: "UpToDate", $$1b4ec955-7b6c-48a7-8d46-86d618ef274c: "UpToDate", $$a893f5aa-8e95-4b45-ba09-1c257427fb43: "UpToDate", $$c66a67c1-74d3-4187-98af-f2f314b90e05: "UpToDate", $$1cc56c6e-68ff-47e2-9b35-68df7e9a0ce4: "UpToDate", $$a6bd5add-d035-4cf5-b7d3-791963fc1ca8: "UpToDate", $$02591947-e3b4-4d63-ace6-b395425d2f95: "UpToDate", $$4bf175ae-3219-4f0b-b623-109175b0bf38: "UpToDate", $$0abe40b2-4c5f-49fa-b9f2-1991defbba04: "UpToDate", $$fcb7a85b-f1d3-4584-b291-87bec8431eb2: "UpToDate", $$cd5a526d-fb48-4be0-bf01-6bca7e86cdbf: "UpToDate", $$3cd354b9-1aa4-4b20-beea-804508023e2c: "UpToDate", $$97b4709e-75a9-48aa-8ec3-afb9829c88df: "UpToDate", $$adea7ede-2bac-4fed-a7ae-fb686b9ec379: "UpToDate", $$f51a67ee-830f-4df5-bd1b-f4c8bc46079b: "UpToDate", $$3ab26a41-a552-4cd5-b24e-08b89d7f5260: "UpToDate"}, "Note": None, "IsUpToDate": True, "IsRetained": True, "HasBeenSolved": True, "UpdateOrder": 1}</member-data>
       </Object>
       <Object Name="/Parameters/Parameter:P1" Version="1.0">
         <class-type valType="String">Parameter</class-type>
@@ -475,7 +486,7 @@
       <Object Name="/Parameters/Parameter:P4" Version="1.0">
         <class-type valType="String">Parameter</class-type>
         <object-name valType="String">P4</object-name>
-        <member-data valType="String">{"DisplayText": "Total Deformation Maximum", "Expression": None, "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "DirectOutput", "Value": 5.5719482831232948E-06 [in], "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": "0 [in]", "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Output", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Length"}}</member-data>
+        <member-data valType="String">{"DisplayText": "Total Deformation Maximum", "Expression": None, "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "DirectOutput", "Value": 5.5719476222116923E-06 [in], "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": "0 [in]", "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Output", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Length"}}</member-data>
       </Object>
       <Object Name="/Parameters/Parameter:P5" Version="1.0">
         <class-type valType="String">Parameter</class-type>
@@ -485,52 +496,57 @@
       <Object Name="/Parameters/Parameter:P15" Version="1.0">
         <class-type valType="String">Parameter</class-type>
         <object-name valType="String">P15</object-name>
-        <member-data valType="String">{"DisplayText": "Total Deformation - Mode 10 - 6700.1 Hz Reported Frequency", "Expression": None, "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "DirectOutput", "Value": 1711.207117646298 [Hz], "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": "6700.06664459415 [Hz]", "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Output", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Frequency"}}</member-data>
+        <member-data valType="String">{"DisplayText": "Total Deformation - Mode 10 - 6700.1 Hz Reported Frequency", "Expression": None, "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "DirectOutput", "Value": 1711.20711764249 [Hz], "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": "6700.06664459415 [Hz]", "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Output", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Frequency"}}</member-data>
       </Object>
       <Object Name="/Parameters/Parameter:P6" Version="1.0">
         <class-type valType="String">Parameter</class-type>
         <object-name valType="String">P6</object-name>
-        <member-data valType="String">{"DisplayText": "Total Deformation - Mode 1 - 222.75 Hz Reported Frequency", "Expression": None, "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "DirectOutput", "Value": 295.17346151734955 [Hz], "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": "222.753706652356 [Hz]", "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Output", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Frequency"}}</member-data>
+        <member-data valType="String">{"DisplayText": "Total Deformation - Mode 1 - 222.75 Hz Reported Frequency", "Expression": None, "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "DirectOutput", "Value": 295.17346151848886 [Hz], "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": "222.753706652356 [Hz]", "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Output", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Frequency"}}</member-data>
       </Object>
       <Object Name="/Parameters/Parameter:P7" Version="1.0">
         <class-type valType="String">Parameter</class-type>
         <object-name valType="String">P7</object-name>
-        <member-data valType="String">{"DisplayText": "Total Deformation - Mode 2 - 222.76 Hz Reported Frequency", "Expression": None, "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "DirectOutput", "Value": 309.61266148279685 [Hz], "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": "222.759161543343 [Hz]", "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Output", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Frequency"}}</member-data>
+        <member-data valType="String">{"DisplayText": "Total Deformation - Mode 2 - 222.76 Hz Reported Frequency", "Expression": None, "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "DirectOutput", "Value": 309.61266148429451 [Hz], "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": "222.759161543343 [Hz]", "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Output", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Frequency"}}</member-data>
       </Object>
       <Object Name="/Parameters/Parameter:P8" Version="1.0">
         <class-type valType="String">Parameter</class-type>
         <object-name valType="String">P8</object-name>
-        <member-data valType="String">{"DisplayText": "Total Deformation - Mode 3 - 1353.5 Hz Reported Frequency", "Expression": None, "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "DirectOutput", "Value": 354.67087404598482 [Hz], "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": "1353.47261176969 [Hz]", "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Output", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Frequency"}}</member-data>
+        <member-data valType="String">{"DisplayText": "Total Deformation - Mode 3 - 1353.5 Hz Reported Frequency", "Expression": None, "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "DirectOutput", "Value": 354.670874048134 [Hz], "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": "1353.47261176969 [Hz]", "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Output", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Frequency"}}</member-data>
       </Object>
       <Object Name="/Parameters/Parameter:P9" Version="1.0">
         <class-type valType="String">Parameter</class-type>
         <object-name valType="String">P9</object-name>
-        <member-data valType="String">{"DisplayText": "Total Deformation - Mode 4 - 1353.5 Hz Reported Frequency", "Expression": None, "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "DirectOutput", "Value": 429.01211775247265 [Hz], "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": "1353.51128159547 [Hz]", "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Output", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Frequency"}}</member-data>
+        <member-data valType="String">{"DisplayText": "Total Deformation - Mode 4 - 1353.5 Hz Reported Frequency", "Expression": None, "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "DirectOutput", "Value": 429.012117764201 [Hz], "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": "1353.51128159547 [Hz]", "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Output", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Frequency"}}</member-data>
       </Object>
       <Object Name="/Parameters/Parameter:P10" Version="1.0">
         <class-type valType="String">Parameter</class-type>
         <object-name valType="String">P10</object-name>
-        <member-data valType="String">{"DisplayText": "Total Deformation - Mode 5 - 2364.2 Hz Reported Frequency", "Expression": None, "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "DirectOutput", "Value": 534.0620545629049 [Hz], "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": "2364.18897409899 [Hz]", "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Output", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Frequency"}}</member-data>
+        <member-data valType="String">{"DisplayText": "Total Deformation - Mode 5 - 2364.2 Hz Reported Frequency", "Expression": None, "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "DirectOutput", "Value": 534.06205450737252 [Hz], "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": "2364.18897409899 [Hz]", "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Output", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Frequency"}}</member-data>
       </Object>
       <Object Name="/Parameters/Parameter:P11" Version="1.0">
         <class-type valType="String">Parameter</class-type>
         <object-name valType="String">P11</object-name>
-        <member-data valType="String">{"DisplayText": "Total Deformation - Mode 6 - 3622.8 Hz Reported Frequency", "Expression": None, "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "DirectOutput", "Value": 676.79146281078715 [Hz], "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": "3622.77948586816 [Hz]", "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Output", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Frequency"}}</member-data>
+        <member-data valType="String">{"DisplayText": "Total Deformation - Mode 6 - 3622.8 Hz Reported Frequency", "Expression": None, "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "DirectOutput", "Value": 676.7914630582992 [Hz], "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": "3622.77948586816 [Hz]", "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Output", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Frequency"}}</member-data>
       </Object>
       <Object Name="/Parameters/Parameter:P13" Version="1.0">
         <class-type valType="String">Parameter</class-type>
         <object-name valType="String">P13</object-name>
-        <member-data valType="String">{"DisplayText": "Total Deformation - Mode 8 - 4151.4 Hz Reported Frequency", "Expression": None, "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "DirectOutput", "Value": 1090.7346660048149 [Hz], "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": "4151.39499410618 [Hz]", "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Output", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Frequency"}}</member-data>
+        <member-data valType="String">{"DisplayText": "Total Deformation - Mode 8 - 4151.4 Hz Reported Frequency", "Expression": None, "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "DirectOutput", "Value": 1090.7346657939481 [Hz], "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": "4151.39499410618 [Hz]", "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Output", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Frequency"}}</member-data>
       </Object>
       <Object Name="/Parameters/Parameter:P12" Version="1.0">
         <class-type valType="String">Parameter</class-type>
         <object-name valType="String">P12</object-name>
-        <member-data valType="String">{"DisplayText": "Total Deformation - Mode 7 - 3622.8 Hz Reported Frequency", "Expression": None, "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "DirectOutput", "Value": 875.779112122785 [Hz], "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": "3622.82070259637 [Hz]", "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Output", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Frequency"}}</member-data>
+        <member-data valType="String">{"DisplayText": "Total Deformation - Mode 7 - 3622.8 Hz Reported Frequency", "Expression": None, "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "DirectOutput", "Value": 875.77911161952818 [Hz], "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": "3622.82070259637 [Hz]", "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Output", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Frequency"}}</member-data>
       </Object>
       <Object Name="/Parameters/Parameter:P14" Version="1.0">
         <class-type valType="String">Parameter</class-type>
         <object-name valType="String">P14</object-name>
-        <member-data valType="String">{"DisplayText": "Total Deformation - Mode 9 - 6700. Hz Reported Frequency", "Expression": None, "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "DirectOutput", "Value": 1466.0451796695215 [Hz], "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": "6700.00492114588 [Hz]", "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Output", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Frequency"}}</member-data>
+        <member-data valType="String">{"DisplayText": "Total Deformation - Mode 9 - 6700. Hz Reported Frequency", "Expression": None, "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "DirectOutput", "Value": 1466.0451794193541 [Hz], "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": "6700.00492114588 [Hz]", "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Output", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Frequency"}}</member-data>
+      </Object>
+      <Object Name="/Parameters/Parameter:P16" Version="1.0">
+        <class-type valType="String">Parameter</class-type>
+        <object-name valType="String">P16</object-name>
+        <member-data valType="String">{"DisplayText": "Geometry Mass", "Expression": None, "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "DirectOutput", "Value": 382.056203628001 [kg], "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": "382.056203628001 [kg]", "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Output", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Mass"}}</member-data>
       </Object>
       <ParameterToPropertyMap>
         <Parameter Name="/Parameters/Parameter:P1">
@@ -638,6 +654,13 @@
           </LinkedEntityProperty>
           <ParameterReference valType="String">f51a67ee-830f-4df5-bd1b-f4c8bc46079b</ParameterReference>
         </Parameter>
+        <Parameter Name="/Parameters/Parameter:P16">
+          <LinkedEntityProperty>
+            <EntityReference valType="String">377448d3-1f0e-4552-b36d-5a0a71e3c28e</EntityReference>
+            <Property valType="String">Value</Property>
+          </LinkedEntityProperty>
+          <ParameterReference valType="String">3ab26a41-a552-4cd5-b24e-08b89d7f5260</ParameterReference>
+        </Parameter>
       </ParameterToPropertyMap>
       <container-type valType="String">Ansys.ParameterManager.ParameterManagerAddin:parameters</container-type>
       <static-id valType="String">Parameters</static-id>
@@ -646,7 +669,7 @@
       <maxUpdateOrder valType="Double">1</maxUpdateOrder>
       <deleted-sources valType="String">[]</deleted-sources>
       <last-updated valType="Int64">0</last-updated>
-      <last-modified-by-usage valType="String">{Extrinsic: 14838, Input: 14837, Output: 11912}</last-modified-by-usage>
+      <last-modified-by-usage valType="String">{Extrinsic: 15891, Input: 15892, Output: 11912}</last-modified-by-usage>
       <outputs-generated-by-type valType="String">{}</outputs-generated-by-type>
       <last-update-regen-times valType="String">{}</last-update-regen-times>
       <contains-significant-data valType="Boolean">true</contains-significant-data>
@@ -783,7 +806,7 @@
       <storage-scheme-id valType="String">version-1-format</storage-scheme-id>
       <deleted-sources valType="String">[]</deleted-sources>
       <last-updated valType="Int64">0</last-updated>
-      <last-modified-by-usage valType="String">{Extrinsic: 14775, Input: 13462, Output: 11914}</last-modified-by-usage>
+      <last-modified-by-usage valType="String">{Extrinsic: 15820, Input: 13462, Output: 11914}</last-modified-by-usage>
       <outputs-generated-by-type valType="String">{}</outputs-generated-by-type>
       <last-update-regen-times valType="String">{}</last-update-regen-times>
       <contains-significant-data valType="Boolean">false</contains-significant-data>
@@ -930,7 +953,7 @@
       <storage-scheme-id valType="String">version-1-format</storage-scheme-id>
       <deleted-sources valType="String">[]</deleted-sources>
       <last-updated valType="Int64">0</last-updated>
-      <last-modified-by-usage valType="String">{Extrinsic: 15039, Input: 12137, Output: 12137}</last-modified-by-usage>
+      <last-modified-by-usage valType="String">{Extrinsic: 15779, Input: 12137, Output: 12137}</last-modified-by-usage>
       <outputs-generated-by-type valType="String">{}</outputs-generated-by-type>
       <last-update-regen-times valType="String">{}</last-update-regen-times>
       <contains-significant-data valType="Boolean">false</contains-significant-data>

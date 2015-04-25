@@ -25,43 +25,40 @@ logFile.write("================================================\n")
 logFile.write("Start time: " + DateTime.Now.ToString('yyyy-mm-dd hh:mm:ss') + "\n")
 logFile.write("Proj Dir: %s\n\n" % projDir)
 
-# Define wait time for avoid 2 update event
-start = 0
+# define wait time for avoid 2 update event
 WAIT_TIME = TimeSpan.FromSeconds(5).Ticks
-
-print "init start ", start
-print "WAIT_TIME ", WAIT_TIME
+start = 0
 
 # Initialize listener	
 def watchListener(sender, args):
 	global start
-	print "begin  watchListener"
+	global logFile
+	
 	if(start == 0):
-		print "init start"
 		start = DateTime.Now.Ticks
 	elif (DateTime.Now.Ticks - start < WAIT_TIME):
-		print "slip"
 		start = 0
-		return
-	
+		return	
+		
 	reader = StreamReader(args.FullPath)
 	command = reader.ReadLine().Trim().ToLower()
-	print "command ", command
+	reader.Close()
+	print "command: ", command
 	if (command == "close"):		 
-		sender.write("close ", args.Name)
-		# Cancel watch of directory
-		watcher.EnableRaisingEvents = False		
-		# Close the log file and move on 
-		global logFile
+		logFile.write("close ", args.Name)
+		print "cancel watch of directory"
+		sender.EnableRaisingEvents = False# sender == watcher		
+		print "close the log file and move on" 		
 		logFile.write("End time: " + DateTime.Now.ToString('yyyy-mm-dd hh:mm:ss') + "\n")
 		logFile.close()
+		return
 	elif (command == "update"):     
+		print "in workbench: update model with new parameters"
 		makeStep()
 	elif (command == "save"):
-		# In Workbench: save the systems using the new parameter values
-		logFile.write("Saving Project\n")
+		print "in workbench: save the systems using the new parameter values"		
 		Save()
-	reader.Close()
+		logFile.write("Saving Project\n")
 	start = DateTime.Now.Ticks
 	
 watcher = FileSystemWatcher(projDir + "\listenme")
@@ -69,38 +66,36 @@ watcher.Changed += watchListener
 watcher.EnableRaisingEvents = True
 	
 def makeStep():
-	# Use the Excel GetActiveObject funtion to get the object for the excel session
+	print "use the excel"
 	excelApp = Excel.ApplicationClass()
-
-	# Make Excel visible
-	excelApp.Visible = True
-	
-	# Define the active workbook and worksheet
+	print "define the active workbook and worksheet"
 	excelBook = excelApp.Workbooks.Open(projDir + "\iMAexcel.xlsm")
 	excelSheet = excelBook.ActiveSheet
+	print "make excel visible"	
+	excelApp.Visible = True
 	
-	# In Excel: Grab values for the cells that we want data from (input cells)
+	print "in excel: grab values for the cells that we want data from (input cells)"
 	length = excelSheet.Range["Length"](1,1).Value2
 	width = excelSheet.Range["Width"](1,1).Value2
 	height = excelSheet.Range["Height"](1,1).Value2
 	press = excelSheet.Range["Pressure"](1,1).Value2
 	upress =  excelSheet.Range["Pressure"](1,2).Value2
-
-	# In Workbench: Grab the parameter objects for the input values
+	
+	print "in workbench: grab the parameter objects for the input values"
 	lenParam = Parameters.GetParameter(Name="P1")
 	widParam = Parameters.GetParameter(Name="P2")
 	hgtParam = Parameters.GetParameter(Name="P3")
-	prsParam = Parameters.GetParameter(Name="P5")
-	defParam = Parameters.GetParameter(Name="P4")
+	prsParam = Parameters.GetParameter(Name="P5")			
 	
-	#In Workbench: Set the value of the input parameters in Workbench using the values we got from Excel
+	print "in workbench: set the value of the input parameters in workbench using the values we got from excel"
 	lenParam.Expression = length.ToString()
 	widParam.Expression = width.ToString()
 	hgtParam.Expression = height.ToString()
 	prsParam.Expression = press.ToString() + " [" + upress + "]"
 	
-	# Set the output values to "Calculating..." since they no longer match the input values
+	print "Set the output values to \"Calculating...\" since they no longer match the input values"
 	excelSheet.Range["Max_Bending_Distance"](1,1).Value2 = "Calculating..."
+	excelSheet.Range["Geometry_Mass"](1,1).Value2 = "Calculating..."
 	excelSheet.Range["Mode_1"](1,1).Value2 = "Calculating..."
 	excelSheet.Range["Mode_2"](1,1).Value2 = "Calculating..."
 	excelSheet.Range["Mode_3"](1,1).Value2 = "Calculating..."
@@ -112,18 +107,20 @@ def makeStep():
 	excelSheet.Range["Mode_9"](1,1).Value2 = "Calculating..."
 	excelSheet.Range["Mode_10"](1,1).Value2 = "Calculating..."
 	
-	# In Workbench: update the systems using the new parameter values
+	print "in workbench: update the systems using the new parameter values"
 	logFile.write("Updating Project\n")
 	Update()
 	
-	# Assign the value of the Excel deflection cell output deflection from Workbench 
-	excelSheet.Range["Max_Bending_Distance"](1,1).Value2 = defParam.Value.Value
+	print "in workbench: grab the parameter objects for the output values"
+	defParam = Parameters.GetParameter(Name="P4")
+	massParam = Parameters.GetParameter(Name="P16")
 	
-	# Now go through the value of each natural frequency in Workbench and 
-	#   set the corresponding cell in Excel
-	#    This could be made more general or at least more concise by using a do loop
-	#    Also note that instead of getting the objects, then the values the two steps are 
-	#    combined for these values
+	print "assign the value of the excel deflection cell output deflection from workbench"
+	excelSheet.Range["Max_Bending_Distance"](1,1).Value2 = defParam.Value.Value	
+	print "assign geometry mass"
+	excelSheet.Range["Geometry_Mass"](1,1).Value2 = massParam.Value.Value
+	
+	print "now go through the value of each natural frequency in workbench and set the corresponding cell in excel" 
 	excelSheet.Range["Mode_1"](1,1).Value2 = Parameters.GetParameter(Name="P6").Value.Value
 	excelSheet.Range["Mode_2"](1,1).Value2 = Parameters.GetParameter(Name="P7").Value.Value
 	excelSheet.Range["Mode_3"](1,1).Value2 = Parameters.GetParameter(Name="P8").Value.Value
@@ -135,7 +132,7 @@ def makeStep():
 	excelSheet.Range["Mode_9"](1,1).Value2 = Parameters.GetParameter(Name="P14").Value.Value
 	excelSheet.Range["Mode_10"](1,1).Value2 = Parameters.GetParameter(Name="P15").Value.Value
 	
-	# Close excel
+	print "close excel"
 	Marshal.ReleaseComObject(excelSheet)
 	excelBook.Close(True)
 	Marshal.ReleaseComObject(excelBook)
@@ -146,7 +143,7 @@ def makeStep():
 	excelApp = None	
 	System.GC.Collect()
 	
-	# Notify matlab to it begin optimization
+	print "notify matlab to it begin optimization"
 	matlabCommand = open(projDir + "\listenme\matlab_command.txt", "w");
-	matlabCommand.write('end')
+	matlabCommand.write('make-optimization')
 	matlabCommand.close();

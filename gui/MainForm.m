@@ -88,12 +88,6 @@ function excelSheetPathButton_Callback(hObject, eventdata, handles)
     global PROPERTIES;
     PROPERTIES.excelSheetPath = filePath;  
     PROPERTIES.excelSheetName = fileName;  
-    
-%     excel = Excel(fullfile(PROPERTIES.excelSheetPath, PROPERTIES.excelSheetName));
-%     set(handles.lengthEdit, 'String', excel.getValueOfParameter('Length'));
-%     set(handles.widthEdit, 'String', excel.getValueOfParameter('Width'));
-%     set(handles.heightEdit, 'String', excel.getValueOfParameter('Height'));
-%     set(handles.pressureEdit, 'String', excel.getValueOfParameter('Pressure'));
    
 function scriptPathButton_Callback(hObject, eventdata, handles)
     Logger.info('Main: choose script...');
@@ -141,57 +135,42 @@ function writeOutput()
     global PROPERTIES;
     
     handles = guihandles();  
+    edits = [handles.totalDeformationEdit, handles.massEdit,...
+             handles.mode1Edit, handles.mode2Edit, handles.mode3Edit,...
+             handles.mode4Edit, handles.mode5Edit, handles.mode6Edit,...
+             handles.mode7Edit, handles.mode8Edit, handles.mode9Edit, handles.mode10Edit];
     
     excel = Excel(fullfile(PROPERTIES.excelSheetPath, PROPERTIES.excelSheetName));
     outVector = excel.readParameters();
-    set(handles.totalDeformationEdit, 'String', outVector(1));
-    set(handles.mode1Edit, 'String', outVector(2));
-    set(handles.mode2Edit, 'String', outVector(3));
-    set(handles.mode3Edit, 'String', outVector(4));
-    set(handles.mode4Edit, 'String', outVector(5));
-    set(handles.mode5Edit, 'String', outVector(6));
-    set(handles.mode6Edit, 'String', outVector(7));
-    set(handles.mode7Edit, 'String', outVector(8));
-    set(handles.mode8Edit, 'String', outVector(9));
-    set(handles.mode9Edit, 'String', outVector(10));
-    set(handles.mode10Edit, 'String', outVector(11));
+    [h, ~] = size(outVector);
+    for i = 1 : h
+        set(edits(i), 'String', outVector(i));
+    end   
     
 function runButton_Callback(hObject, eventdata, handles)   
-    Logger.info('Main: runButton_Callback...');   
+    Logger.info('Main: runButton_Callback...');  
     
-    global PROPERTIES;    
-    
-    % read all parameters from ui to properties
-%     applyInputParameters();
-    
-    x0 = [PROPERTIES.length, PROPERTIES.width, PROPERTIES.height];
-    xmin = [PROPERTIES.lengthMin, PROPERTIES.widthMin, PROPERTIES.heightMin];
-    xmax = [PROPERTIES.lengthMax, PROPERTIES.widthMax, PROPERTIES.heightMax];    
-    dx = [1, 1, 1];
-    
+    global PROPERTIES;        
     global ansysRunner
+    
     ansysRunner = AnsysRunner(PROPERTIES.ansysExeFullPath, ...
                               fullfile(PROPERTIES.scriptPath, PROPERTIES.scriptName), ...
                               fullfile(PROPERTIES.ansysProjectPath, PROPERTIES.ansysProjectName));
+    ansysRunner.run(); 
     
-    ansysRunner.run();
-%     ansysRunner.Update([10, 15, 10]);
-                          
-%   ansysRunner.rosenbrok(x0,3,2,-0.5,xmax,xmin,0.05,dx);    
     Logger.info('success!');
     
 function makeStepButton_Callback(hObject, eventdata, handles)
     global PROPERTIES       
+    global ansysRunner
     
     inVector = [PROPERTIES.length; PROPERTIES.width; PROPERTIES.height];
     lowBorder = [PROPERTIES.lengthMin; PROPERTIES.widthMin; PROPERTIES.heightMin];
-    upBorder = [PROPERTIES.lengthMax; PROPERTIES.widthMax; PROPERTIES.heightMax];
-    disp('inVector in makeStep method');       
-    parameters = rosenbrok(inVector, 3, 3, -0.5, upBorder, lowBorder, 0.5, [1; 1; 1]);
-    disp('parameters');
-    disp(parameters);
+    upBorder = [PROPERTIES.lengthMax; PROPERTIES.widthMax; PROPERTIES.heightMax];    
+    result = rosenbrok(inVector, 3, 3, -0.5, upBorder, lowBorder, 0.5, [1; 1; 1], @ansysRunner.update);    
+    disp('results--->>>');
+    disp(result);
     
-    Logger.info(sprintf('step result %d', totalDeformation));
     writeOutput();
     
 

@@ -3,8 +3,8 @@ classdef Excel
     %    
     properties (SetAccess = private)
         path;% path to specific excel file
-        rangeIn = 'B2';% represent rectange for writing parameters
-        rangeOut = 'B9:B19';% represent rectange for reading parameters
+        rangeIn = 'B2';% represent rectange for writing input parameters
+        rangeOut = 'B9:B20';% represent rectange for reading output parameters
     end
     
     methods

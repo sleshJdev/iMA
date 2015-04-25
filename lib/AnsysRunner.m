@@ -6,62 +6,73 @@ classdef AnsysRunner
         ansysExePath;
         ansysProjectPath;
         scriptPath;
+        matlabCommandPath;
+        ansysCommandPath;
+        excel
     end
     
     methods(Access = private)
         function [command] = buildRunCommand(this)
             command = sprintf('"%s" -I -R %s -F %s', this.ansysExePath, this.scriptPath, this.ansysProjectPath);
         end
+        function setCommand(this, commandFor, command)
+            commandFile = fopen(commandFor, 'w');
+            fprintf(commandFile, '%s', command);
+            fclose('all');   
+        end
+        function waitWhileAnsysCalculate(this)                       
+            counter = 1;
+            pauseDuration = 5;
+            value = fileread(this.matlabCommandPath);            
+            while ~strcmp(value, 'make-optimization')
+                pause(pauseDuration);
+                fprintf('%d seconds\n', pauseDuration * counter);
+                counter = counter + 1;
+                value = fileread(this.matlabCommandPath);
+            end 
+            pause(pauseDuration);
+        end
     end
     
     methods
         function this = AnsysRunner(ansysExePath, scriptPath, ansysProjectPath)
+            global PROPERTIES
             this.ansysExePath = ansysExePath;
             this.scriptPath = scriptPath;
             this.ansysProjectPath = ansysProjectPath;
+            this.matlabCommandPath = strcat(PROPERTIES.workDirectoryPath, '\ansys\listenme\matlab_command.txt');
+            this.ansysCommandPath = strcat(PROPERTIES.workDirectoryPath, '\ansys\listenme\ansys_command.txt');
+            this.excel = Excel(fullfile(PROPERTIES.excelSheetPath, PROPERTIES.excelSheetName));
         end
         function run(this)    
-            command = this.buildRunCommand();          
+            command = this.buildRunCommand();     
             
-            disp(command);
-            Logger.info(sprintf('AnsysRunner    run    command: %s', command));    
+            Logger.info(sprintf('ansys run command: %s', command));    
             
             system(command);                
-        end        
-        function [totalDeformation] = update(this, inVector)
-            global PROPERTIES;  
+        end   
+        function [targetValue] = update(this, inVector)         
+            % write new parameters to ansys            
+            this.excel.writeParameters(inVector);      
             
-            disp('inVector in update method');
-            disp(inVector);
-            
-            excel = Excel(fullfile(PROPERTIES.excelSheetPath, PROPERTIES.excelSheetName));
-            excel.writeParameters(inVector);       
-            
-            commandFile = fopen(strcat(PROPERTIES.workDirectoryPath, '\ansys\listenme\ansys_command.txt'), 'w');
-            fprintf(commandFile, '%s', 'update');
-            fclose('all');            
+%             Logger.info('input parameters: %s\n', mat2str(inVector));                      
             
             % reset command file for matalb
-            path = strcat(PROPERTIES.workDirectoryPath, '\ansys\listenme\matlab_command.txt');
-            fprintf('reset command file for matlab \n');
-            commandFile = fopen(path, 'w');
-            fprintf(commandFile, '%s', 'wait');% simply stub
-            fclose('all');
+            this.setCommand(this.matlabCommandPath, 'wait');
             
-            % wait while ansys calculate            
-            value = fileread(path);
-            step = 1;
-            while ~strcmp(value, 'end')
-                pause(2);
-                fprintf('step %d value %s\n', step, value);
-                step = step + 1;
-                value = fileread(path);
-            end                       
+            % update ansys with new parameters
+            this.setCommand(this.ansysCommandPath, 'update');          
             
-            % return totalDeforamtion as criteria of optimization
-            outVector = excel.readParameters();
+            % waiting
+            this.waitWhileAnsysCalculate();
+            
+            % return totalDeforamtion and geometryMass as criteria of optimization
+            outVector = this.excel.readParameters();
             totalDeformation = outVector(1);
-            Logger.info(sprintf('AnsysRunner    update    get totatl deformation: %s', num2str(totalDeformation)));            
-        end
+            geometryMass = outVector(2);
+            targetValue = totalDeformation * geometryMass;
+            Logger.info(sprintf('AnsysRunner    update    totatl deformation: %s, mass: %s, targetValue: %s\n',...
+                                 num2str(totalDeformation), num2str(geometryMass), num2str(targetValue)));            
+        end        
     end
 end
