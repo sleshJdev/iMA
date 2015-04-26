@@ -1,10 +1,4 @@
-function varargout = MainForm(varargin)
-    disp('MainForm');            
-    
-    % settings path
-    addpath ..\lib;  
-    addpath ..\lib\Rosenbrock    
-    
+function varargout = MainForm(varargin)     
     % MAINFORM MATLAB code for MainForm.fig
     gui_Singleton = 1;
     gui_State = struct('gui_Name',       mfilename, ...
@@ -26,8 +20,7 @@ function varargout = MainForm(varargin)
     % Clear old data
 %     clc;
 %     clear;
-%     clear all;
-    fclose('all');    
+%     clear all;      
     
     % End initialization code - DO NOT EDIT
 
@@ -38,17 +31,19 @@ function MainForm_OpeningFcn(hObject, ~, handles, varargin)
     % Update handles structure
     guidata(hObject, handles);    
     
+    % settings path
+    addpath ..\lib;  
+    addpath ..\lib\Rosenbrock
+    
+    % close unclosed files
+    fclose('all'); 
+    
      % global value
     global PROPERTIES
     PROPERTIES = Properties;     
     
 function varargout = MainForm_OutputFcn(~, ~, handles)
-    
-%   initialize logger destination
-function logListbox_CreateFcn(hObject, eventdata, handles)
-    Logger.destination(hObject); % unnecessaty
-    % TODO: remove in future
-
+   
 % =============== listeners   =============== %
 function workDirectoryPathButton_Callback(hObject, eventdata, handles)
     Logger.info('Main: choose work directory...');
@@ -56,7 +51,11 @@ function workDirectoryPathButton_Callback(hObject, eventdata, handles)
     [path] = FileChooser.getDirectory('Choose work directory');
     set(handles.workDirectoryPathEdit, 'String', path);  
     global PROPERTIES;
-           PROPERTIES.workDirectoryPath = path;
+    PROPERTIES.workDirectoryPath = path;
+    PROPERTIES.mainXmlPath = path;
+    PROPERTIES.mainXmlName = 'main.xml';
+    
+    PROPERTIES.ansysExeFullPath = get(handles.ansysExePathEdit, 'String');
     
 % set path to executable file of ansys workbench
 function ansysExePathButton_Callback(hObject, eventdata, handles)
@@ -79,16 +78,6 @@ function ansysProjectPathButton_Callback(hObject, eventdata, handles)
     PROPERTIES.ansysProjectPath = filePath;
     PROPERTIES.ansysProjectName = fileName;
     
-function excelSheetPathButton_Callback(hObject, eventdata, handles)
-    Logger.info('Main: choose excel sheet...');
-    
-    [fileName, filePath] = FileChooser.getFile('*.xlsm', 'Choose excel sheet');
-    set(handles.excelSheetPathEdit, 'String', fullfile(filePath, fileName));
-    
-    global PROPERTIES;
-    PROPERTIES.excelSheetPath = filePath;  
-    PROPERTIES.excelSheetName = fileName;  
-   
 function scriptPathButton_Callback(hObject, eventdata, handles)
     Logger.info('Main: choose script...');
     
@@ -98,34 +87,11 @@ function scriptPathButton_Callback(hObject, eventdata, handles)
     global PROPERTIES;
     PROPERTIES.scriptPath = filePath;
     PROPERTIES.scriptName = fileName;    
-    
-function propertiesPathButton_Callback(hObject, eventdata, handles)
-    % TODO: implement load propertie file
-    
+       
 function applyInputParametersButton_Callback(hObject, eventdata, handles)
     Logger.info('Main: apply input pararmeters...');
     
-    global PROPERTIES;
-    
-    handles = guihandles();  
-    
-    % length
-    PROPERTIES.lengthMin = str2double(get(handles.lengthMinEdit, 'String')); 
-    PROPERTIES.length = str2double(get(handles.lengthEdit, 'String'));
-    PROPERTIES.lengthMax = str2double(get(handles.lengthMaxEdit, 'String')); 
-
-    % width
-    PROPERTIES.widthMin = str2double(get(handles.widthMinEdit, 'String')); 
-    PROPERTIES.width = str2double(get(handles.widthEdit, 'String'));
-    PROPERTIES.widthMax = str2double(get(handles.widthMaxEdit, 'String'));
-
-    % height
-    PROPERTIES.heightMin = str2double(get(handles.heightMinEdit, 'String'));
-    PROPERTIES.height = str2double(get(handles.heightEdit, 'String'));
-    PROPERTIES.heightMax = str2double(get(handles.heightMaxEdit, 'String'));
-    
-    % pressure
-    PROPERTIES.pressure = get(handles.pressureEdit, 'String');     
+    global PROPERTIES;       
     
     Logger.info('success!');    
     
@@ -140,8 +106,8 @@ function writeOutput()
              handles.mode4Edit, handles.mode5Edit, handles.mode6Edit,...
              handles.mode7Edit, handles.mode8Edit, handles.mode9Edit, handles.mode10Edit];
     
-    excel = Excel(fullfile(PROPERTIES.excelSheetPath, PROPERTIES.excelSheetName));
-    outVector = excel.readParameters();
+    xmlWorker = XmlWorker(fullfile(PROPERTIES.mainXmlPath, PROPERTIES.mainXmlName));
+    outVector = xmlWorker.getOutputParameters();
     [h, ~] = size(outVector);
     for i = 1 : h
         set(edits(i), 'String', outVector(i));
@@ -162,15 +128,20 @@ function runButton_Callback(hObject, eventdata, handles)
     
 function makeStepButton_Callback(hObject, eventdata, handles)
     global PROPERTIES       
-    global ansysRunner
+    global ansysRunner    
     
-    inVector = [PROPERTIES.length; PROPERTIES.width; PROPERTIES.height];
-    lowBorder = [PROPERTIES.lengthMin; PROPERTIES.widthMin; PROPERTIES.heightMin];
-    upBorder = [PROPERTIES.lengthMax; PROPERTIES.widthMax; PROPERTIES.heightMax];    
-    result = rosenbrok(inVector, 3, 3, -0.5, upBorder, lowBorder, 0.5, [1; 1; 1], @ansysRunner.update);    
+    xmlWorker = XmlWorker(fullfile(PROPERTIES.mainXmlPath, PROPERTIES.mainXmlName));
+    bounds = xmlWorker.getInputBounds();
+    inVector = xmlWorker.getInputParameters();
+    lowerBorder = bounds(:, 1);
+    upBorder = bounds(:, 2);   
+    
+    [resultX, resultY] = rosenbrok(inVector, 3, 2, -0.5, upBorder, lowerBorder, 0.5, [0.01; 0.01; 1; 1], @ansysRunner.update);    
     disp('results--->>>');
-    disp(result);
-    
-    writeOutput();
+    disp('X');
+    disp(resultX);
+    disp('Y');
+    disp(resultY);
+%     writeOutput();
     
 

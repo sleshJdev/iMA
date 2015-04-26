@@ -23,7 +23,6 @@ classdef Logger
         function debug(message)
             Logger.log(sprintf('ERROR %s: %s', datestr(now, 'HH:MM:SS'), message));
         end
-    end
-    
+    end    
 end
 

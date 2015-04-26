@@ -46,10 +46,10 @@ function res = GramN( d, lambda )
             end
         end
     end         
-    a
-    b
-    d
-    lambda
+%     a
+%     b
+%     d
+%     lambda
     res = d;
 end
 

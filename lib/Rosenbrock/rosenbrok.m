@@ -1,12 +1,10 @@
-function result = rosenbrok( x0, num, a, b, xmax, xmin, threshold, dx0, targetFunction)
+function [resultX, resultY] = rosenbrok( x0, num, a, b, xmax, xmin, threshold, dx0, targetFunction)
     addpath ..\ % to use Logger
-    globalStepCounter = 1;
-    localStepCounter = 1;       
+    globalStepCounter = 0;     
     
     failCount = 0; %количество неудачных серий шагов
-    isEndWhile = 0; %конец при =1
-    [sss1, sss2] = size(x0);
-    n = max(sss1, sss2); %кол-во параметров
+    isEndWhile = 0; %конец при =1    
+    n = max(size(x0)); %кол-во параметров
     directions = zeros(n);
     for i = 1:n %заполнение матрицы направлений
         directions(i,i) = 1;
@@ -18,9 +16,9 @@ function result = rosenbrok( x0, num, a, b, xmax, xmin, threshold, dx0, targetFu
     xk = x0; %массив параметров на пред. итерации
     yk = yCur; %знач. функции на пред. итерации   asdsa
     while isEndWhile == 0
+        globalStepCounter = globalStepCounter + 1;
         yPrev = targetFunction(xCur); %знач. фун. на пред. серии шагов
-        Logger.info(sprintf('%d.%d: xCur: %s, yCur: %s, dx: %s\n',... 
-                            globalStepCounter, localStepCounter, mat2str(xCur), mat2str(yCur), mat2str(dx)));
+        Logger.info(sprintf('%d.%d: xCur: %s, yCur: %s, dx: %s\n',globalStepCounter, 0, mat2str(xCur), mat2str(yCur), mat2str(dx)));                    
         dxPrev = dx; %длины шага на пред. серии шагов. assa
         for i = 1 : n         
             xNext = xCur;
@@ -29,8 +27,7 @@ function result = rosenbrok( x0, num, a, b, xmax, xmin, threshold, dx0, targetFu
             end
             if(xNext > xmin & xNext < xmax) %проверка границ поиска                           
                 yNext = targetFunction(xNext);                
-                Logger.info(sprintf('%d.%d: xCur: %s, yCur: %s, dx: %s\n',... 
-                            globalStepCounter, localStepCounter, mat2str(xCur), mat2str(yCur), mat2str(dx)));       
+                Logger.info(sprintf('%d.%d: xCur: %s, yCur: %s, dx: %s\n',globalStepCounter, i, mat2str(xCur), mat2str(yCur), mat2str(dx)));                                   
                 if(yNext < yCur)%проверка успешности шага
                     xCur = xNext;
                     yCur = yNext;
@@ -66,4 +63,5 @@ function result = rosenbrok( x0, num, a, b, xmax, xmin, threshold, dx0, targetFu
             end       
          end
     end
-    result = [ xCur yCur ];
+    resultX = xCur;
+    resultY = yCur;

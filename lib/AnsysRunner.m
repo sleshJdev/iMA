@@ -8,15 +8,15 @@ classdef AnsysRunner
         scriptPath;
         matlabCommandPath;
         ansysCommandPath;
-        excel
+        xmlWorker;
     end
     
     methods(Access = private)
         function [command] = buildRunCommand(this)
             command = sprintf('"%s" -I -R %s -F %s', this.ansysExePath, this.scriptPath, this.ansysProjectPath);
         end
-        function setCommand(this, commandFor, command)
-            commandFile = fopen(commandFor, 'w');
+        function setCommand(this, commandFor, command)            
+            commandFile = fopen(char(commandFor), 'w');
             fprintf(commandFile, '%s', command);
             fclose('all');   
         end
@@ -24,13 +24,14 @@ classdef AnsysRunner
             counter = 1;
             pauseDuration = 5;
             value = fileread(this.matlabCommandPath);            
-            while ~strcmp(value, 'make-optimization')
+            while ~strcmp(value, 'optimize')
                 pause(pauseDuration);
                 fprintf('%d seconds\n', pauseDuration * counter);
                 counter = counter + 1;
                 value = fileread(this.matlabCommandPath);
             end 
             pause(pauseDuration);
+            Logger.info(sprintf('time: %s seconds', num2str(counter * pauseDuration)));
         end
     end
     
@@ -40,9 +41,9 @@ classdef AnsysRunner
             this.ansysExePath = ansysExePath;
             this.scriptPath = scriptPath;
             this.ansysProjectPath = ansysProjectPath;
-            this.matlabCommandPath = strcat(PROPERTIES.workDirectoryPath, '\ansys\listenme\matlab_command.txt');
-            this.ansysCommandPath = strcat(PROPERTIES.workDirectoryPath, '\ansys\listenme\ansys_command.txt');
-            this.excel = Excel(fullfile(PROPERTIES.excelSheetPath, PROPERTIES.excelSheetName));
+            this.xmlWorker = XmlWorker(fullfile(PROPERTIES.mainXmlPath, PROPERTIES.mainXmlName));
+            this.matlabCommandPath = char(this.xmlWorker.getValueOf('matlab-cmd')); %strcat(PROPERTIES.workDirectoryPath, '\listenme\matlab_command.txt');
+            this.ansysCommandPath = char(this.xmlWorker.getValueOf('ansys-cmd'));%strcat(PROPERTIES.workDirectoryPath, '\listenme\ansys_command.txt');
         end
         function run(this)    
             command = this.buildRunCommand();     
@@ -53,12 +54,7 @@ classdef AnsysRunner
         end   
         function [targetValue] = update(this, inVector)         
             % write new parameters to ansys            
-            this.excel.writeParameters(inVector);      
-            
-%             Logger.info('input parameters: %s\n', mat2str(inVector));                      
-            
-            % reset command file for matalb
-            this.setCommand(this.matlabCommandPath, 'wait');
+            this.xmlWorker.setInputParameters(inVector);        
             
             % update ansys with new parameters
             this.setCommand(this.ansysCommandPath, 'update');          
@@ -67,12 +63,22 @@ classdef AnsysRunner
             this.waitWhileAnsysCalculate();
             
             % return totalDeforamtion and geometryMass as criteria of optimization
-            outVector = this.excel.readParameters();
-            totalDeformation = outVector(1);
-            geometryMass = outVector(2);
-            targetValue = totalDeformation * geometryMass;
-            Logger.info(sprintf('AnsysRunner    update    totatl deformation: %s, mass: %s, targetValue: %s\n',...
-                                 num2str(totalDeformation), num2str(geometryMass), num2str(targetValue)));            
-        end        
+            [outValues, outNames] = this.xmlWorker.getOutputParameters();             
+            log = 'output parameters : ';
+            quantity = max(size(outValues));
+            for i = 1 : quantity
+                log = strcat(log, sprintf(' %s: %s, ', char(outNames(i)), num2str(outValues(i))));
+            end
+            targetValue = this.getTargetValue(outValues);
+            log = strcat(log, sprintf('targetValue: %s\n', num2str(targetValue)));            
+            Logger.info(log);            
+        end 
+        function targetValue = getTargetValue(this, values)
+            quantity = max(size(values));
+            targetValue = 1;
+            for i = 1 : quantity
+                targetValue = targetValue * values(i);
+            end
+        end
     end
 end
