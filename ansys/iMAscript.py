@@ -75,10 +75,11 @@ def makeStep():
 	excelApp.Visible = True
 	
 	print "in excel: grab values for the cells that we want data from (input cells)"
-	length = excelSheet.Range["Length"](1,1).Value2
-	width = excelSheet.Range["Width"](1,1).Value2
-	height = excelSheet.Range["Height"](1,1).Value2
-	press = excelSheet.Range["Pressure"](1,1).Value2
+	fermaB = excelSheet.Range["Ferma_B"](1,1).Value2
+	fermaH = excelSheet.Range["Ferma_H"](1,1).Value2
+	innerRadius = excelSheet.Range["CircularTube_Ri"](1,1).Value2
+	outerRadius = excelSheet.Range["CircularTube_Ro"](1,1).Value2
+	
 	upress =  excelSheet.Range["Pressure"](1,2).Value2
 	
 	print "in workbench: grab the parameter objects for the input values"
