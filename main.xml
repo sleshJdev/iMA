@@ -6,21 +6,19 @@
    </path>
    <parameters>
       <input-bounds>
-         <bound id="P16" max="40" min="20"/>
-         <bound id="P17" max="1" min="0.02"/>
-         <bound id="P18" max="3" min="1.1"/>
-         <bound id="P19" max="70" min="50"/>
+         <bound id="P1" max="70" min="50"/>
+         <bound id="P2" max="40" min="20"/>
+         <bound id="P3" max="1.55" min="1.45"/>
+         <bound id="P4" max="1.44" min="1.40"/>
       </input-bounds>
       <input>
-         <parameter id="P16" name="Ferma_H">32</parameter>
-         <parameter id="P17" name="CircularTube_Ri">0.75</parameter>
-         <parameter id="P18" name="CircularTube_Ro">1.51</parameter>
-         <parameter id="P19" name="Ferma_B">60</parameter>
+         <parameter id="P1" name="Ferma_B">60</parameter>
+         <parameter id="P2" name="Ferma_H">32</parameter>
+         <parameter id="P3" name="CircularTube_Ri">1.475</parameter>
+         <parameter id="P4" name="CircularTube_Ro">1.5</parameter>
       </input>
       <output>
-         <parameter id="P12" name="Maximum Combined Stress Maximum">-3956.45922529</parameter>
-         <parameter id="P13" name="Geometry Mass">68.9715029513</parameter>
-         <parameter id="P14" name="Total Deformation Maximum">5.17452356539e-08</parameter>
+         <parameter id="5" name="Maximum Combined Stress Maximum"/>
       </output>
    </parameters>
 </ima>
