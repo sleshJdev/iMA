@@ -12,9 +12,9 @@
          <bound id="P19" max="70" min="50"/>
       </input-bounds>
       <input>
-         <parameter id="P16" name="Ferma_H">31</parameter>
+         <parameter id="P16" name="Ferma_H">32</parameter>
          <parameter id="P17" name="CircularTube_Ri">0.75</parameter>
-         <parameter id="P18" name="CircularTube_Ro">1.5</parameter>
+         <parameter id="P18" name="CircularTube_Ro">1.51</parameter>
          <parameter id="P19" name="Ferma_B">60</parameter>
       </input>
       <output>
