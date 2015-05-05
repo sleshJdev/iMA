@@ -312,12 +312,13 @@
 "974b04a4-2808-46eb-8edd-3d6096a62836": "/Units/Quantity:Quantity 178"
 }</ReferenceList>
     </ReferenceCache>
-    <timestamp-max valType="Int64">4816</timestamp-max>
+    <timestamp-max valType="Int64">5027</timestamp-max>
     <active-designpoint-dirname valType="String">dp0</active-designpoint-dirname>
     <framework-build-version valType="String">14.0.250.0</framework-build-version>
-    <last-saved-utc valType="String">04/25/2015 22:09:22</last-saved-utc>
+    <last-saved-utc valType="String">05/05/2015 14:18:51</last-saved-utc>
     <logHistory valType="StringArray">
       <ArrayEntry Index="0">slesh@SLESH-PC:C:\Users\slesh\AppData\Local\Temp\WorkbenchLogs\CoreEvents3756.log</ArrayEntry>
+      <ArrayEntry Index="1">slesh@SLESH-PC:C:\Users\slesh\AppData\Local\Temp\WorkbenchLogs\CoreEvents3408.log</ArrayEntry>
     </logHistory>
     <expression-scope-container valType="String">Parameters</expression-scope-container>
   </Project>
@@ -486,7 +487,7 @@ http://www.ansys.com/rss/ansys-news.rss""", "Details": None, "Association": "", 
       <maxUpdateOrder valType="Double">1</maxUpdateOrder>
       <deleted-sources valType="String">[]</deleted-sources>
       <last-updated valType="Int64">0</last-updated>
-      <last-modified-by-usage valType="String">{Extrinsic: 4807, Input: 4794, Output: 1655}</last-modified-by-usage>
+      <last-modified-by-usage valType="String">{Extrinsic: 5022, Input: 4794, Output: 1655}</last-modified-by-usage>
       <outputs-generated-by-type valType="String">{}</outputs-generated-by-type>
       <last-update-regen-times valType="String">{}</last-update-regen-times>
       <contains-significant-data valType="Boolean">false</contains-significant-data>
@@ -700,7 +701,7 @@ http://www.ansys.com/rss/ansys-news.rss""", "Details": None, "Association": "", 
       <storage-scheme-id valType="String">version-1-format</storage-scheme-id>
       <deleted-sources valType="String">[]</deleted-sources>
       <last-updated valType="Int64">0</last-updated>
-      <last-modified-by-usage valType="String">{Extrinsic: 4586, Input: 1898, Output: 1898}</last-modified-by-usage>
+      <last-modified-by-usage valType="String">{Extrinsic: 5018, Input: 1898, Output: 1898}</last-modified-by-usage>
       <outputs-generated-by-type valType="String">{}</outputs-generated-by-type>
       <last-update-regen-times valType="String">{}</last-update-regen-times>
       <contains-significant-data valType="Boolean">false</contains-significant-data>
