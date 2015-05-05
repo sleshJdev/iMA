@@ -1,26 +1,26 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <ima>
-  <path>
-    <ansys-cmd>c:\Users\slesh\Documents\MATLAB\Workspace\iMA\control\ansys_command.txt</ansys-cmd>
-    <matlab-cmd>c:\Users\slesh\Documents\MATLAB\Workspace\iMA\control\matlab_command.txt</matlab-cmd>
-  </path>
-  <parameters>
-    <input-bounds>
-      <bound id="P8" max="10" min="5" />
-      <bound id="P9" max="15" min="6" />
-      <bound id="P11" max="0.4" min="0.2" />
-      <bound id="P10" max="0.15" min="0.01" />
-    </input-bounds>
-    <input>
-      <parameter id="P8" name="Ferma_B">6.01</parameter>
-      <parameter id="P9" name="Ferma_L">6.0125</parameter>
-      <parameter id="P11" name="CircularTube_Ro">0.3</parameter>
-      <parameter id="P10" name="CircularTube_Ri">0.05</parameter>
-    </input>
-    <output>
-      <parameter id="P12" name="Maximum Combined Stress Maximum">207.631079174</parameter>
-      <parameter id="P13" name="Geometry Mass">0.637003149709</parameter>
-      <parameter id="P14" name="Total Deformation Maximum">4.84310798069e-10</parameter>
-    </output>
-  </parameters>
+   <path>
+      <ansys-cmd>c:\Users\slesh\Documents\MATLAB\Workspace\iMA\control\ansys_command.txt</ansys-cmd>
+      <matlab-cmd>c:\Users\slesh\Documents\MATLAB\Workspace\iMA\control\matlab_command.txt</matlab-cmd>
+   </path>
+   <parameters>
+      <input-bounds>
+         <bound id="P16" max="70" min="50"/>
+         <bound id="P18" max="3" min="1.1"/>
+         <bound id="P19" max="1" min="0.02"/>
+         <bound id="P20" max="40" min="20"/>
+      </input-bounds>
+      <input>
+         <parameter id="P16" name="Ferma_B">60</parameter>
+         <parameter id="P18" name="CircularTube_Ro">1.5</parameter>
+         <parameter id="P19" name="CircularTube_Ri">0.6025</parameter>
+         <parameter id="P20" name="Ferma_H">31</parameter>
+      </input>
+      <output>
+         <parameter id="P12" name="Maximum Combined Stress Maximum">-3956.45922529</parameter>
+         <parameter id="P13" name="Geometry Mass">68.9715029513</parameter>
+         <parameter id="P14" name="Total Deformation Maximum">5.17452356539e-08</parameter>
+      </output>
+   </parameters>
 </ima>

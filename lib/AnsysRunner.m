@@ -49,6 +49,7 @@ classdef AnsysRunner
             command = this.buildRunCommand();     
             
             Logger.info(sprintf('ansys run command: %s', command));    
+            disp(command);
             
             system(command);                
         end   
@@ -57,12 +58,14 @@ classdef AnsysRunner
             this.xmlWorker.setInputParameters(inVector);        
             
             % update ansys with new parameters
-            this.setCommand(this.ansysCommandPath, 'update');          
+            updateCommand = strcat('update-', num2str(rand(1, 1)));
+            this.setCommand(this.ansysCommandPath, updateCommand);          
+            disp(sprintf('update command: %s', updateCommand));
             
             % waiting
             this.waitWhileAnsysCalculate();
             
-            % return totalDeforamtion and geometryMass as criteria of optimization
+            % return Total Deforamtion, Maximum Combined Stress Maximum and Geometry Mass as criteria of optimization
             [outValues, outNames] = this.xmlWorker.getOutputParameters();             
             log = 'output parameters : ';
             quantity = max(size(outValues));

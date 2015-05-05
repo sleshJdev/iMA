@@ -80,14 +80,6 @@
 "94f4f92d-3bbc-4e5d-8b80-81b0802a4683": "/FileTypesContainer/FileType:GeometryFileType",
 "87c2bd0f-12e8-4005-b15a-2e6afd24fb29": "/FileTypesContainer/FileType:project",
 "d73ead5a-1bee-4abf-a498-10007c75a75f": "/FileTypesContainer/FileType:MechanicalFileType",
-"d3268e27-b03c-47ff-91cd-2961e137270d": "/Parameters/Parameter:P11",
-"164941bc-09e3-4a4a-ad15-b0dc35b64bd5": "/Parameters/Parameter:P10",
-"dfb89315-f242-482e-a402-293643070bf9": "/Parameters/Parameter:P8",
-"2a3c6e09-b109-493a-9c4c-b183519d8013": "/Parameters/Parameter:P9",
-"c9035fdf-7712-4b11-8aa0-cb8ebbbe29e6": "/Geometry/ParameterAdapter16:DesignModelerParameter",
-"26f3781e-b079-4857-a12a-cef246252bbf": "/Geometry/ParameterAdapter15:DesignModelerParameter",
-"dc508fc5-e307-40f3-8708-f2a146781b3a": "/Geometry/ParameterAdapter13:DesignModelerParameter",
-"38cdb105-24ba-45be-8a87-13e299f67e93": "/Geometry/ParameterAdapter14:DesignModelerParameter",
 "0cf09222-f8f9-40ae-a13a-c1c80f40ec99": "/Results/ParameterAdapter1:577c5420-b61e-4284-98c5-196ab034308c",
 "9a06c16f-2dcd-4517-b9d9-a351ec22e19a": "/Model/ParameterAdapter1:773cf2d3-68aa-4f1c-8bbd-dbb67f90b025",
 "c49f2373-d558-4610-979e-fdb8da74c79b": "/Results/ParameterAdapter2:55169398-1348-4006-8a8c-9484ca3af36d",
@@ -309,15 +301,27 @@
 "dc23f94f-f06b-4d03-b2bc-b551991d67c9": "/Units/Quantity:Quantity 175",
 "79c361b3-1dc6-4f01-bd2a-d0e0ea8944d3": "/Units/Quantity:Quantity 176",
 "58f4d9f6-1aa1-431e-b4ab-5ebd96a410b4": "/Units/Quantity:Quantity 177",
-"974b04a4-2808-46eb-8edd-3d6096a62836": "/Units/Quantity:Quantity 178"
+"974b04a4-2808-46eb-8edd-3d6096a62836": "/Units/Quantity:Quantity 178",
+"3098bd64-e7bd-4a19-8b8e-0fb9f07e21a8": "/Parameters/Parameter:P18",
+"feedc269-3209-454c-926c-b80326fd7e52": "/Parameters/Parameter:P19",
+"c9d22a2f-535c-4a8a-a973-c3930a7b55ac": "/Parameters/Parameter:P16",
+"cd1a0770-f1df-40d2-a4fb-995ba44f78f4": "/Geometry/ParameterAdapter4:DesignModelerParameter",
+"12989c1c-d2d7-44c1-b5d2-dc646fcb617f": "/Geometry/ParameterAdapter5:DesignModelerParameter",
+"c244f6c7-3fbf-481b-96e1-616d865404e9": "/Geometry/ParameterAdapter2:DesignModelerParameter",
+"1273593b-6ef9-417f-b2f8-9f93c7f66aa7": "/Parameters/Parameter:P20",
+"20c2336d-a82c-4d2a-933b-93f180d7e778": "/Geometry/ParameterAdapter6:DesignModelerParameter"
 }</ReferenceList>
     </ReferenceCache>
-    <timestamp-max valType="Int64">4816</timestamp-max>
+    <timestamp-max valType="Int64">6667</timestamp-max>
     <active-designpoint-dirname valType="String">dp0</active-designpoint-dirname>
     <framework-build-version valType="String">14.0.250.0</framework-build-version>
-    <last-saved-utc valType="String">04/25/2015 22:09:22</last-saved-utc>
+    <last-saved-utc valType="String">04/27/2015 17:55:45</last-saved-utc>
     <logHistory valType="StringArray">
       <ArrayEntry Index="0">slesh@SLESH-PC:C:\Users\slesh\AppData\Local\Temp\WorkbenchLogs\CoreEvents3756.log</ArrayEntry>
+      <ArrayEntry Index="1">slesh@SLESH-PC:C:\Users\slesh\AppData\Local\Temp\WorkbenchLogs\CoreEvents5708.log</ArrayEntry>
+      <ArrayEntry Index="2">slesh@SLESH-PC:C:\Users\slesh\AppData\Local\Temp\WorkbenchLogs\CoreEvents3628.log</ArrayEntry>
+      <ArrayEntry Index="3">slesh@SLESH-PC:C:\Users\slesh\AppData\Local\Temp\WorkbenchLogs\CoreEvents2112.log</ArrayEntry>
+      <ArrayEntry Index="4">slesh@SLESH-PC:C:\Users\slesh\AppData\Local\Temp\WorkbenchLogs\CoreEvents4816.log</ArrayEntry>
     </logHistory>
     <expression-scope-container valType="String">Parameters</expression-scope-container>
   </Project>
@@ -334,12 +338,12 @@
       <Object Name="/FileContainer/FileReference:F4" Version="1.0">
         <class-type valType="String">FileReference</class-type>
         <object-name valType="String">F4</object-name>
-        <member-data valType="String">{"DisplayText": "material.engd", "FileType": $$a57d1334-a80d-415d-a32a-916233a3277c, "DependentFiles": [], "ContainerAssociations": ["Engineering Data"], "SkipForDesignPointDuplication": False, "IsDeletable": True, "Location": r"$(ProjectName)_files\dp0\SYS\ENGD\material.engd", "ReferenceCount": 1}</member-data>
+        <member-data valType="String">{"DisplayText": "material.engd", "FileType": $$a57d1334-a80d-415d-a32a-916233a3277c, "DependentFiles": [], "ContainerAssociations": ["Engineering Data"], "SkipForDesignPointDuplication": False, "IsDeletable": True, "Location": r"$(ProjectName)_files\dp0\SYS\ENGD\material.engd", "ReferenceCount": 3}</member-data>
       </Object>
       <Object Name="/FileContainer/FileReference:F5" Version="1.0">
         <class-type valType="String">FileReference</class-type>
         <object-name valType="String">F5</object-name>
-        <member-data valType="String">{"DisplayText": "SYS.engd", "FileType": $$a57d1334-a80d-415d-a32a-916233a3277c, "DependentFiles": [], "ContainerAssociations": ["Model"], "SkipForDesignPointDuplication": False, "IsDeletable": True, "Location": r"$(ProjectName)_files\dp0\global\MECH\SYS.engd", "ReferenceCount": 1}</member-data>
+        <member-data valType="String">{"DisplayText": "SYS.engd", "FileType": $$a57d1334-a80d-415d-a32a-916233a3277c, "DependentFiles": [], "ContainerAssociations": ["Model"], "SkipForDesignPointDuplication": False, "IsDeletable": True, "Location": r"$(ProjectName)_files\dp0\global\MECH\SYS.engd", "ReferenceCount": 3}</member-data>
       </Object>
       <Object Name="/FileContainer/FileReference:F3" Version="1.0">
         <class-type valType="String">FileReference</class-type>
@@ -378,11 +382,41 @@
         <member-data valType="String">{"DisplayText": "Message", "MessageType": "Information", "Summary": """ANSYS news messages could not be loaded because no external internet connection was found.
 http://www.ansys.com/rss/ansys-news.rss""", "Details": None, "Association": "", "DateTimeStamp": 04/25/2015 21:11:21, "Visibility": "Information", "MessageSourceContainer": None, "MessageSourceEntity": None}</member-data>
       </Object>
+      <Object Name="/Messages/StoredMessage:Message 1" Version="1.0">
+        <class-type valType="String">StoredMessage</class-type>
+        <object-name valType="String">Message 1</object-name>
+        <member-data valType="String">{"DisplayText": "Message", "MessageType": "Information", "Summary": """ANSYS news messages could not be loaded because no external internet connection was found.
+http://www.ansys.com/rss/ansys-news.rss""", "Details": None, "Association": "", "DateTimeStamp": 04/27/2015 16:20:36, "Visibility": "Information", "MessageSourceContainer": None, "MessageSourceEntity": None}</member-data>
+      </Object>
+      <Object Name="/Messages/StoredMessage:Message 2" Version="1.0">
+        <class-type valType="String">StoredMessage</class-type>
+        <object-name valType="String">Message 2</object-name>
+        <member-data valType="String">{"DisplayText": "Message", "MessageType": "Error", "Summary": "The Mechanical editor does not have a valid license.", "Details": """Ansys.Core.Commands.UserReadableFailureException: The Mechanical editor does not have a valid license.
+   at Ansys.Addins.Infrastructure.CommandUtilities.CommandHelper.Execute(IFullContext context)
+   at Ansys.Core.Commands.Concurrency.CommandWorkUnit.executeInContext(CommandContext subContext, IExecutionEngineCallback tracer)
+   at Ansys.Core.Commands.Concurrency.BaseWorkUnit.doExecute(IExecutionEngineCallback executionEngine, CommandContext subContext)
+   at Ansys.Core.Commands.Concurrency.BaseWorkUnit.Execute(IExecutionEngineCallback executionEngine, Boolean dontCatchExceptions)
+--- Ansys.Core.Commands.CommandFailedException: The Mechanical editor does not have a valid license.
+CommandName: Mechanical.StartSimulationEditor(ModelContainer=\"Model\")
+   at Ansys.Core.Commands.CommandAsyncResult.Wait(Int32 milliSecondsTimeout, Boolean exitContext)
+   at Ansys.Core.Commands.CommandAsyncResult.Wait()
+   at Ansys.Simulation.Core.Commands.StartSimulationEditor.InvokeAndWait(IProtectedContext context, DataContainerReference ModelContainer, Boolean IsBatchMode, Boolean RequireLicense)
+   at Ansys.Simulation.GUI.EditModel.InvokeEditModelOperation(GuiOperationContext context, IGuiOperation guiOperation, DataContainerReference dcr)
+   at Ansys.UI.UIManager.&lt;&gt;c__DisplayClassb.&lt;InvokeOperation&gt;b__a()
+   at Ansys.UI.UIManager.InvokeOperationCore(String pseudoname, OperationDelegate callback, Boolean allowOSMessages, Boolean coreTransaction)
+""", "Association": "", "DateTimeStamp": 04/27/2015 16:42:29, "Visibility": "Warning", "MessageSourceContainer": None, "MessageSourceEntity": None}</member-data>
+      </Object>
+      <Object Name="/Messages/StoredMessage:Message 3" Version="1.0">
+        <class-type valType="String">StoredMessage</class-type>
+        <object-name valType="String">Message 3</object-name>
+        <member-data valType="String">{"DisplayText": "Message", "MessageType": "Information", "Summary": """ANSYS news messages could not be loaded because no external internet connection was found.
+http://www.ansys.com/rss/ansys-news.rss""", "Details": None, "Association": "", "DateTimeStamp": 04/27/2015 16:48:06, "Visibility": "Information", "MessageSourceContainer": None, "MessageSourceEntity": None}</member-data>
+      </Object>
       <container-type valType="String">Project:Messages</container-type>
       <storage-scheme-id valType="String">version-1-format</storage-scheme-id>
       <deleted-sources valType="String">[]</deleted-sources>
       <last-updated valType="Int64">0</last-updated>
-      <last-modified-by-usage valType="String">{Extrinsic: 2081, Input: 1654, Output: 1654}</last-modified-by-usage>
+      <last-modified-by-usage valType="String">{Extrinsic: 5378, Input: 1654, Output: 1654}</last-modified-by-usage>
       <outputs-generated-by-type valType="String">{}</outputs-generated-by-type>
       <last-update-regen-times valType="String">{}</last-update-regen-times>
       <contains-significant-data valType="Boolean">false</contains-significant-data>
@@ -391,71 +425,71 @@ http://www.ansys.com/rss/ansys-news.rss""", "Details": None, "Association": "", 
       <Object Name="/Parameters/DesignPoint:0" Version="1.0">
         <class-type valType="String">DesignPoint</class-type>
         <object-name valType="String">0</object-name>
-        <member-data valType="String">{"DisplayText": "DP 0", "JustDuplicated": False, "ErrorsOnLastUpdate": {}, "Parameters": {$$d3268e27-b03c-47ff-91cd-2961e137270d: "0.1", $$164941bc-09e3-4a4a-ad15-b0dc35b64bd5: "0.05", $$dfb89315-f242-482e-a402-293643070bf9: "10", $$2a3c6e09-b109-493a-9c4c-b183519d8013: "6"}, "ParameterErrors": {}, "CurrentValues": {$$d3268e27-b03c-47ff-91cd-2961e137270d: 0.1, $$164941bc-09e3-4a4a-ad15-b0dc35b64bd5: 0.05, $$dfb89315-f242-482e-a402-293643070bf9: 10, $$2a3c6e09-b109-493a-9c4c-b183519d8013: 6, $$c064b7af-3956-4e30-ba25-2eea2ac4e42d: 179.273141640074 [Pa], $$f9af7edf-facb-4c28-9092-e7684bea30cc: 0.0666780982209821 [kg], $$c12dfe99-c274-4f26-89bf-9cdf5ba27411: 6.84874690293213E-09 [m]}, "ParameterStatus": {$$d3268e27-b03c-47ff-91cd-2961e137270d: "UpToDate", $$164941bc-09e3-4a4a-ad15-b0dc35b64bd5: "UpToDate", $$dfb89315-f242-482e-a402-293643070bf9: "UpToDate", $$2a3c6e09-b109-493a-9c4c-b183519d8013: "UpToDate", $$c064b7af-3956-4e30-ba25-2eea2ac4e42d: "UpToDate", $$f9af7edf-facb-4c28-9092-e7684bea30cc: "UpToDate", $$c12dfe99-c274-4f26-89bf-9cdf5ba27411: "UpToDate"}, "Note": None, "IsUpToDate": True, "IsRetained": True, "HasBeenSolved": True, "UpdateOrder": 1}</member-data>
+        <member-data valType="String">{"DisplayText": "DP 0", "JustDuplicated": False, "ErrorsOnLastUpdate": {}, "Parameters": {$$3098bd64-e7bd-4a19-8b8e-0fb9f07e21a8: "1.5", $$feedc269-3209-454c-926c-b80326fd7e52: "0.75", $$c9d22a2f-535c-4a8a-a973-c3930a7b55ac: "60", $$1273593b-6ef9-417f-b2f8-9f93c7f66aa7: "30"}, "ParameterErrors": {}, "CurrentValues": {$$3098bd64-e7bd-4a19-8b8e-0fb9f07e21a8: 1.5, $$feedc269-3209-454c-926c-b80326fd7e52: 0.75, $$c9d22a2f-535c-4a8a-a973-c3930a7b55ac: 60, $$1273593b-6ef9-417f-b2f8-9f93c7f66aa7: 30, $$c064b7af-3956-4e30-ba25-2eea2ac4e42d: -6798.332519732423 [Pa], $$f9af7edf-facb-4c28-9092-e7684bea30cc: 61.210436800444725 [kg], $$c12dfe99-c274-4f26-89bf-9cdf5ba27411: 5.799398650196963E-08 [m]}, "ParameterStatus": {$$3098bd64-e7bd-4a19-8b8e-0fb9f07e21a8: "UpToDate", $$feedc269-3209-454c-926c-b80326fd7e52: "UpToDate", $$c9d22a2f-535c-4a8a-a973-c3930a7b55ac: "UpToDate", $$1273593b-6ef9-417f-b2f8-9f93c7f66aa7: "UpToDate", $$c064b7af-3956-4e30-ba25-2eea2ac4e42d: "UpToDate", $$f9af7edf-facb-4c28-9092-e7684bea30cc: "UpToDate", $$c12dfe99-c274-4f26-89bf-9cdf5ba27411: "UpToDate"}, "Note": None, "IsUpToDate": True, "IsRetained": True, "HasBeenSolved": True, "UpdateOrder": 1}</member-data>
       </Object>
-      <Object Name="/Parameters/Parameter:P11" Version="1.0">
+      <Object Name="/Parameters/Parameter:P18" Version="1.0">
         <class-type valType="String">Parameter</class-type>
-        <object-name valType="String">P11</object-name>
-        <member-data valType="String">{"DisplayText": "CircularTube_Ro", "Expression": "0.1", "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "Input", "Value": 0.1, "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": None, "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Input", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Dimensionless"}}</member-data>
+        <object-name valType="String">P18</object-name>
+        <member-data valType="String">{"DisplayText": "CircularTube_Ro", "Expression": "1.5", "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "Input", "Value": 1.5, "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": None, "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Input", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Dimensionless"}}</member-data>
       </Object>
-      <Object Name="/Parameters/Parameter:P10" Version="1.0">
+      <Object Name="/Parameters/Parameter:P19" Version="1.0">
         <class-type valType="String">Parameter</class-type>
-        <object-name valType="String">P10</object-name>
-        <member-data valType="String">{"DisplayText": "CircularTube_Ri", "Expression": "0.05", "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "Input", "Value": 0.05, "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": None, "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Input", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Dimensionless"}}</member-data>
+        <object-name valType="String">P19</object-name>
+        <member-data valType="String">{"DisplayText": "CircularTube_Ri", "Expression": "0.75", "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "Input", "Value": 0.75, "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": None, "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Input", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Dimensionless"}}</member-data>
       </Object>
-      <Object Name="/Parameters/Parameter:P8" Version="1.0">
+      <Object Name="/Parameters/Parameter:P16" Version="1.0">
         <class-type valType="String">Parameter</class-type>
-        <object-name valType="String">P8</object-name>
-        <member-data valType="String">{"DisplayText": "Ferma_B", "Expression": "10", "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "Input", "Value": 10, "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": None, "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Input", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Dimensionless"}}</member-data>
+        <object-name valType="String">P16</object-name>
+        <member-data valType="String">{"DisplayText": "Ferma_B", "Expression": "60", "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "Input", "Value": 60, "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": None, "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Input", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Dimensionless"}}</member-data>
       </Object>
-      <Object Name="/Parameters/Parameter:P9" Version="1.0">
+      <Object Name="/Parameters/Parameter:P20" Version="1.0">
         <class-type valType="String">Parameter</class-type>
-        <object-name valType="String">P9</object-name>
-        <member-data valType="String">{"DisplayText": "Ferma_L", "Expression": "6", "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "Input", "Value": 6, "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": None, "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Input", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Dimensionless"}}</member-data>
+        <object-name valType="String">P20</object-name>
+        <member-data valType="String">{"DisplayText": "Ferma_H", "Expression": "30", "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "Input", "Value": 30, "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": None, "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Input", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Dimensionless"}}</member-data>
       </Object>
       <Object Name="/Parameters/Parameter:P12" Version="1.0">
         <class-type valType="String">Parameter</class-type>
         <object-name valType="String">P12</object-name>
-        <member-data valType="String">{"DisplayText": "Maximum Combined Stress Maximum", "Expression": None, "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "DirectOutput", "Value": 179.273141640074 [Pa], "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": "179.273141640074 [Pa]", "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Output", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Stress"}}</member-data>
+        <member-data valType="String">{"DisplayText": "Maximum Combined Stress Maximum", "Expression": None, "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "DirectOutput", "Value": -6798.332519732423 [Pa], "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": "179.273141640074 [Pa]", "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Output", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Stress"}}</member-data>
       </Object>
       <Object Name="/Parameters/Parameter:P13" Version="1.0">
         <class-type valType="String">Parameter</class-type>
         <object-name valType="String">P13</object-name>
-        <member-data valType="String">{"DisplayText": "Geometry Mass", "Expression": None, "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "DirectOutput", "Value": 0.0666780982209821 [kg], "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": "0.0666780982209821 [kg]", "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Output", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Mass"}}</member-data>
+        <member-data valType="String">{"DisplayText": "Geometry Mass", "Expression": None, "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "DirectOutput", "Value": 61.210436800444725 [kg], "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": "0.0666780982209821 [kg]", "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Output", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Mass"}}</member-data>
       </Object>
       <Object Name="/Parameters/Parameter:P14" Version="1.0">
         <class-type valType="String">Parameter</class-type>
         <object-name valType="String">P14</object-name>
-        <member-data valType="String">{"DisplayText": "Total Deformation Maximum", "Expression": None, "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "DirectOutput", "Value": 6.84874690293213E-09 [m], "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": "6.84874690293213E-09 [m]", "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Output", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Length"}}</member-data>
+        <member-data valType="String">{"DisplayText": "Total Deformation Maximum", "Expression": None, "IsParameter": True, "Scope": None, "Description": None, "ErrorMessage": None, "HasRemovedLinksFromMigration": False, "Usage": "DirectOutput", "Value": 5.799398650196963E-08 [m], "ValueSpec": {"SpecType": "Ansys.Core.DataSpecs.QuantitySpec, Ans.Core", "Access": "UserWritable", "Constraints": None, "Context": None, "Default": "6.84874690293213E-09 [m]", "Exposure": "AnyUser", "Group": None, "IsOptional": False, "IsPersistent": True, "IsReadOnly": False, "Label": None, "Presentation": None, "Usage": "Output", "IsParameterizable": True, "ReuseJournalVariables": False, "Max": None, "Min": None, "UndefinedValue": "1.79769313486231E+308", "QuantityName": "Length"}}</member-data>
       </Object>
       <ParameterToPropertyMap>
-        <Parameter Name="/Parameters/Parameter:P11">
+        <Parameter Name="/Parameters/Parameter:P18">
           <LinkedEntityProperty>
-            <EntityReference valType="String">c9035fdf-7712-4b11-8aa0-cb8ebbbe29e6</EntityReference>
+            <EntityReference valType="String">cd1a0770-f1df-40d2-a4fb-995ba44f78f4</EntityReference>
             <Property valType="String">Value</Property>
           </LinkedEntityProperty>
-          <ParameterReference valType="String">d3268e27-b03c-47ff-91cd-2961e137270d</ParameterReference>
+          <ParameterReference valType="String">3098bd64-e7bd-4a19-8b8e-0fb9f07e21a8</ParameterReference>
         </Parameter>
-        <Parameter Name="/Parameters/Parameter:P10">
+        <Parameter Name="/Parameters/Parameter:P19">
           <LinkedEntityProperty>
-            <EntityReference valType="String">26f3781e-b079-4857-a12a-cef246252bbf</EntityReference>
+            <EntityReference valType="String">12989c1c-d2d7-44c1-b5d2-dc646fcb617f</EntityReference>
             <Property valType="String">Value</Property>
           </LinkedEntityProperty>
-          <ParameterReference valType="String">164941bc-09e3-4a4a-ad15-b0dc35b64bd5</ParameterReference>
+          <ParameterReference valType="String">feedc269-3209-454c-926c-b80326fd7e52</ParameterReference>
         </Parameter>
-        <Parameter Name="/Parameters/Parameter:P8">
+        <Parameter Name="/Parameters/Parameter:P16">
           <LinkedEntityProperty>
-            <EntityReference valType="String">dc508fc5-e307-40f3-8708-f2a146781b3a</EntityReference>
+            <EntityReference valType="String">c244f6c7-3fbf-481b-96e1-616d865404e9</EntityReference>
             <Property valType="String">Value</Property>
           </LinkedEntityProperty>
-          <ParameterReference valType="String">dfb89315-f242-482e-a402-293643070bf9</ParameterReference>
+          <ParameterReference valType="String">c9d22a2f-535c-4a8a-a973-c3930a7b55ac</ParameterReference>
         </Parameter>
-        <Parameter Name="/Parameters/Parameter:P9">
+        <Parameter Name="/Parameters/Parameter:P20">
           <LinkedEntityProperty>
-            <EntityReference valType="String">38cdb105-24ba-45be-8a87-13e299f67e93</EntityReference>
+            <EntityReference valType="String">20c2336d-a82c-4d2a-933b-93f180d7e778</EntityReference>
             <Property valType="String">Value</Property>
           </LinkedEntityProperty>
-          <ParameterReference valType="String">2a3c6e09-b109-493a-9c4c-b183519d8013</ParameterReference>
+          <ParameterReference valType="String">1273593b-6ef9-417f-b2f8-9f93c7f66aa7</ParameterReference>
         </Parameter>
         <Parameter Name="/Parameters/Parameter:P12">
           <LinkedEntityProperty>
@@ -486,10 +520,10 @@ http://www.ansys.com/rss/ansys-news.rss""", "Details": None, "Association": "", 
       <maxUpdateOrder valType="Double">1</maxUpdateOrder>
       <deleted-sources valType="String">[]</deleted-sources>
       <last-updated valType="Int64">0</last-updated>
-      <last-modified-by-usage valType="String">{Extrinsic: 4807, Input: 4794, Output: 1655}</last-modified-by-usage>
+      <last-modified-by-usage valType="String">{Extrinsic: 6663, Input: 6664, Output: 1655}</last-modified-by-usage>
       <outputs-generated-by-type valType="String">{}</outputs-generated-by-type>
       <last-update-regen-times valType="String">{}</last-update-regen-times>
-      <contains-significant-data valType="Boolean">false</contains-significant-data>
+      <contains-significant-data valType="Boolean">true</contains-significant-data>
     </Container>
     <Container Name="Schematic" Version="1.0">
       <Object Name="/Schematic/System:Geom" Version="1.0">
@@ -588,7 +622,7 @@ http://www.ansys.com/rss/ansys-news.rss""", "Details": None, "Association": "", 
       <storage-scheme-id valType="String">version-1-format</storage-scheme-id>
       <deleted-sources valType="String">[]</deleted-sources>
       <last-updated valType="Int64">0</last-updated>
-      <last-modified-by-usage valType="String">{Extrinsic: 4811, Input: 4692, Output: 1657}</last-modified-by-usage>
+      <last-modified-by-usage valType="String">{Extrinsic: 6497, Input: 4692, Output: 1657}</last-modified-by-usage>
       <outputs-generated-by-type valType="String">{}</outputs-generated-by-type>
       <last-update-regen-times valType="String">{}</last-update-regen-times>
       <contains-significant-data valType="Boolean">false</contains-significant-data>
@@ -700,7 +734,7 @@ http://www.ansys.com/rss/ansys-news.rss""", "Details": None, "Association": "", 
       <storage-scheme-id valType="String">version-1-format</storage-scheme-id>
       <deleted-sources valType="String">[]</deleted-sources>
       <last-updated valType="Int64">0</last-updated>
-      <last-modified-by-usage valType="String">{Extrinsic: 4586, Input: 1898, Output: 1898}</last-modified-by-usage>
+      <last-modified-by-usage valType="String">{Extrinsic: 6541, Input: 1898, Output: 1898}</last-modified-by-usage>
       <outputs-generated-by-type valType="String">{}</outputs-generated-by-type>
       <last-update-regen-times valType="String">{}</last-update-regen-times>
       <contains-significant-data valType="Boolean">false</contains-significant-data>

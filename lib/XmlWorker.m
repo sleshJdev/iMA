@@ -1,6 +1,7 @@
 classdef XmlWorker
-    %XMLWORKER Summary of this class goes here
-    %   Detailed explanation goes here
+    %XMLWORKER Encapsulate logic work with xml
+    %   Execute reading/writing of parameters
+
     
     properties
         document;

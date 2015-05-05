@@ -110,6 +110,7 @@ class Watcher:
 		map = self.xmlWorker.getInputParameters()
 		for key in map.Keys:
 			Parameters.GetParameter(Name=str(key)).Expression = str(map[key])
+			print Parameters.GetParameter(Name=str(key)).Expression, "---", str(map[key])
 			
 		#MessageBox.Show("notify matlab to it wait")
 		print "notify matlab to it wait"
@@ -124,6 +125,7 @@ class Watcher:
 		map = self.xmlWorker.getOutputParameters()
 		for pair in map.Clone():# to avoid: InvalidOperationException: Collection was modified; enumeration operation may not execute.
 			map[pair.Key] = Parameters.GetParameter(Name=str(pair.Key)).Value.Value	
+			print map[pair.Key], "---", Parameters.GetParameter(Name=str(pair.Key)).Value.Value
 		
 		#MessageBox.Show("save it into xml")
 		print "save it into xml"
@@ -153,5 +155,3 @@ imaPath = DirectoryInfo(projDir).Parent.FullName
 xmlWorker = XmlWorker(imaPath + "/main.xml")		
 
 watcher = Watcher(xmlWorker)
-
-
