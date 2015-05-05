@@ -136,7 +136,7 @@ function makeStepButton_Callback(hObject, eventdata, handles)
     lowerBorder = bounds(:, 1);
     upBorder = bounds(:, 2);   
     
-    [resultX, resultY] = rosenbrok(inVector, 3, 2, -0.5, upBorder, lowerBorder, 0.5, [1; 0.01; 0.01; 1], @ansysRunner.update);    
+    [resultX, resultY] = rosenbrok(inVector, 3, 2, -0.5, upBorder, lowerBorder, 0.5, [1; 1; 0.01; 0.01], @ansysRunner.update);    
     disp('results--->>>');
     disp('X');
     disp(resultX);
