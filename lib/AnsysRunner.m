@@ -24,7 +24,7 @@ classdef AnsysRunner
             counter = 1;
             pauseDuration = 5;
             value = fileread(this.matlabCommandPath);            
-            while ~strcmp(value, 'make-optimization')
+            while ~strcmp(value, 'optimize')
                 pause(pauseDuration);
                 fprintf('%d seconds\n', pauseDuration * counter);
                 counter = counter + 1;
@@ -55,7 +55,7 @@ classdef AnsysRunner
             % write new parameters to ansys            
             this.excel.writeParameters(inVector);      
             
-%             Logger.info('input parameters: %s\n', mat2str(inVector));                      
+            Logger.info(sprintf('input parameters: %s\n', mat2str(inVector)));                      
             
             % reset command file for matalb
             this.setCommand(this.matlabCommandPath, 'wait');

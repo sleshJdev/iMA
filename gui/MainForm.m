@@ -131,21 +131,8 @@ function applyInputParametersButton_Callback(hObject, eventdata, handles)
     
 function writeOutput()
     Logger.info('Main: write output pararmeters...');
-    
-    global PROPERTIES;
-    
-    handles = guihandles();  
-    edits = [handles.totalDeformationEdit, handles.massEdit,...
-             handles.mode1Edit, handles.mode2Edit, handles.mode3Edit,...
-             handles.mode4Edit, handles.mode5Edit, handles.mode6Edit,...
-             handles.mode7Edit, handles.mode8Edit, handles.mode9Edit, handles.mode10Edit];
-    
-    excel = Excel(fullfile(PROPERTIES.excelSheetPath, PROPERTIES.excelSheetName));
-    outVector = excel.readParameters();
-    [h, ~] = size(outVector);
-    for i = 1 : h
-        set(edits(i), 'String', outVector(i));
-    end   
+       
+    Logger.info('success!');
     
 function runButton_Callback(hObject, eventdata, handles)   
     Logger.info('Main: runButton_Callback...');  
@@ -162,7 +149,7 @@ function runButton_Callback(hObject, eventdata, handles)
     
 function makeStepButton_Callback(hObject, eventdata, handles)
     global PROPERTIES       
-    global ansysRunner
+    global ansysRunner       
     
     inVector = [PROPERTIES.length; PROPERTIES.width; PROPERTIES.height];
     lowBorder = [PROPERTIES.lengthMin; PROPERTIES.widthMin; PROPERTIES.heightMin];

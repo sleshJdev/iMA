@@ -3,8 +3,10 @@ classdef Excel
     %    
     properties (SetAccess = private)
         path;% path to specific excel file
-        rangeIn = 'B2';% represent rectange for writing input parameters
-        rangeOut = 'B9:B20';% represent rectange for reading output parameters
+        rangeIn = 'B2:B5';% represent rectange for writing input parameters
+        rangeOut = 'B9:B11';% represent rectange for reading output parameters
+        rangeMinBorder = 'E2:E5';% represent rectange for min border of paramer value
+        rangeMaxBorder = 'F2:F5';% represent rectange for max border of paramer value
     end
     
     methods
@@ -19,6 +21,16 @@ classdef Excel
         function [outVector] = readParameters(this)
             [outVector, ~, ~] = xlsread(this.path, 1, this.rangeOut);      
         end
+        
+        function [minBorder] = readMinBorder(this)
+            [minBorder, ~, ~] = xlsread(this.path, 1, this.rangeMinBorder);
+        end
+        
+        function [maxBorder] = readMaxBorder(this)
+            [maxBorder, ~, ~] = xlsread(this.path, 1, this.rangeMaxBorder);
+        end
+        
+        %TODO: remove in fututre
         function setValueOfParameter(this, parameterName, parameterValue)
             SHIFT = 2; % dependency from excel schema structure
             % TODO: need improve this, remove dependency       
@@ -30,12 +42,14 @@ classdef Excel
             Logger.info(sprintf('parameterName: %s, parameterValue: %s, range: %s', parameterName, num2str(parameterValue), range));
         end
         
+        %TODO: remove in fututre
         function [value, y, x] = getValueOfParameter(this, parameterName)
             [value, y, x] = findCellByName(this, parameterName);
             
             Logger.info(sprintf('parameterName: %s, [value, y, x] : [%s, %d, %d]', parameterName, num2str(value), y, x));
         end
         
+        %TODO: remove in fututre
         function [value, y, x, raw] = findCellByName(this,  name)
             [~, ~, raw] = xlsread(this.path, 1);
             [h, w] = size(raw);

@@ -10,7 +10,7 @@ function result = rosenbrok( x0, num, a, b, xmax, xmin, threshold, dx0, targetFu
     directions = zeros(n);
     for i = 1:n %заполнение матрицы направлений
         directions(i,i) = 1;
-    end 
+    end
     lambda = zeros(1,n); %матрица сум. перемещений по каждому направлению
     dx = dx0; %массив с длинами шага
     xCur = x0; %массив параметров текущий

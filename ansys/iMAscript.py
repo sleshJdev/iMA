@@ -76,63 +76,39 @@ def makeStep():
 	
 	print "in excel: grab values for the cells that we want data from (input cells)"
 	fermaB = excelSheet.Range["Ferma_B"](1,1).Value2
-	fermaH = excelSheet.Range["Ferma_H"](1,1).Value2
-	innerRadius = excelSheet.Range["CircularTube_Ri"](1,1).Value2
 	outerRadius = excelSheet.Range["CircularTube_Ro"](1,1).Value2
-	
-	upress =  excelSheet.Range["Pressure"](1,2).Value2
+	innerRadius = excelSheet.Range["CircularTube_Ri"](1,1).Value2
+	fermaH = excelSheet.Range["Ferma_H"](1,1).Value2
 	
 	print "in workbench: grab the parameter objects for the input values"
-	lenParam = Parameters.GetParameter(Name="P1")
-	widParam = Parameters.GetParameter(Name="P2")
-	hgtParam = Parameters.GetParameter(Name="P3")
-	prsParam = Parameters.GetParameter(Name="P5")			
+	fermaBParam = Parameters.GetParameter(Name="P16")
+	outerRadiusParam = Parameters.GetParameter(Name="P18")
+	innerRadiusParam = Parameters.GetParameter(Name="P19")
+	fermaHParam = Parameters.GetParameter(Name="P20")			
 	
 	print "in workbench: set the value of the input parameters in workbench using the values we got from excel"
-	lenParam.Expression = length.ToString()
-	widParam.Expression = width.ToString()
-	hgtParam.Expression = height.ToString()
-	prsParam.Expression = press.ToString() + " [" + upress + "]"
+	fermaBParam.Expression = fermaB.ToString()
+	outerRadiusParam.Expression = outerRadius.ToString()
+	innerRadiusParam.Expression = innerRadius.ToString()
+	fermaHParam.Expression = fermaH.ToString()
 	
 	print "Set the output values to \"Calculating...\" since they no longer match the input values"
-	excelSheet.Range["Max_Bending_Distance"](1,1).Value2 = "Calculating..."
+	excelSheet.Range["Maximum_Combined_Stress_Maximum"](1,1).Value2 = "Calculating..."
 	excelSheet.Range["Geometry_Mass"](1,1).Value2 = "Calculating..."
-	excelSheet.Range["Mode_1"](1,1).Value2 = "Calculating..."
-	excelSheet.Range["Mode_2"](1,1).Value2 = "Calculating..."
-	excelSheet.Range["Mode_3"](1,1).Value2 = "Calculating..."
-	excelSheet.Range["Mode_4"](1,1).Value2 = "Calculating..."
-	excelSheet.Range["Mode_5"](1,1).Value2 = "Calculating..."
-	excelSheet.Range["Mode_6"](1,1).Value2 = "Calculating..."
-	excelSheet.Range["Mode_7"](1,1).Value2 = "Calculating..."
-	excelSheet.Range["Mode_8"](1,1).Value2 = "Calculating..."
-	excelSheet.Range["Mode_9"](1,1).Value2 = "Calculating..."
-	excelSheet.Range["Mode_10"](1,1).Value2 = "Calculating..."
+	excelSheet.Range["Total_Deformation Maximum"](1,1).Value2 = "Calculating..."
 	
 	print "in workbench: update the systems using the new parameter values"
-	logFile.write("Updating Project\n")
 	Update()
 	
 	print "in workbench: grab the parameter objects for the output values"
-	defParam = Parameters.GetParameter(Name="P4")
-	massParam = Parameters.GetParameter(Name="P16")
+	stressParam = Parameters.GetParameter(Name="P12")
+	massParam = Parameters.GetParameter(Name="P13")
+	deformationParam = Parameters.GetParameter(Name="P14")
 	
-	print "assign the value of the excel deflection cell output deflection from workbench"
-	excelSheet.Range["Max_Bending_Distance"](1,1).Value2 = defParam.Value.Value	
-	print "assign geometry mass"
+	excelSheet.Range["Maximum_Combined_Stress_Maximum"](1,1).Value2 = stressParam.Value.Value	
 	excelSheet.Range["Geometry_Mass"](1,1).Value2 = massParam.Value.Value
-	
-	print "now go through the value of each natural frequency in workbench and set the corresponding cell in excel" 
-	excelSheet.Range["Mode_1"](1,1).Value2 = Parameters.GetParameter(Name="P6").Value.Value
-	excelSheet.Range["Mode_2"](1,1).Value2 = Parameters.GetParameter(Name="P7").Value.Value
-	excelSheet.Range["Mode_3"](1,1).Value2 = Parameters.GetParameter(Name="P8").Value.Value
-	excelSheet.Range["Mode_4"](1,1).Value2 = Parameters.GetParameter(Name="P9").Value.Value
-	excelSheet.Range["Mode_5"](1,1).Value2 = Parameters.GetParameter(Name="P10").Value.Value
-	excelSheet.Range["Mode_6"](1,1).Value2 = Parameters.GetParameter(Name="P11").Value.Value
-	excelSheet.Range["Mode_7"](1,1).Value2 = Parameters.GetParameter(Name="P12").Value.Value
-	excelSheet.Range["Mode_8"](1,1).Value2 = Parameters.GetParameter(Name="P13").Value.Value
-	excelSheet.Range["Mode_9"](1,1).Value2 = Parameters.GetParameter(Name="P14").Value.Value
-	excelSheet.Range["Mode_10"](1,1).Value2 = Parameters.GetParameter(Name="P15").Value.Value
-	
+	excelSheet.Range["Total_Deformation_Maximum"](1,1).Value2 = massParam.Value.Value
+		
 	print "close excel"
 	Marshal.ReleaseComObject(excelSheet)
 	excelBook.Close(True)
@@ -146,5 +122,5 @@ def makeStep():
 	
 	print "notify matlab to it begin optimization"
 	matlabCommand = open(projDir + "\listenme\matlab_command.txt", "w");
-	matlabCommand.write('make-optimization')
+	matlabCommand.write('optimize')
 	matlabCommand.close();
