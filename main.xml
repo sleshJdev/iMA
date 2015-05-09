@@ -1,24 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ima>
-   <path>
-      <ansys-cmd>c:\Users\slesh\Documents\MATLAB\Workspace\iMA\control\ansys_command.txt</ansys-cmd>
-      <matlab-cmd>c:\Users\slesh\Documents\MATLAB\Workspace\iMA\control\matlab_command.txt</matlab-cmd>
-   </path>
-   <parameters>
-      <input-bounds>
-         <bound id="P1" max="70" min="50"/>
-         <bound id="P2" max="40" min="20"/>
-         <bound id="P3" max="1.55" min="1.45"/>
-         <bound id="P4" max="1.44" min="1.40"/>
-      </input-bounds>
-      <input>
-         <parameter id="P1" name="Ferma_B">60</parameter>
-         <parameter id="P2" name="Ferma_H">32</parameter>
-         <parameter id="P3" name="CircularTube_Ri">1.475</parameter>
-         <parameter id="P4" name="CircularTube_Ro">1.5</parameter>
-      </input>
-      <output>
-         <parameter id="5" name="Maximum Combined Stress Maximum"/>
-      </output>
-   </parameters>
+  <path>
+    <ansys-cmd>c:\Users\slesh\Documents\MATLAB\Workspace\iMA\control\ansys_command.txt</ansys-cmd>
+    <matlab-cmd>c:\Users\slesh\Documents\MATLAB\Workspace\iMA\control\matlab_command.txt</matlab-cmd>
+  </path>
+  <settings>
+    <scale-factor>2</scale-factor>
+    <break-factor>-0.5</break-factor>
+    <fails-quantity>3</fails-quantity>
+    <threshold>0.005</threshold>
+  </settings>
+  <parameters>
+    <input>
+      <parameter id="P1" max="70" min="50" name="Ferma_B" step="1">58.5</parameter>
+      <parameter id="P2" max="40" min="20" name="Ferma_H" step="1">31</parameter>
+      <parameter id="P3" max="1.44" min="1.40" name="CircularTube_Ri" step="0.01">1.43</parameter>
+      <parameter id="P4" max="1.55" min="1.45" name="CircularTube_Ro" step="0.01">1.52</parameter>
+    </input>
+    <output>
+      <parameter id="P6" name="Total Deformation Maximum">0.000355952681379</parameter>
+    </output>
+  </parameters>
 </ima>

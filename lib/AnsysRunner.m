@@ -20,18 +20,16 @@ classdef AnsysRunner
             fprintf(commandFile, '%s', command);
             fclose('all');   
         end
-        function waitWhileAnsysCalculate(this)                       
+        function time =  waitWhileAnsysCalculate(this)                       
             counter = 1;
             pauseDuration = 5;
             value = fileread(this.matlabCommandPath);            
             while ~strcmp(value, 'optimize')
-                pause(pauseDuration);
-                fprintf('%d seconds\n', pauseDuration * counter);
+                pause(pauseDuration);                 
                 counter = counter + 1;
                 value = fileread(this.matlabCommandPath);
-            end 
-            pause(pauseDuration);
-            Logger.info(sprintf('time: %s seconds', num2str(counter * pauseDuration)));
+            end      
+            time = counter * pauseDuration;            
         end
     end
     
@@ -53,27 +51,41 @@ classdef AnsysRunner
             
             system(command);                
         end   
-        function [targetValue] = update(this, inVector)         
+        function [targetValue] = update(this, inVector)      
+            global PROPERTIES;
+            
+            if ( PROPERTIES.isTerminate )
+                Logger.info('End. You can close Ansys.');
+                return;
+            end
+            
+            Logger.info(' ');%separator
+            
             % write new parameters to ansys            
-            this.xmlWorker.setInputParameters(inVector);        
+            this.xmlWorker.setInputParameters(inVector);                    
             
             % update ansys with new parameters
             updateCommand = strcat('update-', num2str(rand(1, 1)));
-            this.setCommand(this.ansysCommandPath, updateCommand);          
-            disp(sprintf('update command: %s', updateCommand));
+            this.setCommand(this.ansysCommandPath, updateCommand);
+            
+            Logger.info('Call Ansys...');
+            
+            %pause(5);%????
             
             % waiting
-            this.waitWhileAnsysCalculate();
+            time = this.waitWhileAnsysCalculate();           
+            
+            Logger.info(sprintf('Ansys work %s seconds', num2str(time)));
             
             % return Total Deforamtion, Maximum Combined Stress Maximum and Geometry Mass as criteria of optimization
             [outValues, outNames] = this.xmlWorker.getOutputParameters();             
-            log = 'output parameters : ';
+            log = 'Output parameters from Ansys: ';
             quantity = max(size(outValues));
             for i = 1 : quantity
                 log = strcat(log, sprintf(' %s: %s, ', char(outNames(i)), num2str(outValues(i))));
             end
             targetValue = this.getTargetValue(outValues);
-            log = strcat(log, sprintf('targetValue: %s\n', num2str(targetValue)));            
+            log = strcat(log, sprintf(' targetValue: %s\n', num2str(targetValue)));            
             Logger.info(log);            
         end 
         function targetValue = getTargetValue(this, values)

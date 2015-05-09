@@ -11,7 +11,9 @@ classdef Properties
         mainXmlName;
         
         scriptPath;
-        scriptName;        
+        scriptName;  
+        
+        isTerminate = false;
     end    
     methods
     end    

@@ -21,15 +21,28 @@ classdef XmlWorker
         end
         function [values, names] = getParameters(this, list)
             quantity = list.getLength;
-            values = [];
-            names = [];
+            values = zeros(quantity, 1);
+            names = cell(quantity, 1);
             for i = 0 : quantity - 1
                 item = list.item(i);
-                values = [values, str2double(item.getFirstChild.getData)];
-                names = [names, cellstr(char(item.getAttribute('name')))];
-            end
-            values = values';
-            names = names';
+                values(i + 1) = str2double(item.getFirstChild.getData);
+                names(i + 1) = cellstr(char(item.getAttribute('name')));                
+            end 
+        end
+        function [values, names, min, max, step] = getInput(this)
+            list = this.document.getElementsByTagName('input').item(0)...
+                                .getElementsByTagName('parameter');
+            quantity = list.getLength;            
+            min = zeros(quantity, 1);
+            max = zeros(quantity, 1);
+            step = zeros(quantity, 1);
+            for i = 0 : quantity - 1
+                item = list.item(i);                
+                min(i + 1) = str2double(item.getAttribute('min'));
+                max(i + 1) = str2double(item.getAttribute('max'));               
+                step(i + 1) = str2double(item.getAttribute('step'));
+            end            
+            [values, names] = this.getParameters(list);
         end
         function write(this)
             xmlwrite(this.path, this.document);
@@ -51,10 +64,8 @@ classdef XmlWorker
             this.document = xmlread(path);
         end
         function [inValues, inNames] = getInputParameters(this)
-            this.document = xmlread(this.path);
-            list = this.document.getElementsByTagName('input').item(0)...
-                                .getElementsByTagName('parameter');
-            [inValues, inNames] = this.getParameters(list);
+            this.document = xmlread(this.path);            
+            [inValues, inNames] = this.getInput();
         end
         function setInputParameters(this, inVector)
             list = this.document.getElementsByTagName('input').item(0)...
@@ -69,15 +80,11 @@ classdef XmlWorker
         end        
         function bounds = getInputBounds(this)
             this.document = xmlread(this.path);
-            list = this.document.getElementsByTagName('input-bounds').item(0)...
-                                .getElementsByTagName('bound');
-            quantity = list.getLength;
-            bounds = zeros(quantity, 2);
-            for i = 0 : quantity - 1
-                item = list.item(i);                                
-                bounds(i + 1, 1) = str2double(item.getAttribute('min'));
-                bounds(i + 1, 2) = str2double(item.getAttribute('max'));
-            end            
+            [~, ~, min, max, ~] = this.getInput();
+            bounds = [min, max];      
+        end
+        function steps = getSteps(this)
+            [~, ~, ~, ~, steps] = this.getInput();
         end
         function value = getValueOf(this, tagName)
             value = this.document.getElementsByTagName(tagName).item(0).getFirstChild.getData;

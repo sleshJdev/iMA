@@ -96,28 +96,14 @@ function applyInputParametersButton_Callback(hObject, eventdata, handles)
     Logger.info('success!');    
     
 function writeOutput()
-    Logger.info('Main: write output pararmeters...');
-    
-    global PROPERTIES;
-    
-    handles = guihandles();  
-    edits = [handles.totalDeformationEdit, handles.massEdit,...
-             handles.mode1Edit, handles.mode2Edit, handles.mode3Edit,...
-             handles.mode4Edit, handles.mode5Edit, handles.mode6Edit,...
-             handles.mode7Edit, handles.mode8Edit, handles.mode9Edit, handles.mode10Edit];
-    
-    xmlWorker = XmlWorker(fullfile(PROPERTIES.mainXmlPath, PROPERTIES.mainXmlName));
-    outVector = xmlWorker.getOutputParameters();
-    [h, ~] = size(outVector);
-    for i = 1 : h
-        set(edits(i), 'String', outVector(i));
-    end   
+    Logger.info('Main: write output pararmeters...');    
+     
     
 function runButton_Callback(hObject, eventdata, handles)   
     Logger.info('Main: runButton_Callback...');  
     
     global PROPERTIES;        
-    global ansysRunner
+    global ansysRunner;
     
     ansysRunner = AnsysRunner(PROPERTIES.ansysExeFullPath, ...
                               fullfile(PROPERTIES.scriptPath, PROPERTIES.scriptName), ...
@@ -126,22 +112,33 @@ function runButton_Callback(hObject, eventdata, handles)
     
     Logger.info('success!');
     
+function terminateButton_Callback(hObject, eventdata, handles)
+    global PROPERTIES;
+    
+    PROPERTIES.isTerminate = true;
+    Logger.info('Stopping... Please, wait while Ansys dont finish calculation.');
+    
 function makeStepButton_Callback(hObject, eventdata, handles)
     global PROPERTIES       
     global ansysRunner    
     
-    xmlWorker = XmlWorker(fullfile(PROPERTIES.mainXmlPath, PROPERTIES.mainXmlName));
-    bounds = xmlWorker.getInputBounds();
+    xmlWorker = XmlWorker(fullfile(PROPERTIES.mainXmlPath, PROPERTIES.mainXmlName));    
+    scaleFactor = str2double(xmlWorker.getValueOf('scale-factor'));
+    breakFactor = str2double(xmlWorker.getValueOf('break-factor'));
+    failsQuantity = str2double(xmlWorker.getValueOf('fails-quantity'));
+    threshold = str2double(xmlWorker.getValueOf('threshold'));
     inVector = xmlWorker.getInputParameters();
+    steps = xmlWorker.getSteps();
+    bounds = xmlWorker.getInputBounds();    
     lowerBorder = bounds(:, 1);
     upBorder = bounds(:, 2);   
     
-    [resultX, resultY] = rosenbrok(inVector, 3, 2, -0.5, upBorder, lowerBorder, 0.5, [1; 1; 0.01; 0.01], @ansysRunner.update);    
+    [resultX, resultY] = rosenbrok(inVector, failsQuantity, scaleFactor, breakFactor, upBorder, lowerBorder, threshold, steps, @ansysRunner.update);    
     disp('results--->>>');
     disp('X');
     disp(resultX);
     disp('Y');
     disp(resultY);
-%     writeOutput();
     
 
+    
