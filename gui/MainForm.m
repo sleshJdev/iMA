@@ -110,7 +110,7 @@ function runButton_Callback(hObject, eventdata, handles)
                               fullfile(PROPERTIES.ansysProjectPath, PROPERTIES.ansysProjectName));
     ansysRunner.run(); 
     
-    Logger.info('success!');
+    Logger.info('Success!');
     
 function terminateButton_Callback(hObject, eventdata, handles)
     global PROPERTIES;

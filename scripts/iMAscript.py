@@ -107,14 +107,15 @@ class Watcher:
 	def makeStep(self):
 		#MessageBox.Show("make step...")
 		print "make step..."
-		map = self.xmlWorker.getInputParameters()
-		for key in map.Keys:
-			Parameters.GetParameter(Name=str(key)).Expression = str(map[key])
-			print Parameters.GetParameter(Name=str(key)).Expression, "---", str(map[key])
-			
+		
 		#MessageBox.Show("notify matlab to it wait")
 		print "notify matlab to it wait"
 		self.writeCommand(self.matlabCommandFile, "wait")
+		
+		map = self.xmlWorker.getInputParameters()
+		for key in map.Keys:
+			Parameters.GetParameter(Name=str(key)).Expression = str(map[key])
+			print Parameters.GetParameter(Name=str(key)).Expression, "---", str(map[key])	
 		
 		#MessageBox.Show("in workbench: update the systems using the new parameter values")
 		print "in workbench: update the systems using the new parameter values"

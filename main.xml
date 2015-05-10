@@ -12,13 +12,13 @@
   </settings>
   <parameters>
     <input>
-      <parameter id="P1" max="70" min="50" name="Ferma_B" step="1">58.5</parameter>
-      <parameter id="P2" max="40" min="20" name="Ferma_H" step="1">31</parameter>
+      <parameter id="P1" max="70" min="50" name="Ferma_B" step="1">60.5</parameter>
+      <parameter id="P2" max="40" min="20" name="Ferma_H" step="1">32</parameter>
       <parameter id="P3" max="1.44" min="1.40" name="CircularTube_Ri" step="0.01">1.43</parameter>
-      <parameter id="P4" max="1.55" min="1.45" name="CircularTube_Ro" step="0.01">1.52</parameter>
+      <parameter id="P4" max="1.55" min="1.45" name="CircularTube_Ro" step="0.01">1.5225</parameter>
     </input>
     <output>
-      <parameter id="P6" name="Total Deformation Maximum">0.000355952681379</parameter>
+      <parameter id="P6" name="Total Deformation Maximum">0.000357738521419</parameter>
     </output>
   </parameters>
 </ima>

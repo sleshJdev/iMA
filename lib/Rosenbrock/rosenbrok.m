@@ -17,7 +17,7 @@ function [resultX, resultY] = rosenbrok( x0, num, a, b, xmax, xmin, threshold, d
     yk = yCur; %знач. функции на пред. итерации   asdsa
     while isEndWhile == 0
         globalStepCounter = globalStepCounter + 1;
-        yPrev = targetFunction(xCur); %знач. фун. на пред. серии шагов         
+        yPrev = yCur; %знач. фун. на пред. серии шагов         
         dxPrev = dx; %длины шага на пред. серии шагов. assa
         for i = 1 : n         
             xNext = xCur;
@@ -25,12 +25,12 @@ function [resultX, resultY] = rosenbrok( x0, num, a, b, xmax, xmin, threshold, d
                 xNext(j) = xNext(j) + directions(i,j) * dx(i);
             end
             if(xNext > xmin & xNext < xmax) %проверка границ поиска                           
-                yNext = targetFunction(xNext);                
-                Logger.info(sprintf('%d.%d:_Best:::_____Point:_%s,_Value:_%s,_______Current:::__Point:_%s,_Value:_%s, Step:_%s\n',...
+                yNext = targetFunction(xNext);             
+                Logger.info(sprintf('%d.%d: Best::: point: %s, value:_%s, Current::: point: %s, value: %s, Step: %s\n',...
                             globalStepCounter, i, mat2str(xCur), mat2str(yCur), mat2str(xNext), mat2str(yNext), mat2str(dx)));
                 
-                fprintf('%d.%d:_Best:::_____Point:_%s,_Value:_%s', globalStepCounter, i, mat2str(xCur), mat2str(yCur));
-                fprintf('_______Current:::__Point:_%s,_Value:_%s, Step:_%s\n', mat2str(xNext), mat2str(yNext), mat2str(dx));    
+               fprintf('%d.%d:_Best::: Point: %s,_Value:_%s, Current::: Point: %s, Value: %s, Step: %s\n',...
+                            globalStepCounter, i, mat2str(xCur), mat2str(yCur), mat2str(xNext), mat2str(yNext), mat2str(dx));
                 if(yNext < yCur)%проверка успешности шага
                     xCur = xNext;
                     yCur = yNext;

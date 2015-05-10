@@ -68,14 +68,15 @@ classdef AnsysRunner
             updateCommand = strcat('update-', num2str(rand(1, 1)));
             this.setCommand(this.ansysCommandPath, updateCommand);
             
-            Logger.info('Call Ansys...');
+            %reset state. set command as wait
+            this.setCommand(this.matlabCommandPath, 'wait');
             
-            %pause(5);%????
+            Logger.info('Call Ansys...');         
             
             % waiting
             time = this.waitWhileAnsysCalculate();           
             
-            Logger.info(sprintf('Ansys work %s seconds', num2str(time)));
+            Logger.info(sprintf('Ansys working %s seconds', num2str(time)));
             
             % return Total Deforamtion, Maximum Combined Stress Maximum and Geometry Mass as criteria of optimization
             [outValues, outNames] = this.xmlWorker.getOutputParameters();             
