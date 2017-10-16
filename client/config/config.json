@@ -1,0 +1,24 @@
+{
+	"client": {
+		"name": "iMA",
+		"ansysExePath": "C:/Program Files/ANSYS Inc/v182/Framework/bin/Win64/RunWB2.exe",
+		"mediatorAppPath": "C:/Users/User/Documents/MATLAB/iMA/mediator/sss.py",
+		"ansysProjectPath": "C:/Users/User/Documents/MATLAB/iMA/ansys/iMAmodelFerma.wbpj"
+	},
+	"mediator": {
+		"host": "localhost",
+		"port": 50006
+	},
+	"algorithms": {
+		"rosenbrock": {
+			"title": "Rosenbrock Algorithm",
+			"algorithmFunctionName": "rosenbrock",
+			"settings": {
+				"scaleFactor": 2,
+				"breakFactor": -0.5,
+				"failsQuantity": 3,
+				"threshold": 0.005
+			}
+		}
+	}
+}

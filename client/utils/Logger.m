@@ -18,10 +18,13 @@ classdef Logger
             set(handles.logListbox, 'String', content);
         end
         function info(message)
-            Logger.log(sprintf('INFO %s: %s', datestr(now, 'HH:MM:SS'), message));
+            Logger.log(sprintf('%s INFO : %s', datestr(now, 'HH:MM:SS'), char(message)));
         end
         function debug(message)
-            Logger.log(sprintf('ERROR %s: %s', datestr(now, 'HH:MM:SS'), message));
+            Logger.log(sprintf('%s DEBUG: %s', datestr(now, 'HH:MM:SS'), char(message)));
+        end
+        function error(error)
+            Logger.log(sprintf('%s ERROR: %s', datestr(now, 'HH:MM:SS'), char(error.message)));
         end
     end    
 end
