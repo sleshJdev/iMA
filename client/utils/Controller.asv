@@ -4,7 +4,7 @@ classdef Controller
     
     properties(Access = private)
         wbclient,
-        ansys,
+        ansysRunner,
         config,
         terminated = false
     end
@@ -29,7 +29,8 @@ classdef Controller
             self.ansys = Ansys(self.config);
         end        
         function setup(self)
-            self.ansys.run('C:\Users\User\Documents\MATLAB\iMA\ansys\iMAmodelFerma.wbpj');
+            self.ansysRunner.run();
+            self.wbclient.connect();
         end
         function terminate(self)
             self.terminated = true;

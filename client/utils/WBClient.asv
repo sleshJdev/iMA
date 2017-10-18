@@ -1,4 +1,4 @@
-classdef Communicator < handle
+classdef WBClient < handle
     %COMMUNICATOR Summary of this class goes here
     %   Detailed explanation goes here    
     properties(Access = private)
@@ -10,6 +10,16 @@ classdef Communicator < handle
     end
     
     methods(Access = private)
+        function connect(self)
+            try
+                self.socket = java.net.Socket(self.host, self.port);                    
+                self.in  = java.io.BufferedReader(java.io.InputStreamReader(self.socket.getInputStream), self.PACKAGE_SIZE);
+                self.out =  java.io.PrintStream(java.io.BufferedOutputStream(self.socket.getOutputStream));                        
+            catch e
+                Logger.error(e);
+                self.close();
+            end
+        end
         function response = listen(self)
             response = self.in.readLine();
         end
@@ -20,32 +30,6 @@ classdef Communicator < handle
             catch e, Logger.error(e) 
             end;
         end
-    end
-    
-    methods(Access = public)
-        function self = Communicator(host, port)
-            self.host = host;
-            self.port = port;
-        end
-        
-        function connect(self)
-            import java.net.Socket
-            import java.io.*
-            import org.json.*
-            try
-                self.socket = Socket(self.host, self.port);                    
-                self.in  = BufferedReader(InputStreamReader(self.socket.getInputStream), self.PACKAGE_SIZE);
-                self.out =  PrintStream(BufferedOutputStream(self.socket.getOutputStream));                        
-            catch e
-                Logger.error(e);
-                self.close();
-            end
-        end
-        function response = makeRequest(self, request)            
-            self.send(request);
-            jsonResponse = self.listen();            
-            response = org.json.JSONObject(jsonResponse);
-        end        
         function close(self)
             if ~isempty(self.in)
                 try self.in.close(), catch e, Logger.error(e), end;
@@ -57,6 +41,19 @@ classdef Communicator < handle
                 try self.socket.close(), catch e, Logger.error(e), end;
             end
         end
+    end
+    
+    methods(Access = public)
+        function self = WBClient(config)
+            wbclientConfig = self.config.getJSONObject('wbclient');
+            self.host = host;
+            self.port = port;
+        end       
+        function response = makeRequest(self, request)            
+            self.send(request);
+            jsonResponse = self.listen();            
+            response = org.json.JSONObject(jsonResponse);
+        end       
     end    
 end
 

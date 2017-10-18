@@ -1,64 +1,49 @@
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.realpath(__file__)))
-
 import socket
 import json
 import time
-import utils
-import dispatch
-from dispatch import Dispatcher   
+
+from mediator import utils
+from mediator.dispatch import Dispatcher   
 
 class Mediator:   
 	
     def __init__(self, context):
-        self.logger = logger = utils.create_logger('ima/' + __name__, context.log_file_path)
+        print "1"
+        self.logger = utils.create_logger(__name__, context.log_file_path)
         self.context = context
         self.dispatcher = Dispatcher(context)
         self.logger.debug('dispatcher has been created')        
 
-    def start(self, host, port):          
-        self.__open_socket(host, port)        
-        while True:
-            request = self.__listen()
-            if not request: 
-                self.stop()
-                break            
-            response = self.dispatcher.dispath(request)            
-            self.__respond(response)
-
-    def stop(self):
-        self.__close_socket()
+    def accept_request(self, request):                       
+        response = self.dispatcher.dispath(request)            
+        self.__respond(response)   
     
     def __respond(self, response):
-        time.sleep(1)
-        self.logger.info('response: {!s}'.format(response))
-        self.connection.sendall(str(response))
-        self.connection.sendall(os.linesep)
-
-    def __listen(self):
-        self.logger.info('waiting for request...')
-        message = self.connection.recv(20 * 1024)        
-        if not message: return None
-        request = json.loads(message) 
-        self.logger.debug('request: ' + str(request))          
-        return request
+        s = self.__open_socket("localhost", 50001)
+        try:
+            self.logger.info('response: {!s}'.format(response))
+            s.sendall(str(response))
+            # s.sendall("<EOF>")
+            s.sendall(os.linesep)
+        except Exception as e:
+            self.__close_socket(s)
+            self.logger.error("error during sending response: {!s}. error details: {!s}".format(response, e))           
 
     def __open_socket(self, host, port):
-        self.logger.info('opening a socket...')
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.bind((host, port))
-        s.listen(1)
-        connection, address = s.accept()
-        self.socket = s
-        self.connection = connection
-        self.logger.debug('connected by: {!s}'.format(address))
-        return address
-
-    def __close_socket(self):
-        self.logger.info('releasing the resources...')
-        if self.connection:
-           self.connection.close() 
-        if self.socket:         
-            self.socket.shutdown(socket.SHUT_RDWR)
-            self.socket.close()
+        self.logger.info('opening a socket to {!s}:{!s}...'.format(host, port))        
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect((host, port))
+            return s
+        except Exception as e:
+            self.__close_socket(s)
+            logger.error("error during opening a socket to {!s}:{!s}. error details: {!s}".format(host, port, e))
+            raise e
+            
+    def __close_socket(self, s):
+        self.logger.info('releasing the resources...')        
+        try:
+            if s: s.close()
+        except Exception as e:
+            self.logger.error("error durind closing a socket {!s}".format(s))
+            raise e

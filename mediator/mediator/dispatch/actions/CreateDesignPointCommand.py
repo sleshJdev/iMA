@@ -1,12 +1,12 @@
 import json
-import utils
+from mediator import utils
 
 class CreateDesignPointCommand:
 
     def __init__(self, context):
         self.context = context
         logger_name = 'ima/' + __name__        
-        self.logger = logger = utils.create_logger(logger_name, context.log_file_path)
+        self.logger = utils.create_logger(logger_name, context.log_file_path)
     
     def execute(self, payload):
         designPoint = self.context.Parameters.CreateDesignPoint()

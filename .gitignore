@@ -1,0 +1,11 @@
+test/
+
+# python 
+.pyc
+
+# matlab
+.asv
+.log
+
+# ansys
+*_files/

@@ -1,13 +1,15 @@
 {
-	"client": {
-		"name": "iMA",
+	"wbclient": {		
 		"ansysExePath": "C:/Program Files/ANSYS Inc/v182/Framework/bin/Win64/RunWB2.exe",
-		"mediatorAppPath": "C:/Users/User/Documents/MATLAB/iMA/mediator/sss.py",
-		"ansysProjectPath": "C:/Users/User/Documents/MATLAB/iMA/ansys/iMAmodelFerma.wbpj"
+		"rootPath": null,
+        "host": "localhost",
+        "port": 50005
 	},
-	"mediator": {
+	"ansys": {
+        "showGui": true,
+        "exeName": "RunWB2.exe",
 		"host": "localhost",
-		"port": 50006
+		"port": 8001
 	},
 	"algorithms": {
 		"rosenbrock": {

@@ -1,9 +1,6 @@
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.realpath(__file__)))
+from mediator import utils
+from mediator.dispatch import actions
 
-import utils
-import actions
 from actions import CreateDesignPointCommand
 
 class Dispatcher:

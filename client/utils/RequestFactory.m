@@ -1,0 +1,20 @@
+classdef RequestFactory
+    %REQUESTFACTORY Summary of this class goes here
+    %   Detailed explanation goes here
+    
+    properties
+    end
+    
+    methods(Static)
+        function request = createSeedRequest()
+            request = org.json.JSONObject('{"command": "seed", "payload": {}');
+        end
+        function request = createDesignPointRequest(payload)
+            request = org.json.JSONObject();
+            request.put('command', 'create-design-point');
+            request.put('payload', payload);
+        end
+    end
+    
+end
+

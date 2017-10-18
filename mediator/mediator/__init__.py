@@ -1,2 +1,2 @@
 from Mediator import Mediator
-from App import App
+from WBClient import WBClient
