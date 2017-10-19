@@ -9,17 +9,10 @@ classdef FileChooser
                 Logger.info(path);
             end            
         end
-        function [fileName, filePath] = getFile(filter, title)
-            global PROPERTIES;
-            
-            if ( PROPERTIES.workDirectoryPath )
-                [fileName, filePath, ~] = uigetfile(filter, title, PROPERTIES.workDirectoryPath);
-            else
-                [fileName, filePath, ~] = uigetfile(filter, title);
-            end
+        function [fileName, filePath] = getFile(filter, title)            
+            [fileName, filePath, ~] = uigetfile(filter, title);
             if ( isequal(fileName, 0) )
-                Logger.info('cancel');
-                return;
+                Logger.info('Cancel');
             else              
                 Logger.info(fullfile(filePath, fileName));
             end

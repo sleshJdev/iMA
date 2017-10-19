@@ -1,13 +1,14 @@
 {
-	"wbclient": {		
+	"wbclient": {
+		"varInstanceName": "ima_awb_client",
 		"ansysExePath": "C:/Program Files/ANSYS Inc/v182/Framework/bin/Win64/RunWB2.exe",
-		"rootPath": null,
-        "host": "localhost",
-        "port": 50005
+		"host": "localhost",
+		"port": 50005,
+		"timeout": 300
 	},
 	"ansys": {
-        "showGui": true,
-        "exeName": "RunWB2.exe",
+		"showGui": true,
+		"exeName": "RunWB2.exe",
 		"host": "localhost",
 		"port": 8001
 	},

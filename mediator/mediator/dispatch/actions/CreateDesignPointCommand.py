@@ -4,9 +4,8 @@ from mediator import utils
 class CreateDesignPointCommand:
 
     def __init__(self, context):
-        self.context = context
-        logger_name = 'ima/' + __name__        
-        self.logger = utils.create_logger(logger_name, context.log_file_path)
+        self.context = context   
+        self.logger = utils.create_logger('ima/' + __name__, context.log_file_path)
     
     def execute(self, payload):
         designPoint = self.context.Parameters.CreateDesignPoint()
@@ -37,26 +36,24 @@ class CreateDesignPointCommand:
         return self.__generate_response(designPoint, backgroundSession)
     
     def __generate_response(self, designPoint, backgroundSession):    
-        return json.dumps({
-            'payload': {                
-                'designPoint': {
-                    'name': designPoint.Name,
-                    'displayText': designPoint.DisplayText
-                },
-                'parameters': map(
-                    lambda param: {
-                        'name': param.Name,
-                        'displayText': param.DisplayText,
-                        'expression': param.Expression,
-                        'value': designPoint.GetParameterValue(Parameter = param).Value,
-                        'unit': designPoint.GetParameterValue(Parameter = param).Unit,
-                        'minValue': designPoint.GetParameterValue(Parameter = param).MinValue.Value,
-                        'maxValue': designPoint.GetParameterValue(Parameter = param).MaxValue.Value
+        return {                
+                    'designPoint': {
+                        'name': designPoint.Name,
+                        'displayText': designPoint.DisplayText
                     },
-                    filter(
-                        lambda param: param.IsOutput,
-                        self.context.Parameters.GetAllParameters()
+                    'parameters': map(
+                        lambda param: {
+                            'name': param.Name,
+                            'displayText': param.DisplayText,
+                            'expression': param.Expression,
+                            'value': designPoint.GetParameterValue(Parameter = param).Value,
+                            'unit': designPoint.GetParameterValue(Parameter = param).Unit,
+                            'minValue': designPoint.GetParameterValue(Parameter = param).MinValue.Value,
+                            'maxValue': designPoint.GetParameterValue(Parameter = param).MaxValue.Value
+                        },
+                        filter(
+                            lambda param: param.IsOutput,
+                            self.context.Parameters.GetAllParameters()
+                        )
                     )
-                )
-            }
-        })
+                }

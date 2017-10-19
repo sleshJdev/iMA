@@ -6,34 +6,32 @@ classdef Controller
         wbclient,
         ansys,
         config,
-        terminated = false
+        terminated = false,
+        configPath
     end
     
     methods
         function config = get.config(self)
             config = self.config;
         end
-    end
-    
-    methods(Static)
-        function config = loadConfig(path)
-            jsonConfig = fileread(path);
-            config = org.json.JSONObject(jsonConfig);
-        end        
-    end
+    end    
     
     methods(Access = public)
         function self = Controller()
-            self.config = Controller.loadConfig('C:\Users\User\Documents\MATLAB\iMA\client\config\config.json');            
+            self.configPath = sprintf('%s\\config\\config.json', pwd);
+            self.config = Controller.loadConfig(self.configPath);            
             self.wbclient = WBClient(self.config);
             self.ansys = Ansys(self.config);
         end        
-        function setup(self)
-            self.ansys.run('C:\Users\User\Documents\MATLAB\iMA\ansys\iMAmodelFerma.wbpj');
+        function runAnsys(self, ansysProjectPath)
+            self.ansys.run(ansysProjectPath);            
+        end
+        function connect(self)
+            self.wbclient.setup();
         end
         function terminate(self)
             self.terminated = true;
-            self.wbclient.stop();           
+            self.ansys.stop();         
         end
         function optimizedVector = optimize(self, algorithmName)            
             algorithmsConfig = self.config.getJSONObject('algorithms');
@@ -56,9 +54,22 @@ classdef Controller
         function outputVector = getNewOutputVector(self, inputVector)
             request = RequestFactory.createDesignPointRequest(inputVector);
             response = self.wbclient.makeRequest(request);
-            outputVector = response.getJSONObject('payload');
+            json = org.json.JSONObject(response);
+            outputVector = json.getJSONObject('payload');
         end        
     end  
+    
+    methods(Static)
+        function config = loadConfig(path)
+            jsonConfig = fileread(path);
+            config = org.json.JSONObject(jsonConfig);
+        end        
+    end
+    
+    methods(Access = private)
+        function setUpWbClient()
+        end
+    end
     
 end
 

@@ -14,6 +14,13 @@ classdef RequestFactory
             request.put('command', 'create-design-point');
             request.put('payload', payload);
         end
+        function request = openProjectRequest(projectPath)
+            payload = org.json.JSONObject();
+            payload.putString('projectPath', projectPath);
+            request = org.json.JSONObject();
+            request.put('command', 'open-project');
+            request.put('payload', payload);            
+        end
     end
     
 end

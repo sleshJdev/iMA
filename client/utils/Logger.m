@@ -23,8 +23,8 @@ classdef Logger
         function debug(message)
             Logger.log(sprintf('%s DEBUG: %s', datestr(now, 'HH:MM:SS'), char(message)));
         end
-        function error(error)
-            Logger.log(sprintf('%s ERROR: %s', datestr(now, 'HH:MM:SS'), char(error.message)));
+        function error(message)
+            Logger.log(sprintf('%s ERROR: %s', datestr(now, 'HH:MM:SS'), char(message)));
         end
     end    
 end

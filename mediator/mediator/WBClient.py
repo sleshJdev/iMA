@@ -4,13 +4,12 @@ from mediator import Mediator
 
 class WBClient:
     
-    def __init__(self, context):
-        print __name__
-        logger = utils.create_logger('ima/' + __name__  , context.log_file_path)
+    def __init__(self, context):        
         self.context = context
-        self.logger = logger       
+        self.logger = utils.create_logger('ima/' + __name__  , context.log_file_path)
+        self.logger.info('start initializing of iMA Mediator')        
         self.mediator = Mediator(context)
-        self.logger.debug('mediator has been created')   
+        self.logger.info("iMA Mediator has was initialized successfully")   
         
     def execute(self, jsonRequest):        
         try:

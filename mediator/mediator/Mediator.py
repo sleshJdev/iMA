@@ -15,14 +15,29 @@ class Mediator:
         self.logger.debug('dispatcher has been created')        
 
     def accept_request(self, request):                       
-        response = self.dispatcher.dispath(request)            
-        self.__respond(response)   
+        try:
+            payload = self.dispatcher.dispath(request)           
+            self.__respond({
+                'status': 200,
+                'message': 'OK',
+                'payload': payload
+            })
+        except Exception as e:
+            self.__respond({
+                'status': 400,
+                'message': 'Error during creating a new design point.',
+                'payload': {
+                    'error': str(e),
+                    'request': request
+                }                
+            })
     
     def __respond(self, response):
         s = self.__open_socket("localhost", 50001)
         try:
-            self.logger.info('response: {!s}'.format(response))
-            s.sendall(str(response))
+            jsonText = json.dumps(response) 
+            self.logger.info('response: {!s}'.format(jsonText))
+            s.sendall(jsonText)
             # s.sendall("<EOF>")
             s.sendall(os.linesep)
         except Exception as e:
