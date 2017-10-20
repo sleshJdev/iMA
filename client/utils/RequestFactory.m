@@ -6,6 +6,9 @@ classdef RequestFactory
     end
     
     methods(Static)
+        function request = createStopAnsysRequest()
+            request = 'Exit\n<EOF>';
+        end
         function request = createSeedRequest()
             request = org.json.JSONObject('{"command": "seed", "payload": {}}');
         end

@@ -31,6 +31,10 @@ classdef Ansys
             Logger.info(sprintf('Ansys run command: %s', command));           
             system(command);       
         end
+        function stop(self)            
+            command = RequestFactory.createStopAnsysRequest();
+            self.wbclient.command(command);
+        end
         function openProject(ansysProjectPath)
             request = RequestFactory.createOpenProjectRequest(ansysProjectPath);
             self.wbclient.makeRequest(request);

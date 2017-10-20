@@ -26,6 +26,9 @@ classdef Controller
         function runAnsys(self, ansysProjectPath)
             self.ansys.run(ansysProjectPath);            
         end
+        function stopAnsys(self)
+            self.ansys.stop();
+        end
         function connect(self)
             self.wbclient.setup();
         end

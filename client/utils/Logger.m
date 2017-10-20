@@ -23,8 +23,14 @@ classdef Logger
         function debug(message)
             Logger.log(sprintf('%s DEBUG: %s', datestr(now, 'HH:MM:SS'), char(message)));
         end
-        function error(message)
-            Logger.log(sprintf('%s ERROR: %s', datestr(now, 'HH:MM:SS'), char(message)));
+        function error(erro)
+            if ischar(erro)
+                Logger.log(sprintf('%s ERROR: %s', datestr(now, 'HH:MM:SS'), char(erro)));
+            elseif strfind(erro.identifier, 'MATLAB')
+                Logger.log(sprintf('%s ERROR: %s', datestr(now, 'HH:MM:SS'), char(erro.message)));
+            else
+                Logger.log(sprintf('%s ERROR: %s', datestr(now, 'HH:MM:SS'), 'Unknown error has occured, please check program output'));
+            end            
         end
     end    
 end

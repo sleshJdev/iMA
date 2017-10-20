@@ -71,10 +71,18 @@ function optimizeButton_Callback(hObject, eventdata, handles)
     
 function terminateButton_Callback(hObject, eventdata, handles)
     global controller;    
+    Logger.info('Terminating of optimization...');
     controller.stop();
-    Logger.info('Stooped');
+    Logger.info('Optimization was terminated');
     
 function connectButton_Callback(hObject, eventdata, handles)
-    global controller;    
+    global controller;       
+    Logger.info('Connecting to Ansys...');
     controller.connect();
     Logger.info('Connected');
+
+function stopAnsysButton_Callback(hObject, eventdata, handles)
+    global controller;    
+    Logger.info('Stopping Ansys...');
+    controller.stopAnsys();
+    Logger.info('Ansys stoppd');

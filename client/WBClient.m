@@ -45,6 +45,9 @@ classdef WBClient < handle
                 WBClient.close(socket, in, out, 0);
             end;
         end
+        function command(self, command)
+            self.send(command);
+        end
         function response = makeRequest(self, request)
             self.send(request);
             jsonResponse = self.listen();
@@ -86,19 +89,19 @@ classdef WBClient < handle
                 end
                 WBClient.close(socket, in, out);
             catch e
-                Logger.error(e);
-                WBClient.close(socket, in, out);
+                Logger.error(char(e.message));
+                WBClient.close(socket, in, out, 0);
             end;
         end
         function response = listen(self)
             try
                 server = java.net.ServerSocket(self.wbclientPort);
-                server.setTimeout(self.wbclientTimeout * 1000);
+                server.setSoTimeout(self.wbclientTimeout * 1000);
                 socket = server.accept();
                 in  = java.io.BufferedReader(java.io.InputStreamReader(socket.getInputStream), self.PACKAGE_SIZE);
                 response = in.readLine();
                 WBClient.close(socket, in, 0, server);                
-            catch e
+            catch e                
                 Logger.error(e);
                 WBClient.close(socket, in, 0, server);
             end;
