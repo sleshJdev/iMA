@@ -7,7 +7,7 @@ classdef RequestFactory
     
     methods(Static)
         function request = createSeedRequest()
-            request = org.json.JSONObject('{"command": "seed", "payload": {}');
+            request = org.json.JSONObject('{"command": "seed", "payload": {}}');
         end
         function request = createDesignPointRequest(payload)
             request = org.json.JSONObject();
