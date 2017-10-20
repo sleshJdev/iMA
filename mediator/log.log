@@ -1,0 +1,8 @@
+2017-10-20 21:48:18,151 - Dummy-1(1) - ima/mediator.WBClient - INFO - start initializing of iMA Mediator
+2017-10-20 21:48:18,338 - Dummy-1(1) - ima/mediator.WBClient - INFO - iMA Mediator has was initi2017-10-20 21:48:58,789 - Dummy-1(1) - mediator.Mediator - DEBUG - dispatcher has been created
+ initializing of iMA Mediator
+2017-10-20 21:48:58,804 - Dummy-1(1) - ima/mediator.WBClient - INFO - iMA Mediator has was initialized successfully
+2017-10-20 22:38:21,430 - Dummy-1(1) - ima/mediator.WBClient - INFO - start initializing of iMA Mediator
+2017-10-20 22:38:21,529 - Dummy-1(1) - ima/mediator.WBClient - INFO - iMA Mediator has was initi2017-10-20 22:48:01,983 - Dummy-1(1) - mediator.Mediator - DEBUG - dispatcher has been created
+ initializing of iMA Mediator
+2017-10-20 22:48:01,983 - Dummy-1(1) - ima/mediator.WBClient - INFO - iMA Mediator has was initialized successfully
