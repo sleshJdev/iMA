@@ -34,7 +34,7 @@ classdef WBClient < handle
                 out.println(sprintf('%s = WBClient(Context("%s"))', char(self.wbclientVarName), mediatorPath));
                 out.print('<EOF>');
                 answer = in.readLine();
-                if isequal(answer, '<OK>')
+                if strcmp(answer, '<OK>')
                     Logger.debug('Successful Transmission.');
                 else
                     Logger.debug('Transmission failed.  Check server reply for details.');
