@@ -1,11 +1,11 @@
 test/
 
 # python 
-.pyc
+*.pyc
 
 # matlab
-.asv
-.log
+*.asv
+*.log
 
 # ansys
 *_files/
