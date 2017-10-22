@@ -6,7 +6,7 @@ class WBClient:
     
     def __init__(self, context):        
         self.context = context
-        self.logger = utils.create_logger('ima/' + __name__  , context.log_file_path)
+        self.logger = utils.create_logger(__name__  , context.log_file_path)
         self.logger.info('start initializing of iMA Mediator')        
         self.mediator = Mediator(context)
         self.logger.info("iMA Mediator has was initialized successfully")   

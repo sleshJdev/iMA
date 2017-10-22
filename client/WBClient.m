@@ -5,6 +5,8 @@ classdef WBClient < handle
         ansysHost, ansysPort;
         wbclientHost, wbclientPort;
         wbclientTimeout, wbclientVarName;
+        responsePath;
+        terminated = false;
     end
     properties(Constant)
         PACKAGE_SIZE = 20 * 1024 % 20Kb
@@ -18,93 +20,99 @@ classdef WBClient < handle
             self.wbclientPort = wbclientConfig.getInt('port');
             self.wbclientTimeout = wbclientConfig.getInt('timeout');
             
+            self.responsePath = sprintf('%s\\mediator\\response', pwd);
+            if exist(self.responsePath, 'file') == 2
+                delete(self.responsePath);
+            end
+            
             ansysConfig = config.getJSONObject('ansys');
             self.ansysHost = ansysConfig.getString('host');
             self.ansysPort = ansysConfig.getInt('port');
         end
         function setup(self)
+            mediatorPath = sprintf('%s\\mediator', pwd);
+            message = sprintf('%s\n%s\n%s\n%s',...
+                'import sys',...
+                sprintf('sys.path.append("%s")', mediatorPath),...
+                fileread(sprintf('%s\\Runner.py', mediatorPath)),...
+                sprintf(...
+                    '%s = WBClient(Context("%s"))',...
+                    char(self.wbclientVarName), mediatorPath));
+            self.sendAndCheck(message);
+        end
+        function reset(self)
+            self.terminated = false;
+        end
+        function sendOnly(self, message)
+            self.send(message, false);
+        end
+        function sendAndCheck(self, message)
+            self.send(message, true);
+        end
+        function execute(self, command)
+            command = sprintf(...
+                '%s.execute("""%s""")',...
+                char(self.wbclientVarName), char(command));
+            self.sendOnly(command);
+        end
+        function json = waitForResponse(self)
             try
-                socket = java.net.Socket(self.ansysHost, self.ansysPort);
-                in  = java.io.BufferedReader(java.io.InputStreamReader(socket.getInputStream()), self.PACKAGE_SIZE);
-                out =  java.io.PrintStream(java.io.BufferedOutputStream(socket.getOutputStream(), true));
-                mediatorPath = sprintf('%s\\mediator', pwd);                
-                out.println('import sys');                
-                out.println(sprintf('sys.path.append("%s")', mediatorPath));
-                out.println(fileread(sprintf('%s\\Runner.py', mediatorPath)));
-                out.println(sprintf('%s = WBClient(Context("%s"))', char(self.wbclientVarName), mediatorPath));
-                out.print('<EOF>');
-                answer = in.readLine();
-                if strcmp(answer, '<OK>')
-                    Logger.debug('Successful Transmission.');
-                else
-                    Logger.debug('Transmission failed.  Check server reply for details.');
+                pauseDuration = 1;
+                computationTime = 0;
+                while ~self.terminated && ~exist(self.responsePath, 'file')
+                    pause(pauseDuration);
+                    computationTime = computationTime + pauseDuration;
                 end
-                WBClient.close(socket, in, out, 0);
+                response = fileread(self.responsePath);
+                json = org.json.JSONObject(response);
+                delete(self.responsePath);
+                Logger.info(sprintf(...
+                    'Computation time: %ds, Response: %s',...
+                    computationTime, char(json.toString())));
             catch e
                 Logger.error(e);
-                WBClient.close(socket, in, out, 0);
             end;
         end
-        function command(self, command)
-            self.send(command);
-        end
-        function response = makeRequest(self, request)
-            self.send(request);
-            jsonResponse = self.listen();
-            response = org.json.JSONObject(jsonResponse);
+    end
+    
+    methods(Access = private)
+        function send(self, message, checkIfOk)
+            socket = 0; in = 0; out = 0; 
+            try
+                socket = java.net.Socket(self.ansysHost, self.ansysPort);                
+                out =  java.io.PrintStream(java.io.BufferedOutputStream(socket.getOutputStream), true);
+                out.println(char(message));
+                out.print('<EOF>');
+                if (checkIfOk)
+                    in  = java.io.BufferedReader(java.io.InputStreamReader(socket.getInputStream), self.PACKAGE_SIZE);
+                    answer = in.readLine();
+                    if strcmp(answer, '<OK>')
+                        Logger.info(sprintf(...
+                            'Successful Transmission: %s', char(answer)));
+                    else
+                        Logger.error(sprintf(...
+                            'Transmission failed.  Check server reply for details: %s', char(answer)))
+                    end
+                end
+                WBClient.close(socket, in, out);
+            catch e
+                Logger.error(e);
+                WBClient.close(socket, in, out);
+            end;
         end
     end
     
     methods(Static)
-        function close(socket, in, out, server)
-            if ~isempty(in)
-                try in.close(), catch e, Logger.error(''), end;
+        function close(socket, in, out)
+            if ~isequal(in, 0)
+                try in.close(), catch e, Logger.error(e), end;
             end
-            if ~isempty(out)
-                try out.close(), catch e, Logger.error(''), end;
+            if ~isequal(out, 0)
+                try out.close(), catch e, Logger.error(e), end;
             end
-            if ~isempty(socket)
-                try socket.close(), catch e, Logger.error(''), end;
+            if ~isequal(socket, 0)
+                try socket.close(), catch e, Logger.error(e), end;
             end
-            if ~isequal(server, 0)
-                try server.close(), catch e, Logger.error(''), end;
-            end
-        end
-    end
-    
-    methods(Access = private)        
-        function send(self, message)
-            try
-                socket = java.net.Socket(self.ansysHost, self.ansysPort);
-                in  = java.io.BufferedReader(java.io.InputStreamReader(socket.getInputStream), self.PACKAGE_SIZE);
-                out =  java.io.PrintStream(java.io.BufferedOutputStream(socket.getOutputStream));
-                out.println(char(message));
-                out.println('<EOF>');
-                out.flush();
-                answer = in.readLine();
-                if isequal(answer, '<OK>')
-                    Logger.debug('Successful Transmission.');
-                else
-                    Logger.error(strcat('Transmission failed.  Check server reply for details: ', char(answer)))
-                end
-                WBClient.close(socket, in, out);
-            catch e
-                Logger.error(char(e.message));
-                WBClient.close(socket, in, out, 0);
-            end;
-        end
-        function response = listen(self)
-            try
-                server = java.net.ServerSocket(self.wbclientPort);
-                server.setSoTimeout(self.wbclientTimeout * 1000);
-                socket = server.accept();
-                in  = java.io.BufferedReader(java.io.InputStreamReader(socket.getInputStream), self.PACKAGE_SIZE);
-                response = in.readLine();
-                WBClient.close(socket, in, 0, server);                
-            catch e                
-                Logger.error(e);
-                WBClient.close(socket, in, 0, server);
-            end;
         end
     end
 end

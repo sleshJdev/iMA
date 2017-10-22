@@ -5,7 +5,7 @@ class CreateDesignPointCommand:
 
     def __init__(self, context):
         self.context = context   
-        self.logger = utils.create_logger('ima/' + __name__, context.log_file_path)
+        self.logger = utils.create_logger(__name__, context.log_file_path)
     
     def execute(self, payload):
         designPoint = self.context.Parameters.CreateDesignPoint()

@@ -17,6 +17,9 @@
 			"title": "Rosenbrock Algorithm",
 			"algorithmFunctionName": "rosenbrock",
 			"settings": {
+                "dx0": [6, 3, 0.3, 0.012],
+                "xmin": [5, 6, 0.2, 0.01],
+                "xmax": [10, 15, 0.4, 0.15],
 				"scaleFactor": 2,
 				"breakFactor": -0.5,
 				"failsQuantity": 3,

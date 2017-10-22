@@ -12,11 +12,7 @@ classdef Ansys
             self.wbclient = WBClient(config);
         end
         function run(self, ansysProjectPath)
-            awbRoot = getenv('AWP_ROOT182');
-            ansysFrameworkPath = fullfile(awbRoot, 'Framework/bin/Win64');
-            workbenchExeName = self.ansysConfig.getString('exeName');
-            workbenchExeFullPath = fullfile(char(ansysFrameworkPath), char(workbenchExeName));        
-
+            workbenchExeName = self.ansysConfig.getString('exeName');            
             showGui = self.ansysConfig.getBoolean('showGui');
             host = char(self.ansysConfig.getString('host'));
             port = num2str(self.ansysConfig.getInt('port'));
@@ -25,19 +21,15 @@ classdef Ansys
                 host, port, char(ansysProjectPath)))            
             
             command = sprintf(...
-                '"%%AWP_ROOT182%%\\commonfiles\\IronPython\\ipy.exe" %s\\client\\ansys\\run-ansys.py -H %s -P %s -F "%s" ',... 
-                pwd, host, port, char(ansysProjectPath));
+                '"%%AWP_ROOT182%%\\commonfiles\\IronPython\\ipy.exe" %s\\client\\ansys\\run-ansys.py -H %s -P %s -F "%s" -DE "%s"',... 
+                pwd, host, port, char(ansysProjectPath), char(workbenchExeName));
             if ~showGui, command = strcat(command, ' -nowindow -B'); end;            
             Logger.info(sprintf('Ansys run command: %s', command));           
             system(command);       
         end
         function stop(self)            
             command = RequestFactory.createStopAnsysRequest();
-            self.wbclient.command(command);
-        end
-        function openProject(ansysProjectPath)
-            request = RequestFactory.createOpenProjectRequest(ansysProjectPath);
-            self.wbclient.makeRequest(request);
+            self.wbclient.sendOnly(command);
         end
     end
 end

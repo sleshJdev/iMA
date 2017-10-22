@@ -13,9 +13,9 @@ classdef Algorithm < handle
             self.algorithmFunction = str2func(char(algorithmFunctionName));            
             self.algorithmSettings = algorithmConfig.getJSONObject('settings');
         end
-        function [error, optimizedVector] = run(self, initialOutputVector, getNewOutputVector)                       
+        function [error, optimizedVector] = run(self, seed, getNewOutputVector)  
             [error, optimizedVector] = self.algorithmFunction(...
-                self.algorithmSettings, initialOutputVector, getNewOutputVector);
+                self.algorithmSettings, seed, getNewOutputVector);
         end
     end
     

@@ -1,14 +1,14 @@
-function [resultX, resultY] = rosenbrok(settings, initialInputVector, getNewOutputVector)
-
-addpath ./rosenbrock;
+function [error, optimizedVector] = rosenbrok(settings, seed, getNewOutputVector)
+% TODO: fix algorithm
+addpath('./rosenbrock', '-end');
 
 num = settings.getInt('failsQuantity');
 a = settings.getDouble('scaleFactor');
 b = settings.getDouble('breakFactor');
 threshold = settings.getDouble('threshold');
-xmax = settings.getArray('xmax');
-xmin = settings.getArray('xmin');
-dx0 = settings.getArray('dx0');
+xmax = Converter.parseJsonArray(settings.getJSONArray('xmax'));
+xmin = Converter.parseJsonArray(settings.getJSONArray('xmin'));
+dx0 = Converter.parseJsonArray(settings.getJSONArray('dx0'));
 
 globalStepCounter = 0;
 failCount = 0;
@@ -93,5 +93,5 @@ while isEndWhile == 0
         end
     end
 end
-resultX = xCur;
-resultY = yCur;
+error = 0;
+optimizedVector = [xCur, yCur];

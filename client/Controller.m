@@ -6,7 +6,6 @@ classdef Controller
         wbclient,
         ansys,
         config,
-        terminated = false,
         configPath
     end
     
@@ -26,38 +25,44 @@ classdef Controller
         function runAnsys(self, ansysProjectPath)
             self.ansys.run(ansysProjectPath);            
         end
-        function stopAnsys(self)
-            self.ansys.stop();
-        end
         function connect(self)
             self.wbclient.setup();
         end
+        function stopAnsys(self)
+            self.ansys.stop();
+        end
         function terminate(self)
-            self.terminated = true;
-            self.ansys.stop();         
+            self.wbclient.terminate();  
         end
         function optimizedVector = optimize(self, algorithmName)            
             algorithmsConfig = self.config.getJSONObject('algorithms');
             algorithmConfig = algorithmsConfig.getJSONObject(algorithmName);           
             algorithm = Algorithm(algorithmConfig);
-            initialOutputVector = self.seed();                
-            [error, optimizedVector] = algorithm.run(initialOutputVector, @self.getNewOutputVector);
-            if ~isempty(error)
-                Logger.error(error);
+            self.wbclient.reset();
+            seedResponse = self.seed(); 
+            ok = seedResponse.getInt('status') == 200;
+            if ok
+                seedPayload = seedResponse.getJSONObject('payload');
+                [error, optimizedVector] = algorithm.run(...
+                    seedPayload, @(inputVector)self.getNewOutputVector(inputVector));
+                if ~isempty(error)
+                    Logger.error(error);
+                else 
+                    Logger.info(sprintf('>>> Optimized vector: %s', mat2str(optimizedVector)));
+                end
+            else
+                Logger.error(seedResponse.getString('message'));
             end
-        end
-        function value = isTerminated(self)
-            value = self.terminated;
-        end
-        function outputVector = seed(self)
+        end       
+        function json = seed(self)
             request = RequestFactory.createSeedRequest();
-            response = self.wbclient.makeRequest(request);
-            outputVector = response.getJSONObject('payload');
+            self.wbclient.execute(request);
+            json = self.wbclient.waitForResponse();   
         end      
         function outputVector = getNewOutputVector(self, inputVector)
             request = RequestFactory.createDesignPointRequest(inputVector);
-            response = self.wbclient.makeRequest(request);
-            json = org.json.JSONObject(response);
+            self.wbclient.execute(request);
+            json = self.wbclient.waitForResponse();
             outputVector = json.getJSONObject('payload');
         end        
     end  
@@ -67,12 +72,6 @@ classdef Controller
             jsonConfig = fileread(path);
             config = org.json.JSONObject(jsonConfig);
         end        
-    end
-    
-    methods(Access = private)
-        function setUpWbClient()
-        end
-    end
-    
+    end    
 end
 

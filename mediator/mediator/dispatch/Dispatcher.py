@@ -7,7 +7,7 @@ from actions import SeedCommad
 class Dispatcher:
 
     def __init__(self, context):
-        self.logger = utils.create_logger('ima/' + __name__, context.log_file_path)
+        self.logger = utils.create_logger(__name__, context.log_file_path)
         self.context = context        
         self.seed_command = SeedCommad(context)
         self.create_design_point_command = CreateDesignPointCommand(context)

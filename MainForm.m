@@ -23,10 +23,10 @@ function MainForm_OpeningFcn(hObject, ~, handles, varargin)
     
     % settings path
     javaaddpath('.\client\libraries\orgjson.jar')
-    addpath .\client;
-    addpath .\client\ansys;
-    addpath .\client\algorithms;
-    addpath .\client\utils;
+    addpath('.\client', '-end');
+    addpath('.\client\ansys', '-end');
+    addpath('.\client\algorithms', '-end');
+    addpath('.\client\utils', '-end');
     
     % initialization
     global controller
@@ -45,7 +45,8 @@ function runButton_Callback(hObject, eventdata, handles)
     
 function optimizeButton_Callback(hObject, eventdata, handles)
     global controller;
-    controller.optimize('rosenbrock');
+    Logger.info('Optimization started');
+    controller.optimize('rosenbrock')
     Logger.info('Optimized done');
 
 %     global PROPERTIES       
