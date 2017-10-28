@@ -48,10 +48,10 @@ classdef Controller < handle
             seedResponse = self.seed();
             if seedResponse.getInt('status') == 200 % is ok
                 seedPayload = seedResponse.getJSONObject('payload');
-                self.algorithm = AlgoFactory.create(...
-                    self.config.getJSONObject('algorithms').getJSONObject(algorithmName),...
-                    seedPayload.getJSONArray('in'),...
-                    self.objective.getValue(seedPayload.getJSONArray('out')));
+                self.algorithm = AlgoFactory.createAlgorithm(...
+                    self.config.getJSONObject('algorithms').getJSONObject(algorithmName),...% algorithm config
+                    seedPayload.getJSONArray('in'),... % initial input parameters
+                    self.objective.getValue(seedPayload.getJSONArray('out'))); % initial output parameters
                 
                 [message, optimizedVector, optimizedValue] = self.algorithm...
                     .start(@self.getNewOutputValue, @Logger.debug);
@@ -60,6 +60,8 @@ classdef Controller < handle
                     Logger.info(sprintf('>>> Optimized vector: %s(%d)', mat2str(optimizedVector), optimizedValue));
                 elseif strcmpi(message, 'CANCELED')
                     Logger.info(sprintf('>>> Canceled by used, current vector: %s(%d)', mat2str(optimizedVector), optimizedValue));
+                elseif strcmpi(message, 'ABROAD')
+                    Logger.info(sprintf('>>> Abroaded, current vector: %s(%d)', mat2str(optimizedVector), optimizedValue));
                 else
                     Logger.error(message);
                 end
