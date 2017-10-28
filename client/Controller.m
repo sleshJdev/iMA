@@ -87,11 +87,15 @@ classdef Controller < handle
             payload.put('parameters', parameters);
             request = RequestFactory.createDesignPointRequest(payload);
             self.wbclient.execute(request);
-            json = self.wbclient.waitForResponse();
-            payload = json.getJSONObject('payload');
-            outputParameters = payload.getJSONArray('parameters');
+            json = self.wbclient.waitForResponse();            
             status = json.getInt('status');
-            outputValue = self.objective.getValue(outputParameters);
+            payload = json.getJSONObject('payload');            
+            if status == 200
+                outputParameters = payload.getJSONArray('parameters');
+                outputValue = self.objective.getValue(outputParameters);
+            else 
+                outputValue = 0;
+            end            
         end
     end
     
