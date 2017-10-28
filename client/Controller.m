@@ -1,4 +1,4 @@
-classdef Controller
+classdef Controller < handle
     %CONTROLLER Summary of this class goes here
     %   Detailed explanation goes here
     
@@ -8,7 +8,8 @@ classdef Controller
         config,
         configPath,
         objective,
-        terminated;
+        terminated,
+        algorithm;
     end
     
     methods
@@ -42,22 +43,19 @@ classdef Controller
             terminated = self.terminated;
         end
         function optimizedVector = optimize(self, algorithmName)
-            self.terminated = false;
-            algorithmsConfig = self.config.getJSONObject('algorithms');
-            algorithmConfig = algorithmsConfig.getJSONObject(algorithmName);
-            algorithm = AlgorithmStarter(algorithmConfig);
+            self.terminated = false;            
             self.wbclient.reset();
             seedResponse = self.seed();
             if seedResponse.getInt('status') == 200 % is ok
                 seedPayload = seedResponse.getJSONObject('payload');
-                inputParameters = seedPayload.getJSONArray('in');
-                outputParameters = seedPayload.getJSONArray('out');
-                initialValue = self.objective.getValue(outputParameters);
-                [message, optimizedVector, optimizedValue] = algorithm.run(...
-                    inputParameters, initialValue,...
-                    @self.getNewOutputValue,...
-                    @Logger.debug,...
-                    @self.isTerminated);
+                self.algorithm = AlgoFactory.create(...
+                    self.config.getJSONObject('algorithms').getJSONObject(algorithmName),...
+                    seedPayload.getJSONArray('in'),...
+                    self.objective.getValue(seedPayload.getJSONArray('out')));
+                
+                [message, optimizedVector, optimizedValue] = self.algorithm...
+                    .start(@self.getNewOutputValue, @Logger.debug);
+                
                 if strcmpi(message, 'OK')
                     Logger.info(sprintf('>>> Optimized vector: %s(%d)', mat2str(optimizedVector), optimizedValue));
                 elseif strcmpi(message, 'CANCELED')

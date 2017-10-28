@@ -5,17 +5,19 @@ classdef Rosenbrock < handle
     properties
         terminated = false;
         scaleFactor, breakFactor, maxFails, threshold;
-        lowerBound, upperBound;
+        startPoint, initialValue, lowerBound, upperBound;
     end
     
     methods
-        function self = Rosenbrock(settings, lowerBound, upperBound)
+        function self = Rosenbrock(settings, startPoint, initialValue, lowerBound, upperBound)
             % settings
             self.scaleFactor = settings.getDouble('scaleFactor');
             self.breakFactor = settings.getDouble('breakFactor');
             self.maxFails = settings.getInt('maxFails');
-            self.threshold = settings.getDouble('threshold');
+            self.threshold = settings.getDouble('threshold');            
             
+            self.startPoint = startPoint;
+            self.initialValue = initialValue;
             self.lowerBound = lowerBound;
             self.upperBound = upperBound;
         end
@@ -23,22 +25,21 @@ classdef Rosenbrock < handle
             self.terminated = true;
         end
         function [message, optimizedVector, optimizedValue] = start(...
-                self, startPoint, initialValue, computeNextValue, log)
-            numberDimensions = length(startPoint);
-            intialStepSizes = 1:1:numberDimensions;
+                self, computeNextValue, log)
+            numberDimensions = length(self.startPoint);
+            intialStepSizes = 1:1:numberDimensions;            
             % initialization
             stepSizes = intialStepSizes;
             directions = diag(ones(numberDimensions, 1));
             dimensionPoints = zeros(numberDimensions, numberDimensions + 1);
-            iterationPoints = zeros(numberDimensions, 1);
-            optimizationPath = zeros(numberDimensions, 1);
+            dimensionValues = zeros(1, numberDimensions + 1);
             
-            dimensionPoints(:, 1) = startPoint;
-            iterationPoints(:, 1) = startPoint;
-            optimizationPath(:, 1) = startPoint;
-            dimensionValues(1) = initialValue;
-            iterationValues(1) = initialValue;
-            optimizationValues(1) = initialValue;
+            dimensionPoints(:, 1) = self.startPoint;
+            iterationPoints(:, 1) = self.startPoint;
+            optimizationPath(:, 1) = self.startPoint;
+            dimensionValues(1) = self.initialValue;
+            iterationValues(1) = self.initialValue;
+            optimizationValues(1) = self.initialValue;
             
             iterationsCounter = 1;
             failsCounter = 0;
@@ -47,30 +48,30 @@ classdef Rosenbrock < handle
                 for dimension = 1 : numberDimensions
                     if self.isTerminated()
                         message = 'CANCELED';
-                        optimizedVector = iterationPoints(:, iterationsCounter);
-                        optimizedValue = iterationValues(:, iterationsCounter);
+                        optimizedVector = iterationPoints(:, end);
+                        optimizedValue = iterationValues(:, end);
                         return;
                     end
                     nextPoint = dimensionPoints(:, dimension) + stepSizes(dimension) * directions(:, dimension);
                     if self.isAbroad(nextPoint)
                         message = 'ABROAD';
-                        optimizedVector = iterationPoints(:, iterationsCounter);
-                        optimizedValue = iterationValues(:, iterationsCounter);
+                        optimizedVector = iterationPoints(:, end);
+                        optimizedValue = iterationValues(:, end);
                         return;
                     end
                     [status, nextValue] = computeNextValue(nextPoint);
                     if status ~= 200
                         message = 'ERROR';
-                        optimizedVector = iterationPoints(:, iterationsCounter);
-                        optimizedValue = iterationValues(:, iterationsCounter);
+                        optimizedVector = iterationPoints(:, end);
+                        optimizedValue = iterationValues(:, end);
                         return;
                     end
                     if nextValue < dimensionValues(dimension)
                         dimensionPoints(:, dimension + 1) = nextPoint;
                         dimensionValues(dimension + 1) = nextValue;
                         stepSizes(dimension) = stepSizes(dimension) * self.scaleFactor;
-                        optimizationPath = [optimizationPath, nextPoint];
-                        optimizationValues = [optimizationValues, nextValue];
+                        optimizationPath(:, end + 1) = nextPoint;
+                        optimizationValues(end + 1) = nextValue;
                         log(['Successful attept on dimension ',num2str(dimension),...
                             ', next point ', mat2str(nextPoint),...
                             '(', num2str(nextValue), ')',...
@@ -87,8 +88,8 @@ classdef Rosenbrock < handle
                 end
                 firstDimensionPoint = dimensionPoints(:, 1);
                 firstDimensionValue = dimensionValues(1);
-                lastDimensionPoint = dimensionPoints(:, numberDimensions + 1);
-                lastDimensionValue = dimensionValues(numberDimensions + 1);
+                lastDimensionPoint = dimensionPoints(:, end);
+                lastDimensionValue = dimensionValues(end);
                 log(['Iteration ', num2str(iterationsCounter), ' was finished'...
                     ', start point is ', mat2str(dimensionPoints(:, 1)), '(', num2str(firstDimensionValue),')',...
                     ', end point is ', mat2str(lastDimensionPoint), '(',num2str(lastDimensionValue),')']);

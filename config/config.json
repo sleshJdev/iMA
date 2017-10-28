@@ -17,7 +17,7 @@
 	"algorithms": {
 		"rosenbrock": {
 			"title": "Rosenbrock Algorithm",
-			"algorithmFunctionName": "rosenbrock",
+			"className": "Rosenbrock",
 			"settings": {                
 				"scaleFactor": 2,
 				"breakFactor": -0.5,
