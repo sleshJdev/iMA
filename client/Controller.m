@@ -6,24 +6,27 @@ classdef Controller
         wbclient,
         ansys,
         config,
-        configPath
+        configPath,
+        objective,
+        terminated;
     end
     
     methods
         function config = get.config(self)
             config = self.config;
         end
-    end    
+    end
     
     methods(Access = public)
         function self = Controller()
             self.configPath = sprintf('%s\\config\\config.json', pwd);
-            self.config = Controller.loadConfig(self.configPath);            
+            self.config = Controller.loadConfig(self.configPath);
             self.wbclient = WBClient(self.config);
             self.ansys = Ansys(self.config);
-        end        
+            self.objective = Multiply;
+        end
         function runAnsys(self, ansysProjectPath)
-            self.ansys.run(ansysProjectPath);            
+            self.ansys.run(ansysProjectPath);
         end
         function connect(self)
             self.wbclient.setup();
@@ -32,46 +35,71 @@ classdef Controller
             self.ansys.stop();
         end
         function terminate(self)
-            self.wbclient.terminate();  
+            self.wbclient.terminate();
+            self.terminated = true;
         end
-        function optimizedVector = optimize(self, algorithmName)            
+        function terminated = isTerminated(self)
+            terminated = self.terminated;
+        end
+        function optimizedVector = optimize(self, algorithmName)
+            self.terminated = false;
             algorithmsConfig = self.config.getJSONObject('algorithms');
-            algorithmConfig = algorithmsConfig.getJSONObject(algorithmName);           
-            algorithm = Algorithm(algorithmConfig);
+            algorithmConfig = algorithmsConfig.getJSONObject(algorithmName);
+            algorithm = AlgorithmStarter(algorithmConfig);
             self.wbclient.reset();
-            seedResponse = self.seed(); 
-            ok = seedResponse.getInt('status') == 200;
-            if ok
+            seedResponse = self.seed();
+            if seedResponse.getInt('status') == 200 % is ok
                 seedPayload = seedResponse.getJSONObject('payload');
-                [error, optimizedVector] = algorithm.run(...
-                    seedPayload, @(inputVector)self.getNewOutputVector(inputVector));
-                if ~isempty(error)
-                    Logger.error(error);
-                else 
-                    Logger.info(sprintf('>>> Optimized vector: %s', mat2str(optimizedVector)));
+                inputParameters = seedPayload.getJSONArray('in');
+                outputParameters = seedPayload.getJSONArray('out');
+                initialValue = self.objective.getValue(outputParameters);
+                [message, optimizedVector, optimizedValue] = algorithm.run(...
+                    inputParameters, initialValue,...
+                    @self.getNewOutputValue,...
+                    @Logger.debug,...
+                    @self.isTerminated);
+                if strcmpi(message, 'OK')
+                    Logger.info(sprintf('>>> Optimized vector: %s(%d)', mat2str(optimizedVector), optimizedValue));
+                elseif strcmpi(message, 'CANCELED')
+                    Logger.info(sprintf('>>> Canceled by used, current vector: %s(%d)', mat2str(optimizedVector), optimizedValue));
+                else
+                    Logger.error(message);
                 end
             else
                 Logger.error(seedResponse.getString('message'));
             end
-        end       
+        end
         function json = seed(self)
             request = RequestFactory.createSeedRequest();
             self.wbclient.execute(request);
-            json = self.wbclient.waitForResponse();   
-        end      
-        function outputVector = getNewOutputVector(self, inputVector)
-            request = RequestFactory.createDesignPointRequest(inputVector);
+            json = self.wbclient.waitForResponse();
+        end
+        function [status, outputValue] = getNewOutputValue(self, inputVector)
+            parameters = org.json.JSONArray();
+            for i = 1 : length(inputVector)
+                param = org.json.JSONObject();
+                paramName = strcat(self.wbclient.getAnsysParamPrefix(), num2str(i));
+                param.put('name', paramName);
+                param.put('value', inputVector(i));
+                parameters.put(param);
+            end
+            payload = org.json.JSONObject();
+            payload.put('parameters', parameters);
+            request = RequestFactory.createDesignPointRequest(payload);
             self.wbclient.execute(request);
             json = self.wbclient.waitForResponse();
-            outputVector = json.getJSONObject('payload');
-        end        
-    end  
+            payload = json.getJSONObject('payload');
+            outputParameters = payload.getJSONArray('parameters');
+            status = json.getInt('status');
+            outputValue = self.objective.getValue(outputParameters);
+        end
+    end
     
     methods(Static)
         function config = loadConfig(path)
             jsonConfig = fileread(path);
             config = org.json.JSONObject(jsonConfig);
-        end        
-    end    
+        end
+    end
 end
 

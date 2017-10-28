@@ -22,8 +22,9 @@ function MainForm_OpeningFcn(hObject, ~, handles, varargin)
     guidata(hObject, handles);    
     
     % settings path
-    javaaddpath('.\client\libraries\orgjson.jar')
-    addpath('.\client', '-end');
+    javaaddpath('.\client\libraries\orgjson.jar')    
+    addpath('.\client', '-end');    
+    addpath('.\client\objective', '-end');
     addpath('.\client\ansys', '-end');
     addpath('.\client\algorithms', '-end');
     addpath('.\client\utils', '-end');
@@ -48,32 +49,11 @@ function optimizeButton_Callback(hObject, eventdata, handles)
     Logger.info('Optimization started');
     controller.optimize('rosenbrock')
     Logger.info('Optimized done');
-
-%     global PROPERTIES       
-%     global ansysRunner    
-%     
-%     xmlWorker = XmlWorker(fullfile(PROPERTIES.mainXmlPath, PROPERTIES.mainXmlName));    
-%     scaleFactor = str2double(xmlWorker.getValueOf('scale-factor'));
-%     breakFactor = str2double(xmlWorker.getValueOf('break-factor'));
-%     failsQuantity = str2double(xmlWorker.getValueOf('fails-quantity'));
-%     threshold = str2double(xmlWorker.getValueOf('threshold'));
-%     inVector = xmlWorker.getInputParameters();
-%     steps = xmlWorker.getSteps();
-%     bounds = xmlWorker.getInputBounds();    
-%     lowerBorder = bounds(:, 1);
-%     upBorder = bounds(:, 2);   
-%     
-%     [resultX, resultY] = rosenbrok(inVector, failsQuantity, scaleFactor, breakFactor, upBorder, lowerBorder, threshold, steps, @ansysRunner.update);    
-%     disp('results--->>>');
-%     disp('X');
-%     disp(resultX);
-%     disp('Y');
-%     disp(resultY);
     
 function terminateButton_Callback(hObject, eventdata, handles)
     global controller;    
     Logger.info('Terminating of optimization...');
-    controller.stop();
+    controller.terminate();
     Logger.info('Optimization was terminated');
     
 function connectButton_Callback(hObject, eventdata, handles)

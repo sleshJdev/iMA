@@ -1,0 +1,10 @@
+% clear java;
+javaaddpath('..\libraries\orgjson.jar');
+f = @(v)deal(200, 4*(v(1,:) - 5).^2 + (v(2,:) - 6).^2);
+settings = org.json.JSONObject('{"scaleFactor": 2, "breakFactor": -0.5, "maxFails": 13, "threshold": 0.6}');
+logger = @(message)disp(message);
+algo = Rosenbrock(settings, [-20;-20],[20;20]);
+startPoint = [8;9];
+[~, initialValue] = f(startPoint);
+[message, vector, val] = algo.start(startPoint, initialValue, f, logger);
+disp([message, mat2str(vector), num2str(val)]);

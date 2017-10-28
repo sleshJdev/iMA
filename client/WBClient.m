@@ -4,7 +4,8 @@ classdef WBClient < handle
     properties(Access = private)
         ansysHost, ansysPort;
         wbclientHost, wbclientPort;
-        wbclientTimeout, wbclientVarName;
+        wbclientTick, wbclientTimeout, 
+        wbcAnsysParamPrefix, wbclientVarName;
         responsePath;
         terminated = false;
     end
@@ -19,15 +20,15 @@ classdef WBClient < handle
             self.wbclientHost = wbclientConfig.getString('host');
             self.wbclientPort = wbclientConfig.getInt('port');
             self.wbclientTimeout = wbclientConfig.getInt('timeout');
-            
-            self.responsePath = sprintf('%s\\mediator\\response', pwd);
-            if exist(self.responsePath, 'file') == 2
-                delete(self.responsePath);
-            end
-            
+            self.wbclientTick = wbclientConfig.getInt('tick');    
+            self.wbcAnsysParamPrefix = wbclientConfig.getString('ansysParamPrefix');   
+            self.responsePath = sprintf('%s\\mediator\\response', pwd);            
             ansysConfig = config.getJSONObject('ansys');
             self.ansysHost = ansysConfig.getString('host');
             self.ansysPort = ansysConfig.getInt('port');
+        end
+        function prefix = getAnsysParamPrefix(self)
+            prefix = char(self.wbcAnsysParamPrefix);
         end
         function setup(self)
             mediatorPath = sprintf('%s\\mediator', pwd);
@@ -42,6 +43,9 @@ classdef WBClient < handle
         end
         function reset(self)
             self.terminated = false;
+            if exist(self.responsePath, 'file') == 2
+                delete(self.responsePath);
+            end
         end
         function sendOnly(self, message)
             self.send(message, false);
@@ -57,11 +61,10 @@ classdef WBClient < handle
         end
         function json = waitForResponse(self)
             try
-                pauseDuration = 1;
                 computationTime = 0;
                 while ~self.terminated && ~exist(self.responsePath, 'file')
-                    pause(pauseDuration);
-                    computationTime = computationTime + pauseDuration;
+                    pause(self.wbclientTick);
+                    computationTime = computationTime + self.wbclientTick;
                 end
                 response = fileread(self.responsePath);
                 json = org.json.JSONObject(response);

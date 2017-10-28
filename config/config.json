@@ -4,26 +4,25 @@
 		"ansysExePath": "C:/Program Files/ANSYS Inc/v182/Framework/bin/Win64/RunWB2.exe",
 		"host": "localhost",
 		"port": 50005,
-		"timeout": 300
+		"timeout": 300,
+        "tick": 1,
+        "ansysParamPrefix": "P"
 	},
 	"ansys": {
 		"showGui": true,
 		"exeName": "RunWB2.exe",
 		"host": "localhost",
-		"port": 8001
+		"port": 8001        
 	},
 	"algorithms": {
 		"rosenbrock": {
 			"title": "Rosenbrock Algorithm",
 			"algorithmFunctionName": "rosenbrock",
-			"settings": {
-                "dx0": [6, 3, 0.3, 0.012],
-                "xmin": [5, 6, 0.2, 0.01],
-                "xmax": [10, 15, 0.4, 0.15],
+			"settings": {                
 				"scaleFactor": 2,
 				"breakFactor": -0.5,
-				"failsQuantity": 3,
-				"threshold": 0.005
+				"maxFails": 2,
+				"threshold": 0.5
 			}
 		}
 	}
