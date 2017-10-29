@@ -10,20 +10,19 @@ classdef AlgoFactory < handle
             algorithmSettings = algorithmConfig.getJSONObject('settings');
             
             % parsing of starting point, initial value, lower and upper bounds
-            numberDimensions = initialPrameters.length();
+            params = JsonUtils.sortParams(initialPrameters);
+            numberDimensions = params.length();
             startPoint = zeros(numberDimensions, 1);
             lowerBound = zeros(numberDimensions, 1);
             upperBound = zeros(numberDimensions, 1);
-            for i = 1 : initialPrameters.length()
-                parameter = initialPrameters.getJSONObject(i - 1);
-                name = parameter.getString('name');
-                index = str2double(regexp(char(name), '\d+', 'match'));
-                lowerBound(index) = parameter.getDouble('minValue');
-                upperBound(index) = parameter.getDouble('maxValue');
-                startPoint(index) = parameter.getDouble('value');
-            end            
+            for i = 1 : numberDimensions
+                parameter = params.getJSONObject(i - 1);
+                lowerBound(i) = parameter.getDouble('minValue');
+                upperBound(i) = parameter.getDouble('maxValue');
+                startPoint(i) = parameter.getDouble('value');
+            end
             algorithm = algorithmContructor(...
-                algorithmSettings, startPoint, initialValue, lowerBound, upperBound);            
+                algorithmSettings, startPoint, initialValue, lowerBound, upperBound);
         end
     end
     

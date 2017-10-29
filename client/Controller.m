@@ -43,18 +43,23 @@ classdef Controller < handle
             terminated = self.terminated;
         end
         function optimizedVector = optimize(self, algorithmName)
-            self.terminated = false;            
+            self.terminated = false;
             self.wbclient.reset();
             seedResponse = self.seed();
             if seedResponse.getInt('status') == 200 % is ok
-                seedPayload = seedResponse.getJSONObject('payload');
-                self.algorithm = AlgoFactory.createAlgorithm(...
-                    self.config.getJSONObject('algorithms').getJSONObject(algorithmName),...% algorithm config
-                    seedPayload.getJSONArray('in'),... % initial input parameters
-                    self.objective.getValue(seedPayload.getJSONArray('out'))); % initial output parameters
+                algorithmsSettings = self.config.getJSONObject('algorithms');
+                algorithmSettings = algorithmsSettings.getJSONObject(algorithmName);
                 
-                [message, optimizedVector, optimizedValue] = self.algorithm...
-                    .start(@self.getNewOutputValue, @Logger.debug);
+                seedPayload = seedResponse.getJSONObject('payload');
+                inputParams = JsonUtils.sortParams(seedPayload.getJSONArray('in'));
+                outputParams = seedPayload.getJSONArray('out');
+                initialValue = self.objective.getValue(outputParams);
+                self.algorithm = AlgoFactory.createAlgorithm(algorithmSettings, inputParams, initialValue);
+                
+                paramNames = sortrows(JsonUtils.mapArrayToStrings(inputParams, 'name'));
+                paramUnits = sortrows(JsonUtils.mapArrayToStrings(inputParams, 'unit'));
+                [message, optimizedVector, optimizedValue] = self.algorithm.start(...
+                    @(inputVector)self.getNewOutputValue(paramNames, paramUnits, inputVector), @Logger.debug);
                 
                 if strcmpi(message, 'OK')
                     Logger.info(sprintf('>>> Optimized vector: %s(%d)', mat2str(optimizedVector), optimizedValue));
@@ -74,28 +79,28 @@ classdef Controller < handle
             self.wbclient.execute(request);
             json = self.wbclient.waitForResponse();
         end
-        function [status, outputValue] = getNewOutputValue(self, inputVector)
+        function [status, outputValue] = getNewOutputValue(self, paramNames, paramUnits, paramValues)
             parameters = org.json.JSONArray();
-            for i = 1 : length(inputVector)
+            for i = 1 : length(paramValues)
                 param = org.json.JSONObject();
-                paramName = strcat(self.wbclient.getAnsysParamPrefix(), num2str(i));
-                param.put('name', paramName);
-                param.put('value', inputVector(i));
+                param.put('name', paramNames{i});
+                param.put('value', sprintf('%d [%s]', paramValues(i), paramUnits{i}));
                 parameters.put(param);
             end
             payload = org.json.JSONObject();
             payload.put('parameters', parameters);
             request = RequestFactory.createDesignPointRequest(payload);
             self.wbclient.execute(request);
-            json = self.wbclient.waitForResponse();            
+            json = self.wbclient.waitForResponse();
             status = json.getInt('status');
-            payload = json.getJSONObject('payload');            
+            payload = json.getJSONObject('payload');
             if status == 200
                 outputParameters = payload.getJSONArray('parameters');
                 outputValue = self.objective.getValue(outputParameters);
-            else 
+            else
+                Logger.error(json.getString('message'));
                 outputValue = 0;
-            end            
+            end
         end
     end
     

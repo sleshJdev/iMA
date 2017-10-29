@@ -4,7 +4,7 @@ classdef WBClient < handle
     properties(Access = private)
         ansysHost, ansysPort;
         wbclientHost, wbclientPort;
-        wbclientTick, wbclientTimeout, 
+        wbclientTick, wbclientTimeout,
         wbcAnsysParamPrefix, wbclientVarName;
         responsePath;
         terminated = false;
@@ -43,9 +43,7 @@ classdef WBClient < handle
         end
         function reset(self)
             self.terminated = false;
-            if exist(self.responsePath, 'file') == 2
-                delete(self.responsePath);
-            end
+            self.cleanResponse();
         end
         function sendOnly(self, message)
             self.send(message, false);
@@ -62,18 +60,19 @@ classdef WBClient < handle
         function json = waitForResponse(self)
             try
                 computationTime = 0;
-                while ~self.terminated && ~exist(self.responsePath, 'file')
+                while ~self.terminated && ~exist(self.responsePath, 'file') && computationTime < 300 % 5 minutes
                     pause(self.wbclientTick);
                     computationTime = computationTime + self.wbclientTick;
                 end
                 response = fileread(self.responsePath);
                 json = org.json.JSONObject(response);
-                delete(self.responsePath);
+                self.cleanResponse();
                 Logger.info(sprintf(...
                     'Computation time: %ds, Response: %s',...
                     computationTime, char(json.toString())));
             catch e
                 Logger.error(e);
+                rethrow(e);
             end;
         end
     end
@@ -82,7 +81,7 @@ classdef WBClient < handle
         function send(self, message, checkIfOk)
             socket = 0; in = 0; out = 0; 
             try
-                socket = java.net.Socket(self.ansysHost, self.ansysPort);                
+                socket = java.net.Socket(self.ansysHost, self.ansysPort);          
                 out =  java.io.PrintStream(java.io.BufferedOutputStream(socket.getOutputStream), true);
                 out.println(char(message));
                 out.print('<EOF>');
@@ -102,6 +101,23 @@ classdef WBClient < handle
                 Logger.error(e);
                 WBClient.close(socket, in, out);
             end;
+        end
+        function error = tryClearResponse(self)
+            try
+                delete(self.responsePath);
+                error = 0;
+            catch e
+                pause(1);
+                error = e;
+            end
+        end
+        function cleanResponse(self)
+            if exist(self.responsePath, 'file') == 2
+                for i = 1 : 3
+                    error = self.tryClearResponse();
+                    if ~error, break, end;
+                end
+            end
         end
     end
     

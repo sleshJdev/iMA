@@ -22,12 +22,12 @@ function MainForm_OpeningFcn(hObject, ~, handles, varargin)
     guidata(hObject, handles);    
     
     % settings path
-    javaaddpath('.\client\libraries\orgjson.jar')    
-    addpath('.\client', '-end');    
+    javaaddpath('.\client\libraries\orgjson.jar');    
     addpath('.\client\objective', '-end');
     addpath('.\client\ansys', '-end');
     addpath('.\client\algorithms', '-end');
     addpath('.\client\utils', '-end');
+    addpath('.\client', '-end');
     
     % initialization
     global controller
@@ -43,6 +43,8 @@ function runButton_Callback(hObject, eventdata, handles)
         controller.runAnsys(fullfile(filePath, fileName))
         Logger.info('Ansys started!');
     end   
+    
+
     
 function optimizeButton_Callback(hObject, eventdata, handles)
     global controller;

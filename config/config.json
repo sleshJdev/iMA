@@ -5,14 +5,14 @@
 		"host": "localhost",
 		"port": 50005,
 		"timeout": 300,
-        "tick": 1,
+        "tick": 3,
         "ansysParamPrefix": "P"
 	},
 	"ansys": {
 		"showGui": true,
 		"exeName": "RunWB2.exe",
 		"host": "localhost",
-		"port": 8001        
+		"port": 8003        
 	},
 	"algorithms": {
 		"rosenbrock": {
@@ -22,7 +22,8 @@
 				"scaleFactor": 2,
 				"breakFactor": -0.5,
 				"maxFails": 2,
-				"threshold": 0.5
+				"threshold": 0.5,
+                "stepSizes": [2, 1]
 			}
 		}
 	}

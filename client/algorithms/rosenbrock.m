@@ -4,8 +4,9 @@ classdef Rosenbrock < handle
     
     properties
         terminated = false;
-        scaleFactor, breakFactor, maxFails, threshold;
-        startPoint, initialValue, lowerBound, upperBound;
+        scaleFactor, breakFactor, maxFails, threshold, intialStepSizes;
+        startPoint, initialValue;
+        lowerBound, upperBound;
     end
     
     methods
@@ -14,10 +15,12 @@ classdef Rosenbrock < handle
             self.scaleFactor = settings.getDouble('scaleFactor');
             self.breakFactor = settings.getDouble('breakFactor');
             self.maxFails = settings.getInt('maxFails');
-            self.threshold = settings.getDouble('threshold');            
+            self.threshold = settings.getDouble('threshold');    
+            self.intialStepSizes = JsonUtils.getNumberVector(settings, 'stepSizes');
             
             self.startPoint = startPoint;
-            self.initialValue = initialValue;
+            self.initialValue = initialValue;            
+            
             self.lowerBound = lowerBound;
             self.upperBound = upperBound;
         end
@@ -27,9 +30,8 @@ classdef Rosenbrock < handle
         function [message, optimizedVector, optimizedValue] = start(...
                 self, computeNextValue, log)
             numberDimensions = length(self.startPoint);
-            intialStepSizes = 1:1:numberDimensions;            
             % initialization
-            stepSizes = intialStepSizes;
+            stepSizes = self.intialStepSizes;
             directions = diag(ones(numberDimensions, 1));
             dimensionPoints = zeros(numberDimensions, numberDimensions + 1);
             dimensionValues = zeros(1, numberDimensions + 1);
@@ -116,7 +118,7 @@ classdef Rosenbrock < handle
                                 '. Performing axes rorations']);
                             log(['Current directions: ', mat2str(directions)]);
                             directions = Rosenbrock.gsrotate(lastIterationPoint - prevIterationPoint, directions);
-                            stepSizes = intialStepSizes;
+                            stepSizes = self.intialStepSizes;
                             dimensionPoints(:, 1) = lastIterationPoint;
                             dimensionValues(1) = iterationValues(iterationsCounter + 1);
                             iterationsCounter = iterationsCounter + 1;
