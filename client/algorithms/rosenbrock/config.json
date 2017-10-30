@@ -1,0 +1,13 @@
+{
+	"title": "Rosenbrock Algorithm",
+	"className": "Rosenbrock",
+	"settings": {
+		"scaleFactor": 2,
+		"breakFactor": -0.5,
+		"maxFails": 3,
+		"threshold": 0.5,
+		"stepSizes": [2, 1],
+		"lowerBound": [54.45, 65],
+		"upperBound": [66.55, 65]
+	}
+}

@@ -13,18 +13,5 @@
 		"exeName": "RunWB2.exe",
 		"host": "localhost",
 		"port": 8003        
-	},
-	"algorithms": {
-		"rosenbrock": {
-			"title": "Rosenbrock Algorithm",
-			"className": "Rosenbrock",
-			"settings": {                
-				"scaleFactor": 2,
-				"breakFactor": -0.5,
-				"maxFails": 2,
-				"threshold": 0.5,
-                "stepSizes": [2, 1]
-			}
-		}
 	}
 }

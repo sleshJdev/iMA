@@ -15,14 +15,17 @@ classdef Rosenbrock < handle
             self.scaleFactor = settings.getDouble('scaleFactor');
             self.breakFactor = settings.getDouble('breakFactor');
             self.maxFails = settings.getInt('maxFails');
-            self.threshold = settings.getDouble('threshold');    
-            self.intialStepSizes = JsonUtils.getNumberVector(settings, 'stepSizes');
+            self.threshold = settings.getDouble('threshold');
             
             self.startPoint = startPoint;
-            self.initialValue = initialValue;            
+            self.initialValue = initialValue;
             
-            self.lowerBound = lowerBound;
-            self.upperBound = upperBound;
+            if settings.has('stepSizes'); self.intialStepSizes = JsonUtils.getNumberVector(settings, 'stepSizes');
+            else self.intialStepSizes = ones(1, length(startPoint)); end
+            if settings.has('lowerBound'); self.lowerBound = JsonUtils.getNumberVector(settings, 'lowerBound');
+            else self.lowerBound = lowerBound; end
+            if settings.has('upperBound'); self.upperBound = JsonUtils.getNumberVector(settings, 'upperBound');
+            else self.upperBound = upperBound; end
         end
         function terminate(self)
             self.terminated = true;
@@ -53,14 +56,16 @@ classdef Rosenbrock < handle
                         optimizedVector = iterationPoints(:, end);
                         optimizedValue = iterationValues(:, end);
                         return;
-                    end
-                    nextPoint = dimensionPoints(:, dimension) + stepSizes(dimension) * directions(:, dimension);
-                    if self.isAbroad(nextPoint)
-                        message = 'ABROAD';
-                        optimizedVector = iterationPoints(:, end);
-                        optimizedValue = iterationValues(:, end);
-                        return;
-                    end
+                    end                    
+                    [nextPoint, ~] = self.clamp(...
+                        dimensionPoints(:, dimension) + stepSizes(dimension) * directions(:, dimension));    
+%                     if clamped, stepSizes(dimension) = stepSizes(dimension) * self.breakFactor; end
+%                     if self.isAbroad(nextPoint)
+%                         message = 'ABROAD';
+%                         optimizedVector = iterationPoints(:, end);
+%                         optimizedValue = iterationValues(:, end);
+%                         return;
+%                     end
                     [status, nextValue] = computeNextValue(nextPoint);
                     if status ~= 200
                         message = 'ERROR';
@@ -157,6 +162,19 @@ classdef Rosenbrock < handle
         function terminated = isTerminated(self)
             terminated = self.terminated;
         end
+        function [point, clamped] = clamp(self, point)
+            clamped = false;
+            for i = 1 : length(point)
+                if point(i) < self.lowerBound(i)
+                    point(i) = self.lowerBound(i);
+                    clamped = true;
+                end
+                if point(i) > self.upperBound(i)
+                    point(i) = self.upperBound(i);
+                    clamped = true;
+                end
+            end
+        end
         function abroaded = isAbroad(self, point)
             abroaded = false;
             for i = 1 : length(point)
@@ -165,7 +183,7 @@ classdef Rosenbrock < handle
                     break;
                 end
             end
-        end        
+        end
     end
     methods(Static)
         function d = gsrotate(delta, basises)

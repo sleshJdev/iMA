@@ -3,13 +3,10 @@ classdef Controller < handle
     %   Detailed explanation goes here
     
     properties(Access = private)
-        wbclient,
-        ansys,
-        config,
-        configPath,
-        objective,
-        terminated,
-        algorithm;
+        ansys, wbclient, objective
+        algorithms, algorithm,
+        configPath, config,
+        terminated
     end
     
     methods
@@ -25,6 +22,7 @@ classdef Controller < handle
             self.wbclient = WBClient(self.config);
             self.ansys = Ansys(self.config);
             self.objective = Multiply;
+            self.algorithms = Algorithms();
         end
         function runAnsys(self, ansysProjectPath)
             self.ansys.run(ansysProjectPath);
@@ -36,42 +34,44 @@ classdef Controller < handle
             self.ansys.stop();
         end
         function terminate(self)
-            self.wbclient.terminate();
             self.terminated = true;
+            self.wbclient.reset();
+            self.algorithm.terminate();
         end
         function terminated = isTerminated(self)
             terminated = self.terminated;
         end
-        function optimizedVector = optimize(self, algorithmName)
+        function titles = getAlgorithmTitles(self)
+            titles = self.algorithms.getAlgorithmTitles();
+        end
+        function optimizedVector = optimize(self, algorithmTitle)
             self.terminated = false;
             self.wbclient.reset();
             seedResponse = self.seed();
-            if seedResponse.getInt('status') == 200 % is ok
-                algorithmsSettings = self.config.getJSONObject('algorithms');
-                algorithmSettings = algorithmsSettings.getJSONObject(algorithmName);
-                
-                seedPayload = seedResponse.getJSONObject('payload');
-                inputParams = JsonUtils.sortParams(seedPayload.getJSONArray('in'));
-                outputParams = seedPayload.getJSONArray('out');
-                initialValue = self.objective.getValue(outputParams);
-                self.algorithm = AlgoFactory.createAlgorithm(algorithmSettings, inputParams, initialValue);
-                
-                paramNames = sortrows(JsonUtils.mapArrayToStrings(inputParams, 'name'));
-                paramUnits = sortrows(JsonUtils.mapArrayToStrings(inputParams, 'unit'));
-                [message, optimizedVector, optimizedValue] = self.algorithm.start(...
-                    @(inputVector)self.getNewOutputValue(paramNames, paramUnits, inputVector), @Logger.debug);
-                
-                if strcmpi(message, 'OK')
-                    Logger.info(sprintf('>>> Optimized vector: %s(%d)', mat2str(optimizedVector), optimizedValue));
-                elseif strcmpi(message, 'CANCELED')
-                    Logger.info(sprintf('>>> Canceled by used, current vector: %s(%d)', mat2str(optimizedVector), optimizedValue));
-                elseif strcmpi(message, 'ABROAD')
-                    Logger.info(sprintf('>>> Abroaded, current vector: %s(%d)', mat2str(optimizedVector), optimizedValue));
-                else
-                    Logger.error(message);
-                end
-            else
+            if seedResponse.getInt('status') ~= 200 % is something wrong
                 Logger.error(seedResponse.getString('message'));
+                return;
+            end
+            seedPayload = seedResponse.getJSONObject('payload');
+            inputParams = JsonUtils.sortParams(seedPayload.getJSONArray('in'));
+            outputParams = seedPayload.getJSONArray('out');
+            initialValue = self.objective.getValue(outputParams);
+            self.algorithm = self.algorithms.createAlgorithm(...
+                algorithmTitle, inputParams, initialValue);
+            
+            paramNames = JsonUtils.mapArrayToStrings(inputParams, 'name');
+            paramUnits = JsonUtils.mapArrayToStrings(inputParams, 'unit');
+            [message, optimizedVector, optimizedValue] = self.algorithm.start(...
+                @(inputVector)self.getNewOutputValue(paramNames, paramUnits, inputVector), @Logger.debug);
+            
+            if strcmpi(message, 'OK')
+                Logger.info(sprintf('>>> Optimized vector: %s(%d)', mat2str(optimizedVector), optimizedValue));
+            elseif strcmpi(message, 'CANCELED')
+                Logger.info(sprintf('>>> Canceled by used, current vector: %s(%d)', mat2str(optimizedVector), optimizedValue));
+            elseif strcmpi(message, 'ABROAD')
+                Logger.info(sprintf('>>> Abroaded, current vector: %s(%d)', mat2str(optimizedVector), optimizedValue));
+            else
+                Logger.error(message);
             end
         end
         function json = seed(self)
