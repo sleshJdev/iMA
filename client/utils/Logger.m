@@ -11,6 +11,11 @@ classdef Logger
             end;
             out = currentOut;
         end       
+        function clear()
+            handles = guihandles();
+            content = get(handles.logListbox, 'String');
+            set(handles.logListbox, 'String', {});
+        end
         function log(message)        
             handles = guihandles();             
             content = get(handles.logListbox, 'String');

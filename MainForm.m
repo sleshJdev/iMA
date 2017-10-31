@@ -33,7 +33,7 @@ addpath(genpath('./client/algorithms'), '-end');
 % initialization
 global controller
 controller = Controller();
-
+Logger.info('Application has started');
 function varargout = MainForm_OutputFcn(~, ~, handles)
 
 function runButton_Callback(~, ~, ~)
@@ -123,3 +123,5 @@ if ~isempty(answer)
     controller.algorithms.applyAlgorithmSettings(algoTitle, settingsJson);
 end
 
+function clearLogPushbutton_Callback(hObject, eventdata, handles)
+Logger.clear();
