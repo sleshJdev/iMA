@@ -51,7 +51,11 @@ classdef JsonUtils
             vector = cell(1, jsonArray.length());
             for i = 1 : jsonArray.length()
                 item = jsonArray.getJSONObject(i - 1);
-                vector{i} = char(item.getString(propertyName));
+                if item.isNull(propertyName)
+                    vector{i} = '';
+                else
+                    vector{i} = char(item.getString(propertyName));
+                end
             end
         end
         function sortedParams = sortParams(params)

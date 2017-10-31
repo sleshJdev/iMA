@@ -13,14 +13,13 @@ classdef Logger
         end       
         function clear()
             handles = guihandles();
-            content = get(handles.logListbox, 'String');
             set(handles.logListbox, 'String', {});
         end
         function log(message)        
             handles = guihandles();             
             content = get(handles.logListbox, 'String');
             if isempty(content)
-                content = {};
+                content = cell(1,1);
             end
             content = [content; message];
             set(handles.logListbox, 'String', content);
