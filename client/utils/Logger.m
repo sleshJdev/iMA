@@ -19,6 +19,9 @@ classdef Logger
         function log(message)        
             handles = guihandles();             
             content = get(handles.logListbox, 'String');
+            if isempty(content)
+                content = {};
+            end
             content = [content; message];
             set(handles.logListbox, 'String', content);
         end
