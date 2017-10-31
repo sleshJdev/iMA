@@ -5,7 +5,9 @@ def launch_workbench_in_server_mode(host, port, showgui, ansys_project, workbenc
     workbench_exe_path = os.path.join(framework_path, workbench_exe_name)
     args = [workbench_exe_path, "-P", str(port), "-H", host, "-F", ansys_project]
             
-    if showgui != True:
+    if showgui == True:
+        args.append("-I")
+    else:
         args.append("-nowindow")
         args.append("-B")
     subprocess.Popen(args)

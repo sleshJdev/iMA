@@ -12,19 +12,19 @@ classdef Rosenbrock < handle
     methods
         function self = Rosenbrock(settings, startPoint, initialValue, lowerBound, upperBound)
             % settings
-            self.scaleFactor = settings.getDouble('scaleFactor');
-            self.breakFactor = settings.getDouble('breakFactor');
-            self.maxFails = settings.getInt('maxFails');
-            self.threshold = settings.getDouble('threshold');
+            self.scaleFactor = settings.getDouble('Scale Factor');
+            self.breakFactor = settings.getDouble('Break Factor');
+            self.maxFails = settings.getInt('Max Fails');
+            self.threshold = settings.getDouble('Threshold');
             
             self.startPoint = startPoint;
             self.initialValue = initialValue;
             
-            if settings.has('stepSizes'); self.intialStepSizes = JsonUtils.getNumberVector(settings, 'stepSizes');
+            if settings.has('Step Sizes'); self.intialStepSizes = JsonUtils.getNumberVector(settings, 'Step Sizes');
             else self.intialStepSizes = ones(1, length(startPoint)); end
-            if settings.has('lowerBound'); self.lowerBound = JsonUtils.getNumberVector(settings, 'lowerBound');
+            if settings.has('Lower Bound'); self.lowerBound = JsonUtils.getNumberVector(settings, 'Lower Bound');
             else self.lowerBound = lowerBound; end
-            if settings.has('upperBound'); self.upperBound = JsonUtils.getNumberVector(settings, 'upperBound');
+            if settings.has('Upper Bound'); self.upperBound = JsonUtils.getNumberVector(settings, 'Upper Bound');
             else self.upperBound = upperBound; end
         end
         function terminate(self)

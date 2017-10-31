@@ -1,5 +1,3 @@
-import sys
-sys.path.append("""C:\Users\User\Documents\MATLAB\iMA\mediator""")
 from mediator import utils
 from mediator import WBClient
 
@@ -13,5 +11,3 @@ class Context:
         self.logger = utils.create_logger('mediator.System', log_file_path)       
         self.Parameters = Parameters
         self.UpdateAllDesignPoints = UpdateAllDesignPoints      
-        
-ima_awb_client = WBClient(Context("""C:\Users\User\Documents\MATLAB\iMA\mediator""", """C:\Users\User\Documents\MATLAB\iMA\control"""))

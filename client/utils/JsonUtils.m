@@ -13,6 +13,23 @@ classdef JsonUtils
     end
     
     methods(Static)
+        function json = readJsonFile(filePath)
+            jsonText = fileread(filePath);
+            json = org.json.JSONObject(jsonText);
+        end
+        function writeToFile(json, filePath)
+            writer = 0;
+            try
+                writer = java.io.FileWriter(filePath);
+                json.write(writer, 4, 0);
+                writer.close();
+            catch e
+                if writer ~= 0
+                    writer.close();
+                end
+                rethrow(e);
+            end
+        end
         function string = getString(source, propertyName)
             string = char(source.getString(propertyName));
         end

@@ -1,13 +1,16 @@
 {
-	"title": "Rosenbrock Algorithm",
-	"className": "Rosenbrock",
-	"settings": {
-		"scaleFactor": 2,
-		"breakFactor": -0.5,
-		"maxFails": 3,
-		"threshold": 0.5,
-		"stepSizes": [2, 1],
-		"lowerBound": [54.45, 65],
-		"upperBound": [66.55, 65]
-	}
+    "title": "Rosenbrock Algorithm",
+    "settings": {
+        "Max Fails": 3,
+        "Step Sizes": [
+            2,
+            1
+        ],
+        "Lower Bound": [54, 65],
+        "Upper Bound": [66, 75],
+        "Break Factor": -0.5,
+        "Scale Factor": 2,
+        "Threshold": 0.6
+    },
+    "className": "Rosenbrock"
 }

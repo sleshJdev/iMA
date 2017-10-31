@@ -1,10 +1,13 @@
-classdef Controller < handle
+classdef Controller
     %CONTROLLER Summary of this class goes here
     %   Detailed explanation goes here
     
+    properties
+        algorithms
+    end
     properties(Access = private)
         ansys, wbclient, objective
-        algorithms, algorithm,
+        algorithm,
         configPath, config,
         terminated
     end
@@ -12,6 +15,9 @@ classdef Controller < handle
     methods
         function config = get.config(self)
             config = self.config;
+        end
+        function algorithms = get.algorithms(self)
+            algorithms = self.algorithms;
         end
     end
     
@@ -23,7 +29,7 @@ classdef Controller < handle
             self.ansys = Ansys(self.config);
             self.objective = Multiply;
             self.algorithms = Algorithms();
-        end
+        end        
         function runAnsys(self, ansysProjectPath)
             self.ansys.run(ansysProjectPath);
         end
@@ -35,14 +41,11 @@ classdef Controller < handle
         end
         function terminate(self)
             self.terminated = true;
-            self.wbclient.reset();
+            self.wbclient.terminate();
             self.algorithm.terminate();
         end
         function terminated = isTerminated(self)
             terminated = self.terminated;
-        end
-        function titles = getAlgorithmTitles(self)
-            titles = self.algorithms.getAlgorithmTitles();
         end
         function optimizedVector = optimize(self, algorithmTitle)
             self.terminated = false;

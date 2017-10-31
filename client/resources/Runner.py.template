@@ -1,5 +1,5 @@
 import sys
-sys.path.append("""C:\Users\User\Documents\MATLAB\iMA\mediator""")
+sys.path.append("""${MEDIATOR_PATH}""")
 from mediator import utils
 from mediator import WBClient
 
@@ -14,4 +14,4 @@ class Context:
         self.Parameters = Parameters
         self.UpdateAllDesignPoints = UpdateAllDesignPoints      
         
-ima_awb_client = WBClient(Context("""C:\Users\User\Documents\MATLAB\iMA\mediator""", """C:\Users\User\Documents\MATLAB\iMA\control"""))
+${WBCLIENT_VAR_NAME} = WBClient(Context("""${MEDIATOR_PATH}""", """${CONTROL_PATH}"""))

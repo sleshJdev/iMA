@@ -45,13 +45,16 @@ if ~isequal(fileName, 0)
     Logger.info('Ansys started!');
 end
 
-function optimizeButton_Callback(~, ~, handles)
-global controller;
-Logger.info('Optimization started');
+function selectedAlgorithmTitle = getSelectedAlgorithm()
+handles = guihandles();
 options = cellstr(get(handles.algorithmPopupmenu,'String'));
 optionIndex = get(handles.algorithmPopupmenu,'Value');
 selectedAlgorithmTitle = options{optionIndex};
-controller.optimize(selectedAlgorithmTitle);
+
+function optimizeButton_Callback(~, ~, ~)
+global controller;
+Logger.info('Optimization started');
+controller.optimize(getSelectedAlgorithm());
 Logger.info('Optimized done');
 
 function terminateButton_Callback(~, ~, ~)
@@ -77,5 +80,46 @@ global controller;
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
-set(hObject, 'String', controller.getAlgorithmTitles());
+if ~isempty(controller)
+    set(hObject, 'String', controller.algorithms.getAlgorithmTitles());
+end
+
+function optimizationSettingPushbutton_Callback(hObject, eventdata, handles)
+global controller;
+algoTitle = getSelectedAlgorithm();
+settingsJson = controller.algorithms.getAlgorithmSettings(algoTitle);
+names = settingsJson.names();
+settingNames = cell(1, names.length());
+defaults = cell(1, names.length());
+types = cell(1, names.length());
+for i = 1 : names.length()
+    name = names.get(i - 1);
+    settingNames{i} = name;
+    value = settingsJson.get(name);
+    if isnumeric(value)
+        defaults{i} = num2str(value);
+        types{i} = 'number';
+    else
+        if isa(value, 'org.json.JSONArray')
+            types{i} = 'array';
+        elseif isa(value, 'java.lang.String')
+            types{i} = 'string';
+        end
+        defaults{i} = char(value.toString());
+    end
+end
+answer = inputdlg(settingNames, ['Settings of ', algoTitle], 0.9, defaults);
+if ~isempty(answer)
+    for i = 1 : names.length()
+        name = names.get(i - 1);
+        if isequal(types{i}, 'number')
+            settingsJson.put(name, str2double(answer{i}));
+        elseif isequal(types{i}, 'string')
+            settingsJson.put(name, answer{i});
+        elseif isequal(types{i}, 'array')
+            settingsJson.put(name, org.json.JSONArray(answer{i}));
+        end
+    end
+    controller.algorithms.applyAlgorithmSettings(algoTitle, settingsJson);
+end
 

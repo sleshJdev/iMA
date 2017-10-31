@@ -1,21 +1,26 @@
 classdef Algorithms < handle
     %ALGORITHM Summary of this class goes here
     %   Detailed explanation goes here
+    properties(Constant)
+        configFileName = 'config.json'
+    end
     properties(Access = private)
-        mapping
+        mapping, algosPath
     end
     methods(Access = public)
         function self = Algorithms()
-            self.mapping = Algorithms.getAlgorithmsMapping();
+            self.algosPath = [pwd, filesep, 'client', filesep, 'algorithms'];
+            self.mapping = self.getAlgorithmsKeyTitleMapping(self.algosPath);        
         end
         function titles = getAlgorithmTitles(self)
-            titles = self.mapping(:, 4);
+            titles = keys(self.mapping);
         end
         function algorithm = createAlgorithm(self, algorithmTitle, initialPrameters, initialValue)
-            algoMapping = self.findAlgorithmMappingByTitle(algorithmTitle);
-            algorithmClassName = algoMapping{2};
+            configJson = self.getAlgorithmConfig(algorithmTitle);
+            algorithmClassName = configJson.getString('className');
+            algorithmSettings = configJson.getJSONObject('settings');
+            
             algorithmContructor = str2func(char(algorithmClassName));
-            algorithmSettings = algoMapping{3};
             % parsing of starting point, initial value, lower and upper bounds
             params = JsonUtils.sortParams(initialPrameters);
             numberDimensions = params.length();
@@ -31,34 +36,37 @@ classdef Algorithms < handle
             algorithm = algorithmContructor(...
                 algorithmSettings, startPoint, initialValue, lowerBound, upperBound);
         end
-    end
-    methods(Access = private)
-        function mapping = findAlgorithmMappingByTitle(self, title)
-            for i = 1 : size(self.mapping, 1)
-                tuple = self.mapping(i, :);
-                if strcmp(tuple(4), title)
-                    mapping = tuple;
-                    return;
-                end
-            end
+        function settings = getAlgorithmSettings(self, algoTitle)
+            configJson = self.getAlgorithmConfig(algoTitle);
+            settings = configJson.getJSONObject('settings');
+        end
+        function applyAlgorithmSettings(self, algoTitle, settings)                 
+            [configJson, configPath, ~] = self.getAlgorithmConfig(algoTitle);
+            configJson.put('settings', settings);
+            JsonUtils.writeToFile(configJson, configPath);
         end
     end
-    methods(Static)
-        function mapping = getAlgorithmsMapping()
-            mapping = {};
-            algosPath = [pwd, filesep, 'client', filesep, 'algorithms'];
+    methods(Access = private)        
+        function [configJson, configPath, algoKey] = getAlgorithmConfig(self, algoTitle)
+            algoKey = self.mapping(algoTitle);
+            configPath = self.buildAlgorithmConfigPath(algoKey);
+            configJson = JsonUtils.readJsonFile(configPath);
+        end
+        function path = buildAlgorithmConfigPath(self, algoKey)
+            path = [self.algosPath, filesep, algoKey, filesep, self.configFileName];
+        end
+        function mapping = getAlgorithmsKeyTitleMapping(self, algosPath)
+            mapping = containers.Map();            
             contents = dir(algosPath);
             for i = 1 : length(contents)
                 item = contents(i);
                 if ~strcmp(item.name, '.') && ~strcmp(item.name, '..')...
-                        && ~strcmp(item.name(1), '_') && item.isdir
+                        && item.isdir && ~strcmp(item.name(1), '_') %_ small trick to disable some algorithm
                     algoKey = item.name;
-                    configContent = fileread([algosPath, filesep, algoKey, filesep, 'config.json']);
+                    configContent = fileread([algosPath, filesep, algoKey, filesep, self.configFileName]);
                     configJson = org.json.JSONObject(configContent);
                     title = configJson.getString('title');
-                    className = configJson.getString('className');
-                    settings = configJson.getJSONObject('settings');
-                    mapping(end + 1, :) = {algoKey, char(className), settings, char(title)};
+                    mapping(char(title)) = char(algoKey);
                 end
             end
         end
