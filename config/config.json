@@ -12,6 +12,6 @@
 		"showGui": true,
 		"exeName": "RunWB2.exe",
 		"host": "localhost",
-		"port": 8008        
+		"port": 8009        
 	}
 }

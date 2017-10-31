@@ -10,7 +10,7 @@ classdef WBClient < handle
         terminated = false;
     end
     properties(Constant)
-        PACKAGE_SIZE = 20 * 1024 % 20Kb
+        PACKAGE_SIZE = 8 * 1024 % 20Kb
     end
     
     methods(Access = public)
@@ -20,31 +20,28 @@ classdef WBClient < handle
             self.wbclientHost = wbclientConfig.getString('host');
             self.wbclientPort = wbclientConfig.getInt('port');
             self.wbclientTimeout = wbclientConfig.getInt('timeout');
-            self.wbclientTick = wbclientConfig.getInt('tick');    
-            self.wbcAnsysParamPrefix = wbclientConfig.getString('ansysParamPrefix');                 
+            self.wbclientTick = wbclientConfig.getInt('tick');
+            self.wbcAnsysParamPrefix = wbclientConfig.getString('ansysParamPrefix');
             ansysConfig = config.getJSONObject('ansys');
             self.ansysHost = ansysConfig.getString('host');
-            self.ansysPort = ansysConfig.getInt('port');            
+            self.ansysPort = ansysConfig.getInt('port');
             
             self.mediatorPath = [pwd, filesep, 'mediator'];
-            self.controlPath = [pwd, filesep, 'control'];
-            self.responsePath = [self.controlPath, filesep, 'response'];
-            self.requestPath = [self.controlPath, filesep, 'request'];
+            self.responsePath = [self.mediatorPath, filesep, 'control', filesep, 'response'];
             self.runnerPath = [self.mediatorPath, filesep, 'Runner.py'];
         end
         function prefix = getAnsysParamPrefix(self)
             prefix = char(self.wbcAnsysParamPrefix);
         end
-        function setup(self)      
+        function setup(self)
             writer = 0;
-            try 
+            try
                 template = fileread([pwd, filesep, 'client', filesep, 'resources', filesep, 'Runner.py.template']);
                 template = strrep(template, '${MEDIATOR_PATH}', self.mediatorPath);
-                template = strrep(template, '${CONTROL_PATH}', self.controlPath);
-                runnerCode = strrep(template, '${WBCLIENT_VAR_NAME}', char(self.wbclientVarName));                 
-                delete(self.runnerPath); 
+                runnerCode = strrep(template, '${WBCLIENT_VAR_NAME}', char(self.wbclientVarName));
+                delete(self.runnerPath);
                 writer = java.io.FileWriter(self.runnerPath);
-                writer.write(runnerCode);                   
+                writer.write(runnerCode);
                 writer.close();
                 self.sendAndCheck(runnerCode);
             catch e
@@ -53,7 +50,7 @@ classdef WBClient < handle
                     writer.close();
                 end
                 rethrow(e);
-            end            
+            end
         end
         function terminate(self)
             self.terminated = true;
@@ -64,7 +61,6 @@ classdef WBClient < handle
         end
         function sendOnly(self, message)
             self.send(message, false);
-%             self.write(message);
         end
         function sendAndCheck(self, message)
             self.send(message, true);
@@ -78,7 +74,15 @@ classdef WBClient < handle
         function json = waitForResponse(self)
             try
                 computationTime = 0;
-                while ~self.terminated && ~exist(self.responsePath, 'file') && computationTime < 300 % 5 minutes
+                while ~exist(self.responsePath, 'file')
+                    if self.terminated
+                        Logger.info('Terminated by user');
+                        return;
+                    end
+                    if computationTime > 300 % 5 minutes
+                        Logger.info(sprintf('Terminated by timeout %ds', computationTime));
+                        return;
+                    end
                     pause(self.wbclientTick);
                     computationTime = computationTime + self.wbclientTick;
                 end
@@ -96,25 +100,11 @@ classdef WBClient < handle
     end
     
     methods(Access = private)
-        function write(self, message)
-            writer = 0;
-            try
-                writer = java.io.FileWriter(self.requestPath);
-                writer.write(char(message));                   
-                writer.close();
-            catch e
-                Logger.error('Canno write request');
-                if writer ~= 0
-                    writer.close();
-                end
-                rethrow(e);
-            end            
-        end
         function send(self, message, checkIfOk)
-            socket = 0; in = 0; out = 0; 
+            socket = 0; in = 0; out = 0;
             try
-                socket = java.net.Socket(self.ansysHost, self.ansysPort);          
-                out =  java.io.PrintStream(java.io.BufferedOutputStream(socket.getOutputStream, 8 * 1024), true);
+                socket = java.net.Socket(self.ansysHost, self.ansysPort);
+                out =  java.io.PrintStream(java.io.BufferedOutputStream(socket.getOutputStream, self.PACKAGE_SIZE), true);
                 out.print(char(message));
                 out.print('<EOF>');
                 if (checkIfOk)
@@ -132,6 +122,7 @@ classdef WBClient < handle
             catch e
                 Logger.error(e);
                 WBClient.close(socket, in, out);
+                rethrow(e);
             end;
         end
         function error = tryClearResponse(self)

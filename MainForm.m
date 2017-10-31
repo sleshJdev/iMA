@@ -73,7 +73,7 @@ function stopAnsysButton_Callback(~, ~, ~)
 global controller;
 Logger.info('Stopping Ansys...');
 controller.stopAnsys();
-Logger.info('Ansys stoppd');
+Logger.info('Ansys stopped');
 
 function algorithmPopupmenu_CreateFcn(hObject, ~, ~)
 global controller;

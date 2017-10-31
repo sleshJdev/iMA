@@ -1,13 +1,11 @@
 def launch_workbench_in_server_mode(host, port, showgui, ansys_project, workbench_exe_name):
     import os, subprocess, time
     awpVal = os.environ.get("AWP_ROOT182")
-    framework_path = os.path.join(awpVal, os.path.join("Framework", os.path.join("bin", "Win64")))
+    framework_path = os.path.join(awpVal, "Framework", "bin", "Win64")
     workbench_exe_path = os.path.join(framework_path, workbench_exe_name)
     args = [workbench_exe_path, "-P", str(port), "-H", host, "-F", ansys_project]
             
-    if showgui == True:
-        args.append("-I")
-    else:
+    if showgui != True:
         args.append("-nowindow")
         args.append("-B")
     subprocess.Popen(args)
