@@ -1,44 +1,67 @@
-classdef Logger
+classdef Logger < handle
     %LOGGER Summary of this class goes here
     %   Detailed explanation goes here
-    methods (Static)    
-        % while not use. 
-        % TODO: maybe implemets write log into file
-        function [out] = destination(newOut)
-            persistent currentOut;
-            if ( nargin >= 1 )
-                currentOut = newOut;
-            end;
-            out = currentOut;
-        end       
+    properties(Constant)
+        formatter = SingleLineFormatter();
+        handlers = Logger.createFileHandler()
+        fileLogger = Logger.createFileLogger(Logger.handlers)
+    end
+    methods (Static)
+        function handlers = createFileHandler()
+            logFilePath = [pwd, filesep, 'client', filesep, [datestr(now, 'yyyy-mm-dd'), '.log']];
+            fileHandler = java.util.logging.FileHandler(logFilePath, true);
+            fileHandler.setFormatter(Logger.formatter);
+            handlers = [fileHandler];
+        end
+        function logger = createFileLogger(handlers)
+            logger = java.util.logging.Logger.getLogger('ima-client');
+            logger.setUseParentHandlers(false);
+            for i = 1 : length(handlers)
+                logger.addHandler(handlers(i));
+            end
+        end
+        function close()
+            for i = 1 : length(Logger.handlers)
+                try
+                    Logger.handlers(i).flush();
+                    Logger.handlers(i).close();
+                catch e
+                    disp(e);
+                end
+            end
+        end        
         function clear()
             handles = guihandles();
             set(handles.logListbox, 'String', {});
         end
-        function log(message)        
-            handles = guihandles();             
+        function log(message)
+            handles = guihandles();
             content = get(handles.logListbox, 'String');
             if isempty(content)
                 content = cell(1,1);
             end
             content = [content; message];
             set(handles.logListbox, 'String', content);
+            disp(message);
         end
         function info(message)
             Logger.log(sprintf('%s INFO : %s', datestr(now, 'HH:MM:SS'), char(message)));
+            Logger.fileLogger.info(char(message));
         end
         function debug(message)
             Logger.log(sprintf('%s DEBUG: %s', datestr(now, 'HH:MM:SS'), char(message)));
+            Logger.fileLogger.debug(char(message));
         end
         function error(error)
+            message = 'Unknown error has occured, please check program output';
             if ischar(error)
-                Logger.log(sprintf('%s ERROR: %s', datestr(now, 'HH:MM:SS'), char(error)));
+                message = char(error);
             elseif strfind(error.identifier, 'MATLAB')
-                Logger.log(sprintf('%s ERROR: %s', datestr(now, 'HH:MM:SS'), char(error.message)));
-            else
-                Logger.log(sprintf('%s ERROR: %s', datestr(now, 'HH:MM:SS'), 'Unknown error has occured, please check program output'));
-            end            
+                message = char(error.message);
+            end
+            Logger.fileLogger.error(message);
+            Logger.log(sprintf('%s ERROR: %s', datestr(now, 'HH:MM:SS'), message));
         end
-    end    
+    end
 end
 

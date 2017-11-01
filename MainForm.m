@@ -27,6 +27,7 @@ clear all;
 
 % settings path
 javaaddpath('.\client\libraries\orgjson.jar');
+javaaddpath('.\client\libraries\formatter.jar');
 addpath(genpath('./client'), '-end');
 addpath(genpath('./client/algorithms'), '-end');
 
@@ -125,3 +126,8 @@ end
 
 function clearLogPushbutton_Callback(hObject, eventdata, handles)
 Logger.clear();
+
+
+
+function imaFigure_DeleteFcn(hObject, eventdata, handles)
+Logger.close()
