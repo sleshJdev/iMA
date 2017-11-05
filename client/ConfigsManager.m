@@ -3,7 +3,7 @@ classdef ConfigsManager
     %   Detailed explanation goes here
     
     properties(Constant)
-        configFileName = 'config.json'
+        CONFIG_FILE_NAME = 'config.json'
     end
     properties
         root, mapping;
@@ -20,7 +20,7 @@ classdef ConfigsManager
             configJson = JsonUtils.readJsonFile(configPath);
         end
         function path = buildConfigPath(self, key)
-            path = [self.root, filesep, key, filesep, self.configFileName];
+            path = [self.root, filesep, key, filesep, self.CONFIG_FILE_NAME];
         end        
         function titles = getTitles(self)
             titles = keys(self.mapping);
@@ -42,7 +42,7 @@ classdef ConfigsManager
                 if ~strcmp(item.name, '.') && ~strcmp(item.name, '..')...
                         && item.isdir && ~strcmp(item.name(1), '_') %_ small trick to disable some items
                     key = item.name;
-                    configContent = fileread([root, filesep, key, filesep, self.configFileName]);
+                    configContent = fileread([root, filesep, key, filesep, self.CONFIG_FILE_NAME]);
                     configJson = org.json.JSONObject(configContent);
                     title = configJson.getString('title');
                     mapping(char(title)) = char(key);

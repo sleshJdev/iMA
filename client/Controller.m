@@ -22,7 +22,7 @@ classdef Controller < handle
             self.ansys = Ansys(self.config);
             self.objectivities = Objectivities();
             self.algorithms = Algorithms();
-        end       
+        end
         function connect(self)
             self.wbclient.setup();
             self.fetchMetadata();
@@ -34,7 +34,7 @@ classdef Controller < handle
             end
             if self.algorithm ~= 0
                 self.algorithm.terminate();
-            end            
+            end
         end
         function reset(self)
             self.terminated = false;
@@ -47,20 +47,27 @@ classdef Controller < handle
         end
         function optimizedVector = optimize(self, algorithmTitle, objectiveTitle)
             self.reset();
+            Logger.info('Seed design point processing...');
             seedResponse = self.seed();
-            if seedResponse.getInt('status') ~= 200 % is something wrong
+            status = seedResponse.getInt('status');
+            if status ~= 200 % is something wrong
                 Logger.error(['Cannot fetch seed data: ', char(seedResponse.getString('message'))]);
                 return;
             end
+            
             seedPayload = seedResponse.getJSONObject('payload');
-            inputParams = JsonUtils.sortParams(seedPayload.getJSONArray('in'));
-            outputParams = JsonUtils.sortParams(seedPayload.getJSONArray('out'));
             
             self.objective = self.objectivities.createObjectiveFunction(...
                 objectiveTitle, self.inParamsMetaInfoMap, self.outParamsMetaInfoMap);
-            initialValue = self.objective.getValue(outputParams);
+            
+            outputParams = JsonUtils.sortParams(seedPayload.getJSONArray('out'));
+            outputParamValues = JsonUtils.mapArrayToNumbers(outputParams, 'value');
+            initialValue = self.objective.getValue(outputParamValues);
+            
+            inputParams = JsonUtils.sortParams(seedPayload.getJSONArray('in'));
             self.algorithm = self.algorithms.createAlgorithm(...
                 algorithmTitle, inputParams, initialValue, self.inParamsMetaInfoMap);
+            Logger.info('Seed design point was processed');
             
             [message, optimizedVector, optimizedValue] = self.algorithm.start(...
                 @self.getNewOutputValue, @Logger.info);
@@ -79,26 +86,32 @@ classdef Controller < handle
     
     methods(Access = private)
         function fetchMetadata(self)
-            request = RequestFactory.createGetMetadataRequest();
-            self.wbclient.execute(request);
-            metadataResponse = self.wbclient.waitForResponse();
-            if metadataResponse.getInt('status') ~= 200
-                Logger.error(['Cannot fetch metadata: ', char(metadataResponse.getString('message'))]);
-                return;
+            try
+                request = RequestFactory.createGetMetadataRequest();
+                self.wbclient.execute(request);
+                metadataResponse = self.wbclient.waitForResponse();
+                if metadataResponse.getInt('status') ~= 200
+                    Logger.error(['Cannot fetch metadata: ', char(metadataResponse.getString('message'))]);
+                    return;
+                end
+                metadataJson = metadataResponse.getJSONObject('payload');
+                inputParams = JsonUtils.sortParams(metadataJson.getJSONArray('in'));
+                outputParams = JsonUtils.sortParams(metadataJson.getJSONArray('out'));
+                self.inParamsMetaInfoMap = JsonUtils.createParametersMap(inputParams);
+                self.outParamsMetaInfoMap = JsonUtils.createParametersMap(outputParams);
+                Logger.info(['Input parameters: ', char(inputParams)]);
+                Logger.info(['Output parameters: ', char(outputParams)]);
+                Logger.info('Metadata was fetched successfully');
+            catch e
+                Logger.error('Problem when fetching a metadata. Loot at details: ');
+                Logger.error(e);
+                rethrow(e);
             end
-            metadataJson = metadataResponse.getJSONObject('payload');
-            inputParams = JsonUtils.sortParams(metadataJson.getJSONArray('in'));
-            outputParams = JsonUtils.sortParams(metadataJson.getJSONArray('out'));
-            self.inParamsMetaInfoMap = JsonUtils.createParametersMap(inputParams);
-            self.outParamsMetaInfoMap = JsonUtils.createParametersMap(outputParams);
-            Logger.info('Metadata was fetched successfully');
-            Logger.info(['Input parameters: ', char(self.inParamsMetaInfoMap)]);
-            Logger.info(['Output parameters: ', char(self.outParamsMetaInfoMap)]);
         end
-        function json = seed(self)
+        function seedResponse = seed(self)
             request = RequestFactory.createSeedRequest();
             self.wbclient.execute(request);
-            json = self.wbclient.waitForResponse();
+            seedResponse = self.wbclient.waitForResponse();
         end
         function [status, outputValue] = getNewOutputValue(self, paramValues)
             request = RequestFactory.createDesignPointRequest(...
@@ -108,10 +121,11 @@ classdef Controller < handle
             status = json.getInt('status');
             payload = json.getJSONObject('payload');
             if status == 200
-                outputParameters = payload.getJSONArray('parameters');
-                outputValue = self.objective.getValue(outputParameters);
+                outputParams = payload.getJSONArray('parameters');
+                outputParamValues = JsonUtils.mapArrayToNumbers(outputParams, 'value');
+                outputValue = self.objective.getValue(outputParamValues);
             else
-                Logger.error(json.getString('message'));
+                Logger.error(['Error when computing design point: ', char(json.getString('message'))]);
                 outputValue = 0;
             end
         end

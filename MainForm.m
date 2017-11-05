@@ -22,8 +22,8 @@ function MainForm_OpeningFcn(hObject, ~, handles, varargin)
 guidata(hObject, handles);
 
 % clear
-% clear java;
-% clear all;
+clear java;
+clear all;
 
 % settings path
 javaaddpath('.\client\libraries\orgjson.jar');

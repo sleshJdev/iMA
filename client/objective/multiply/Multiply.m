@@ -12,10 +12,9 @@ classdef Multiply
             self.weights = weights;
             self.targets = targets;
         end
-        function result = getValue(self, outParams)
-            values = JsonUtils.mapArrayToNumbers(outParams, 'value');
-            minValue = min(values);
-            normalized = (values - minValue) / minValue;
+        function result = getValue(self, outParamValues)
+            minValue = min(outParamValues);
+            normalized = (outParamValues - minValue) / minValue;
             result = 1;
             for i = 1 : length(normalized)
                 if isequal(self.targets{i}, 'max')
