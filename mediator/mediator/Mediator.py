@@ -36,7 +36,10 @@ class Mediator:
     def __respondToFile(self, response):
         self.logger.debug('response: {!s}'.format(response))
         try:
-            with io.open(os.path.join(self.context.work_dir, 'control', 'response'), 'w', encoding='utf-8') as output:
+            control_path = os.path.join(self.context.work_dir, 'control')
+            if not os.path.isdir(control_path):
+                os.makedirs(control_path)
+            with io.open(os.path.join(control_path, 'response'), 'w', encoding='utf-8') as output:
                 #  sort_keys = True, indent = 4, separators = (',', ': '), ensure_ascii = False
                 output.write(json.dumps(response))
         except Exception as e:

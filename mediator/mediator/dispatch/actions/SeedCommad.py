@@ -23,12 +23,7 @@ class SeedCommad:
     def __generate_response(self, designPoint, backgroundSession):   
         collectParamInfo = lambda param: {
                         'name': param.Name,
-                        'displayText': param.DisplayText,
-                        'expression': param.Expression,
-                        'value': designPoint.GetParameterValue(Parameter = param).Value,
-                        'unit': designPoint.GetParameterValue(Parameter = param).Unit,
-                        'minValue': designPoint.GetParameterValue(Parameter = param).MinValue.Value,
-                        'maxValue': designPoint.GetParameterValue(Parameter = param).MaxValue.Value
+                        'value': designPoint.GetParameterValue(Parameter = param).Value
                     }    
         return {                
                     'designPoint': {

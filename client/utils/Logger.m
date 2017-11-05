@@ -50,7 +50,7 @@ classdef Logger < handle
         end
         function debug(message)
             Logger.log(sprintf('%s DEBUG: %s', datestr(now, 'HH:MM:SS'), char(message)));
-            Logger.fileLogger.debug(char(message));
+            Logger.fileLogger.log(java.util.logging.Level.WARNING, char(message));
         end
         function error(error)
             message = 'Unknown error has occured, please check program output';
@@ -59,7 +59,7 @@ classdef Logger < handle
             elseif strfind(error.identifier, 'MATLAB')
                 message = char(error.message);
             end
-            Logger.fileLogger.error(message);
+            Logger.fileLogger.log(java.util.logging.Level.SEVERE, message);
             Logger.log(sprintf('%s ERROR: %s', datestr(now, 'HH:MM:SS'), message));
         end
     end

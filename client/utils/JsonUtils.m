@@ -13,6 +13,17 @@ classdef JsonUtils
     end
     
     methods(Static)
+        function paramsMap = createParametersMap(jsonParams)
+            paramsMap = containers.Map('KeyType', 'char', 'ValueType', 'any');
+            for i = 1 : jsonParams.length()
+                jsonParam = jsonParams.getJSONObject(i - 1);
+                jsonParam.put('weight', 1.0);
+                jsonParam.put('stepSize', 1.0);
+                jsonParam.put('target', 'min');
+                name = char(jsonParam.getString('name'));
+                paramsMap(name) = jsonParam;
+            end
+        end
         function json = readJsonFile(filePath)
             jsonText = fileread(filePath);
             json = org.json.JSONObject(jsonText);
@@ -32,21 +43,16 @@ classdef JsonUtils
         end
         function string = getString(source, propertyName)
             string = char(source.getString(propertyName));
-        end
-        function vector = getNumberVector(source, propertyName)
-            jsonArray = source.getJSONArray(propertyName);
+        end  
+        function vector = mapArrayToNumbers(jsonArray, propertyName)            
             vector = zeros(1, jsonArray.length());
-            for i = 1 : jsonArray.length()                
-                vector(i) = char(jsonArray.getDouble(i - 1));
-            end
-        end 
-        function vector = getStringVector(source, propertyName)
-            jsonArray = source.getJSONArray(propertyName);
-            vector = cell(1, jsonArray.length());
-            for i = 1 : jsonArray.length()                
-                vector{i} = char(jsonArray.getString(i - 1));
-            end
-        end 
+            for i = 1 : jsonArray.length()
+                item = jsonArray.getJSONObject(i - 1);
+                if ~item.isNull(propertyName)
+                    vector(i) = item.getDouble(propertyName);
+                end
+            end           
+        end
         function vector = mapArrayToStrings(jsonArray, propertyName)            
             vector = cell(1, jsonArray.length());
             for i = 1 : jsonArray.length()
@@ -56,7 +62,7 @@ classdef JsonUtils
                 else
                     vector{i} = char(item.getString(propertyName));
                 end
-            end
+            end            
         end
         function sortedParams = sortParams(params)
             indexes = zeros(params.length(), 1);

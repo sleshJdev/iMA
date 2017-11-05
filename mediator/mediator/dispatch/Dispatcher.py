@@ -3,6 +3,7 @@ from mediator.dispatch import actions
 
 from actions import CreateDesignPointCommand
 from actions import SeedCommad
+from actions import GetMetadataCommand
 
 class Dispatcher:
 
@@ -11,6 +12,7 @@ class Dispatcher:
         self.context = context        
         self.seed_command = SeedCommad(context)
         self.create_design_point_command = CreateDesignPointCommand(context)
+        self.get_metadata_command = GetMetadataCommand(context)
     
     def dispath(self, request):        
         command = request['command']
@@ -21,6 +23,8 @@ class Dispatcher:
             response = self.seed_command.execute(payload)
         elif command == "create-design-point":
             response = self.create_design_point_command.execute(payload)
+        elif command == "get-metadata":
+            response = self.get_metadata_command.execute(payload)
         elif command == "update":
             response = Update()
         return response

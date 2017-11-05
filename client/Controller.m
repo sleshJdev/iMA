@@ -1,71 +1,69 @@
-classdef Controller
+classdef Controller < handle
     %CONTROLLER Summary of this class goes here
     %   Detailed explanation goes here
     
-    properties
-        algorithms
-    end
-    properties(Access = private)
-        ansys, wbclient, objective
-        algorithm,
-        configPath, config,
-        terminated
+    properties(Access = public)
+        ansys, wbclient,
+        algorithms, objectivities,
+        inParamsMetaInfoMap, outParamsMetaInfoMap,
+        config
     end
     
-    methods
-        function config = get.config(self)
-            config = self.config;
-        end
-        function algorithms = get.algorithms(self)
-            algorithms = self.algorithms;
-        end
+    properties(Access = private)
+        algorithm = 0, objective = 0,
+        configPath, terminated
     end
     
     methods(Access = public)
         function self = Controller()
-            self.configPath = sprintf('%s\\config\\config.json', pwd);
+            self.configPath = [pwd, filesep, 'config', filesep, 'config.json'];
             self.config = Controller.loadConfig(self.configPath);
             self.wbclient = WBClient(self.config);
             self.ansys = Ansys(self.config);
-            self.objective = Multiply;
+            self.objectivities = Objectivities();
             self.algorithms = Algorithms();
-        end        
-        function runAnsys(self, ansysProjectPath)
-            self.ansys.run(ansysProjectPath);
-        end
+        end       
         function connect(self)
             self.wbclient.setup();
-        end
-        function stopAnsys(self)
-            self.ansys.stop();
+            self.fetchMetadata();
         end
         function terminate(self)
             self.terminated = true;
-            self.wbclient.terminate();
-            self.algorithm.terminate();
+            if self.wbclient ~= 0
+                self.wbclient.terminate();
+            end
+            if self.algorithm ~= 0
+                self.algorithm.terminate();
+            end            
+        end
+        function reset(self)
+            self.terminated = false;
+            self.objective = 0;
+            self.algorithm = 0;
+            self.wbclient.reset();
         end
         function terminated = isTerminated(self)
             terminated = self.terminated;
         end
-        function optimizedVector = optimize(self, algorithmTitle)
-            self.terminated = false;
-            self.wbclient.reset();
+        function optimizedVector = optimize(self, algorithmTitle, objectiveTitle)
+            self.reset();
             seedResponse = self.seed();
             if seedResponse.getInt('status') ~= 200 % is something wrong
-                Logger.error(seedResponse.getString('message'));
+                Logger.error(['Cannot fetch seed data: ', char(seedResponse.getString('message'))]);
                 return;
             end
             seedPayload = seedResponse.getJSONObject('payload');
             inputParams = JsonUtils.sortParams(seedPayload.getJSONArray('in'));
-            outputParams = seedPayload.getJSONArray('out');
+            outputParams = JsonUtils.sortParams(seedPayload.getJSONArray('out'));
+            
+            self.objective = self.objectivities.createObjectiveFunction(...
+                objectiveTitle, self.inParamsMetaInfoMap, self.outParamsMetaInfoMap);
             initialValue = self.objective.getValue(outputParams);
             self.algorithm = self.algorithms.createAlgorithm(...
-                algorithmTitle, inputParams, initialValue);
+                algorithmTitle, inputParams, initialValue, self.inParamsMetaInfoMap);
             
-            paramNames = JsonUtils.mapArrayToStrings(inputParams, 'name');
-            paramUnits = JsonUtils.mapArrayToStrings(inputParams, 'unit');
             [message, optimizedVector, optimizedValue] = self.algorithm.start(...
-                @(inputVector)self.getNewOutputValue(paramNames, paramUnits, inputVector), @Logger.debug);
+                @self.getNewOutputValue, @Logger.info);
             
             if strcmpi(message, 'OK')
                 Logger.info(sprintf('>>> Optimized vector: %s(%d)', mat2str(optimizedVector), optimizedValue));
@@ -77,22 +75,34 @@ classdef Controller
                 Logger.error(message);
             end
         end
+    end
+    
+    methods(Access = private)
+        function fetchMetadata(self)
+            request = RequestFactory.createGetMetadataRequest();
+            self.wbclient.execute(request);
+            metadataResponse = self.wbclient.waitForResponse();
+            if metadataResponse.getInt('status') ~= 200
+                Logger.error(['Cannot fetch metadata: ', char(metadataResponse.getString('message'))]);
+                return;
+            end
+            metadataJson = metadataResponse.getJSONObject('payload');
+            inputParams = JsonUtils.sortParams(metadataJson.getJSONArray('in'));
+            outputParams = JsonUtils.sortParams(metadataJson.getJSONArray('out'));
+            self.inParamsMetaInfoMap = JsonUtils.createParametersMap(inputParams);
+            self.outParamsMetaInfoMap = JsonUtils.createParametersMap(outputParams);
+            Logger.info('Metadata was fetched successfully');
+            Logger.info(['Input parameters: ', char(self.inParamsMetaInfoMap)]);
+            Logger.info(['Output parameters: ', char(self.outParamsMetaInfoMap)]);
+        end
         function json = seed(self)
             request = RequestFactory.createSeedRequest();
             self.wbclient.execute(request);
             json = self.wbclient.waitForResponse();
         end
-        function [status, outputValue] = getNewOutputValue(self, paramNames, paramUnits, paramValues)
-            parameters = org.json.JSONArray();
-            for i = 1 : length(paramValues)
-                param = org.json.JSONObject();
-                param.put('name', paramNames{i});
-                param.put('value', sprintf('%d [%s]', paramValues(i), paramUnits{i}));
-                parameters.put(param);
-            end
-            payload = org.json.JSONObject();
-            payload.put('parameters', parameters);
-            request = RequestFactory.createDesignPointRequest(payload);
+        function [status, outputValue] = getNewOutputValue(self, paramValues)
+            request = RequestFactory.createDesignPointRequest(...
+                paramValues, self.inParamsMetaInfoMap);
             self.wbclient.execute(request);
             json = self.wbclient.waitForResponse();
             status = json.getInt('status');

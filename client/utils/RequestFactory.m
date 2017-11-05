@@ -12,17 +12,24 @@ classdef RequestFactory
         function request = createSeedRequest()
             request = org.json.JSONObject('{"command": "seed", "payload": {}}');
         end
-        function request = createDesignPointRequest(payload)
+        function request = createGetMetadataRequest()
+            request = org.json.JSONObject('{"command": "get-metadata", "payload": {}}');
+        end
+        function request = createDesignPointRequest(paramValues, paramsMetaInfoMap)
+            paramsJson = values(paramsMetaInfoMap);
             request = org.json.JSONObject();
+            parameters = org.json.JSONArray();
+            for i = 1 : length(paramValues)
+                paramJson = paramsJson{i};
+                param = org.json.JSONObject();
+                param.put('name', paramJson.getString('name'));
+                param.put('value', sprintf('%d [%s]', paramValues(i), char(paramJson.getString('unit'))));
+                parameters.put(param);
+            end
+            payload = org.json.JSONObject();
+            payload.put('parameters', parameters);
             request.put('command', 'create-design-point');
             request.put('payload', payload);
-        end
-        function request = openProjectRequest(projectPath)
-            payload = org.json.JSONObject();
-            payload.putString('projectPath', projectPath);
-            request = org.json.JSONObject();
-            request.put('command', 'open-project');
-            request.put('payload', payload);            
         end
     end
     

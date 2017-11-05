@@ -7,7 +7,7 @@ mediator/response
 
 # matlab
 *.asv
-*.log
+*.log*
 
 # ansys
 *_files/

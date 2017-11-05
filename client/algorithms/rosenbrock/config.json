@@ -3,20 +3,8 @@
     "settings": {
         "Max Fails": 3,
         "Break Factor": -0.5,
-        "Lower Bound": [
-            54.45,
-            65
-        ],
-        "Step Sizes": [
-            2,
-            1
-        ],
-        "Scale Factor": 2,
-        "Threshold": 0.6,
-        "Upper Bound": [
-            66.55,
-            75
-        ]
+        "Scale Factor": 1,
+        "Threshold": 0.6
     },
     "className": "Rosenbrock"
 }

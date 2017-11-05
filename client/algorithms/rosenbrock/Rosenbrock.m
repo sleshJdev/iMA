@@ -10,7 +10,8 @@ classdef Rosenbrock < handle
     end
     
     methods
-        function self = Rosenbrock(settings, startPoint, initialValue, lowerBound, upperBound)
+        function self = Rosenbrock(settings, startPoint, initialValue,...
+                                   intialStepSizes, lowerBound, upperBound)
             % settings
             self.scaleFactor = settings.getDouble('Scale Factor');
             self.breakFactor = settings.getDouble('Break Factor');
@@ -20,12 +21,9 @@ classdef Rosenbrock < handle
             self.startPoint = startPoint;
             self.initialValue = initialValue;
             
-            if settings.has('Step Sizes'); self.intialStepSizes = JsonUtils.getNumberVector(settings, 'Step Sizes');
-            else self.intialStepSizes = ones(1, length(startPoint)); end
-            if settings.has('Lower Bound'); self.lowerBound = JsonUtils.getNumberVector(settings, 'Lower Bound');
-            else self.lowerBound = lowerBound; end
-            if settings.has('Upper Bound'); self.upperBound = JsonUtils.getNumberVector(settings, 'Upper Bound');
-            else self.upperBound = upperBound; end
+            self.intialStepSizes = intialStepSizes;
+            self.lowerBound = lowerBound;
+            self.upperBound = upperBound;
         end
         function terminate(self)
             self.terminated = true;
