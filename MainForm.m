@@ -150,6 +150,10 @@ global controller;
 inParamsMetaInfoMap = controller.inParamsMetaInfoMap;
 % json = org.json.JSONArray('[{"expression":"60.5 [W m^-1 C^-1]","unit":"W m^-1 C^-1","displayText":"Thermal Conductivity","name":"P1","minValue":-1.79769313486231E308,"maxValue":1.79769313486231E308},{"expression":"70 [mm]","unit":"mm","displayText":"Plane4.D2","name":"P5","minValue":-1.79769313486231E308,"maxValue":1.79769313486231E308}]');
 % inParamsMap = JsonUtils.createParametersMap(json);
+if(isempty(inParamsMetaInfoMap))
+    Logger.error('The metadata is not loaded!');
+    return;
+end
 paramNames = keys(inParamsMetaInfoMap);
 prompts = cell(1, inParamsMetaInfoMap.Count);
 defaults = cell(1, inParamsMetaInfoMap.Count);
@@ -180,6 +184,10 @@ end
 function outParamsPushbutton_Callback(hObject, eventdata, handles)
 global controller;
 outParamsMetaInfoMap = controller.outParamsMetaInfoMap;
+if(isempty(outParamsMetaInfoMap))
+    Logger.error('The metadata is not loaded!');
+    return;
+end
 % json = org.json.JSONArray('[{"expression":null,"unit":"W m^-2","displayText":"Total Heat Flux 2 Maximum","name":"P3","minValue":-1.79769313486231E308,"maxValue":1.79769313486231E308},{"expression":null,"unit":"m^3","displayText":"Solid Volume","name":"P7","minValue":-1.79769313486231E308,"maxValue":1.79769313486231E308}]');
 % outParamsMap = JsonUtils.createParametersMap(json);
 paramNames = keys(outParamsMetaInfoMap);
