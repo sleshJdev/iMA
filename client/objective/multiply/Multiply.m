@@ -17,9 +17,9 @@ classdef Multiply
             normalized = (outParamValues - minValue) / minValue;
             result = 1;
             for i = 1 : length(normalized)
-                if isequal(self.targets{i}, 'max')
+                if isequal(self.targets{i}, 'min')
                     result = result * self.weights(i) * normalized(i);
-                elseif isequal(self.targets{i}, 'min')
+                elseif isequal(self.targets{i}, 'max')
                     if normalized(i) ~= 0
                         result = result * self.weights(i) * 1 / normalized(i);
                     end                    
