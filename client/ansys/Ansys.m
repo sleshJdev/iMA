@@ -27,9 +27,11 @@ classdef Ansys
             Logger.info(sprintf('Ansys run command: %s', command));           
             system(command);       
         end
-        function stop(self)            
+        function stop(self)      
+            Logger.info('Stopping Ansys...');
             command = RequestFactory.createStopAnsysRequest();
             self.wbclient.sendOnly(command);
+            Logger.info('Ansys stopped');
         end
     end
 end

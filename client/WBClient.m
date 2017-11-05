@@ -36,6 +36,7 @@ classdef WBClient < handle
         function setup(self)
             writer = 0;
             try
+                Logger.info('Connecting to Ansys...');
                 template = fileread([pwd, filesep, 'client', filesep, 'resources', filesep, 'Runner.py.template']);
                 template = strrep(template, '${MEDIATOR_PATH}', self.mediatorPath);
                 runnerCode = strrep(template, '${WBCLIENT_VAR_NAME}', char(self.wbclientVarName));
@@ -44,6 +45,7 @@ classdef WBClient < handle
                 writer.write(runnerCode);
                 writer.close();
                 self.sendAndCheck(runnerCode);
+                Logger.info('Connected');
             catch e
                 Logger.error('Could not generate a Ansys Workbench mediator runner, please check console output for details:');
                 Logger.error(e);

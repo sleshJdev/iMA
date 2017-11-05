@@ -23,11 +23,8 @@ classdef Controller < handle
             self.objectivities = Objectivities();
             self.algorithms = Algorithms();
         end
-        function connect(self)
-            self.wbclient.setup();
-            self.fetchMetadata();
-        end
         function terminate(self)
+            Logger.info('Terminating of optimization...');
             self.terminated = true;
             if self.wbclient ~= 0
                 self.wbclient.terminate();
@@ -35,6 +32,7 @@ classdef Controller < handle
             if self.algorithm ~= 0
                 self.algorithm.terminate();
             end
+            Logger.info('Optimization was terminated');
         end
         function reset(self)
             self.terminated = false;
@@ -45,7 +43,32 @@ classdef Controller < handle
         function terminated = isTerminated(self)
             terminated = self.terminated;
         end
+        function fetchMetadata(self)
+            try
+                Logger.info('Fetching information about parameters...');
+                request = RequestFactory.createGetMetadataRequest();
+                self.wbclient.execute(request);
+                metadataResponse = self.wbclient.waitForResponse();
+                if metadataResponse.getInt('status') ~= 200
+                    Logger.error(['Cannot fetch metadata: ', char(metadataResponse.getString('message'))]);
+                    return;
+                end
+                metadataJson = metadataResponse.getJSONObject('payload');
+                inputParams = JsonUtils.sortParams(metadataJson.getJSONArray('in'));
+                outputParams = JsonUtils.sortParams(metadataJson.getJSONArray('out'));
+                self.inParamsMetaInfoMap = JsonUtils.createParametersMap(inputParams);
+                self.outParamsMetaInfoMap = JsonUtils.createParametersMap(outputParams);
+                Logger.info(['Input parameters: ', char(inputParams)]);
+                Logger.info(['Output parameters: ', char(outputParams)]);
+                Logger.info('Information about parameters was fetched successfully');
+            catch e
+                Logger.error('Problem when fetching a metadata. Loot at details: ');
+                Logger.error(e);
+                rethrow(e);
+            end
+        end
         function optimizedVector = optimize(self, algorithmTitle, objectiveTitle)
+            Logger.info('Optimization started');
             self.reset();
             Logger.info('Seed design point processing...');
             seedResponse = self.seed();
@@ -81,33 +104,11 @@ classdef Controller < handle
             else
                 Logger.error(message);
             end
+            Logger.info('Optimized done');
         end
     end
     
-    methods(Access = private)
-        function fetchMetadata(self)
-            try
-                request = RequestFactory.createGetMetadataRequest();
-                self.wbclient.execute(request);
-                metadataResponse = self.wbclient.waitForResponse();
-                if metadataResponse.getInt('status') ~= 200
-                    Logger.error(['Cannot fetch metadata: ', char(metadataResponse.getString('message'))]);
-                    return;
-                end
-                metadataJson = metadataResponse.getJSONObject('payload');
-                inputParams = JsonUtils.sortParams(metadataJson.getJSONArray('in'));
-                outputParams = JsonUtils.sortParams(metadataJson.getJSONArray('out'));
-                self.inParamsMetaInfoMap = JsonUtils.createParametersMap(inputParams);
-                self.outParamsMetaInfoMap = JsonUtils.createParametersMap(outputParams);
-                Logger.info(['Input parameters: ', char(inputParams)]);
-                Logger.info(['Output parameters: ', char(outputParams)]);
-                Logger.info('Metadata was fetched successfully');
-            catch e
-                Logger.error('Problem when fetching a metadata. Loot at details: ');
-                Logger.error(e);
-                rethrow(e);
-            end
-        end
+    methods(Access = private)        
         function seedResponse = seed(self)
             request = RequestFactory.createSeedRequest();
             self.wbclient.execute(request);

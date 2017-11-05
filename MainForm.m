@@ -60,27 +60,23 @@ selectedAlgorithmTitle = options{optionIndex};
 
 function optimizeButton_Callback(~, ~, ~)
 global controller;
-Logger.info('Optimization started');
 controller.optimize(getSelectedAlgorithm(), getSelectedObjectiveTitle());
-Logger.info('Optimized done');
 
 function terminateButton_Callback(~, ~, ~)
 global controller;
-Logger.info('Terminating of optimization...');
 controller.terminate();
-Logger.info('Optimization was terminated');
 
 function connectButton_Callback(~, ~, ~)
 global controller;
-Logger.info('Connecting to Ansys...');
-controller.connect();
-Logger.info('Connected');
+controller.wbclient.setup();
+
+function fetchParamsInfoPushbutton_Callback(hObject, eventdata, handles)
+global controller;
+controller.fetchMetadata();
 
 function stopAnsysButton_Callback(~, ~, ~)
 global controller;
-Logger.info('Stopping Ansys...');
 controller.ansys.stop();
-Logger.info('Ansys stopped');
 
 function algorithmPopupmenu_CreateFcn(hObject, ~, ~)
 global controller;
@@ -148,8 +144,6 @@ Logger.close();
 function inParamsPushbutton_Callback(hObject, eventdata, handles)
 global controller;
 inParamsMetaInfoMap = controller.inParamsMetaInfoMap;
-% json = org.json.JSONArray('[{"expression":"60.5 [W m^-1 C^-1]","unit":"W m^-1 C^-1","displayText":"Thermal Conductivity","name":"P1","minValue":-1.79769313486231E308,"maxValue":1.79769313486231E308},{"expression":"70 [mm]","unit":"mm","displayText":"Plane4.D2","name":"P5","minValue":-1.79769313486231E308,"maxValue":1.79769313486231E308}]');
-% inParamsMap = JsonUtils.createParametersMap(json);
 if(isempty(inParamsMetaInfoMap))
     Logger.error('The metadata is not loaded!');
     return;
@@ -188,8 +182,6 @@ if(isempty(outParamsMetaInfoMap))
     Logger.error('The metadata is not loaded!');
     return;
 end
-% json = org.json.JSONArray('[{"expression":null,"unit":"W m^-2","displayText":"Total Heat Flux 2 Maximum","name":"P3","minValue":-1.79769313486231E308,"maxValue":1.79769313486231E308},{"expression":null,"unit":"m^3","displayText":"Solid Volume","name":"P7","minValue":-1.79769313486231E308,"maxValue":1.79769313486231E308}]');
-% outParamsMap = JsonUtils.createParametersMap(json);
 paramNames = keys(outParamsMetaInfoMap);
 prompts = cell(1, outParamsMetaInfoMap.Count);
 defaults = cell(1, outParamsMetaInfoMap.Count);
