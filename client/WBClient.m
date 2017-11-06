@@ -90,6 +90,7 @@ classdef WBClient < handle
                     pause(self.wbclientTick);
                     computationTime = computationTime + self.wbclientTick;
                 end
+                pause(1); % to ensure that file handler will be closed when we start reading
                 response = fileread(self.responsePath);
                 json = org.json.JSONObject(response);
                 self.cleanResponse();
