@@ -32,13 +32,13 @@ classdef Logger < handle
         end        
         function clear()
             handles = guihandles();
-            set(handles.logListbox, 'String', {});
+            set(handles.logListbox, 'String', {''});
         end
         function log(message)
             handles = guihandles();
             content = get(handles.logListbox, 'String');
             if isempty(content)
-                content = cell(1,1);
+                content = {''};
             end
             content = [content; message];
             set(handles.logListbox, 'String', content);
