@@ -13,14 +13,18 @@ classdef Objectivities
         end
         function objectiveFunction = createObjectiveFunction(...
                 self, objectiveTitle, inParamsMetaInfoMap, outParamsMetaInfoMap)
+            Logger.info(['Initialize the objective function "', objectiveTitle, '"...']);
             configJson = self.configs.readConfig(objectiveTitle);
             objectiveFunctionName = configJson.getString('className');
             objectiveFunctionSettings = configJson.optJSONObject('settings');
-            
+           
             weights = Objectivities.getWeights(inParamsMetaInfoMap);
             targets = Objectivities.getTargets(outParamsMetaInfoMap);
+            Logger.info(['Settings: ', char(objectiveFunctionSettings)]);
+            
             objectiveFunctionConstructor = str2func(char(objectiveFunctionName));
             objectiveFunction = objectiveFunctionConstructor(objectiveFunctionSettings, weights, targets);
+            Logger.info('Ojbecitve function was created successfully!');
         end
     end
     methods(Static)

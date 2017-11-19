@@ -58,8 +58,10 @@ classdef Controller < handle
                 outputParams = JsonUtils.sortParams(metadataJson.getJSONArray('out'));
                 self.inParamsMetaInfoMap = JsonUtils.createParametersMap(inputParams);
                 self.outParamsMetaInfoMap = JsonUtils.createParametersMap(outputParams);
-                Logger.info(['Input parameters: ', char(inputParams)]);
-                Logger.info(['Output parameters: ', char(outputParams)]);
+                
+                Controller.printInParametersSettings(self.inParamsMetaInfoMap);
+                Controller.printOutParametersSettings(self.outParamsMetaInfoMap);
+                
                 Logger.info('Information about parameters was fetched successfully');
             catch e
                 Logger.error('Problem when fetching a metadata. Loot at details: ');
@@ -70,6 +72,7 @@ classdef Controller < handle
         function optimizedVector = optimize(self, algorithmTitle, objectiveTitle)
             Logger.info('Optimization started');
             self.reset();
+
             Logger.info('Seed design point processing...');
             seedResponse = self.seed();
             status = seedResponse.getInt('status');
@@ -87,10 +90,14 @@ classdef Controller < handle
             outputParamValues = JsonUtils.mapArrayToNumbers(outputParams, 'value');
             initialValue = self.objective.getValue(outputParamValues);
             
+            Logger.info(['Initial value: ', num2str(initialValue)]);
             inputParams = JsonUtils.sortParams(seedPayload.getJSONArray('in'));
             self.algorithm = self.algorithms.createAlgorithm(...
                 algorithmTitle, inputParams, initialValue, self.inParamsMetaInfoMap);
             Logger.info('Seed design point was processed');
+            
+            Controller.printInParametersSettings(self.inParamsMetaInfoMap);
+            Controller.printOutParametersSettings(self.outParamsMetaInfoMap);
             
             [message, optimizedVector, optimizedValue] = self.algorithm.start(...
                 @self.getNewOutputValue, @Logger.info);
@@ -108,13 +115,13 @@ classdef Controller < handle
         end
     end
     
-    methods(Access = private)        
+    methods(Access = private)
         function seedResponse = seed(self)
             request = RequestFactory.createSeedRequest();
             self.wbclient.execute(request);
             seedResponse = self.wbclient.waitForResponse();
         end
-        function [status, outputValue] = getNewOutputValue(self, paramValues)
+        function [status, outputValue, outputParamValues] = getNewOutputValue(self, paramValues)
             request = RequestFactory.createDesignPointRequest(...
                 paramValues, self.inParamsMetaInfoMap);
             self.wbclient.execute(request);
@@ -128,11 +135,36 @@ classdef Controller < handle
             else
                 Logger.error(['Error when computing design point: ', char(json.getString('message'))]);
                 outputValue = 0;
+                outputParamValues = 0;
             end
         end
     end
     
     methods(Static)
+        function printInParametersSettings(inParamsMetaInfoMap)
+            Logger.info('Input parameters settings: ');
+            paramNames = keys(inParamsMetaInfoMap);
+            for i = 1 : inParamsMetaInfoMap.Count
+                paramName = paramNames{i};
+                paramConf = inParamsMetaInfoMap(paramName);
+                Logger.info([char(paramConf.getString('displayText')), '(', paramName, '): ',...
+                    ', Step size = ', num2str(paramConf.getDouble('stepSize')),...
+                    ', Weight = ', num2str(paramConf.getDouble('weight')),...
+                    ', Min value = ', num2str(paramConf.getDouble('minValue')),...
+                    ', Max value = ', num2str(paramConf.getDouble('maxValue'))]);
+            end
+            
+        end
+        function printOutParametersSettings(outParamsMetaInfoMap)
+            Logger.info('Output parameters settings: ');
+            paramNames = keys(outParamsMetaInfoMap);
+            for i = 1 : outParamsMetaInfoMap.Count
+                paramName = paramNames{i};
+                paramConf = outParamsMetaInfoMap(paramName);
+                Logger.info([char(paramConf.getString('displayText')), '(', paramName, ') : ',...
+                    ', target = ', char(paramConf.getString('target'))]);
+            end
+        end
         function config = loadConfig(path)
             jsonConfig = fileread(path);
             config = org.json.JSONObject(jsonConfig);

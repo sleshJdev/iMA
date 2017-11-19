@@ -12,10 +12,11 @@ classdef Algorithms < handle
         end        
         function algorithm = createAlgorithm(...
                 self, algorithmTitle, initialPrameters, initialValue, inParamsMetaInfoMap)
+            Logger.info(['Initialize the algorithm "', char(algorithmTitle), '"...']);
             configJson = self.configs.readConfig(algorithmTitle);
             algorithmClassName = configJson.getString('className');
             algorithmSettings = configJson.getJSONObject('settings');
-            
+            Logger.info(['Seetings: ', char(algorithmSettings)]);
             algorithmContructor = str2func(char(algorithmClassName));
             % parsing of starting point, initial value, lower and upper bounds
             numberDimensions = initialPrameters.length();
@@ -34,6 +35,7 @@ classdef Algorithms < handle
             algorithm = algorithmContructor(...
                 algorithmSettings, startPoint, initialValue,...
                 stepSizes, lowerBound, upperBound);
+            Logger.info('Algorithm was created successfully!');
         end        
     end
 end
