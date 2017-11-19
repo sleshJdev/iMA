@@ -57,13 +57,7 @@ classdef Rosenbrock < handle
                     end                    
                     [nextPoint, ~] = self.clamp(...
                         dimensionPoints(:, dimension) + stepSizes(dimension) * directions(:, dimension));    
-%                     if clamped, stepSizes(dimension) = stepSizes(dimension) * self.breakFactor; end
-%                     if self.isAbroad(nextPoint)
-%                         message = 'ABROAD';
-%                         optimizedVector = iterationPoints(:, end);
-%                         optimizedValue = iterationValues(:, end);
-%                         return;
-%                     end
+                    
                     [status, nextValue, newOutputParams] = computeNextValue(nextPoint);
                     if status ~= 200
                         message = 'ERROR';
@@ -171,15 +165,6 @@ classdef Rosenbrock < handle
                 if point(i) > self.upperBound(i)
                     point(i) = self.upperBound(i);
                     clamped = true;
-                end
-            end
-        end
-        function abroaded = isAbroad(self, point)
-            abroaded = false;
-            for i = 1 : length(point)
-                if point(i) < self.lowerBound(i) || point(i) > self.upperBound(i)
-                    abroaded = true;
-                    break;
                 end
             end
         end
