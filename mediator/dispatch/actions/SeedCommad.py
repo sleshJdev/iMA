@@ -10,7 +10,7 @@ class SeedCommad:
     def execute(self, payload):
         self.logger.info('generating seed started...')
         points = self.context.Parameters.GetAllDesignPoints()
-        designPoint = points[0]
+        designPoint = points[-1] # get last point
         backgroundSession = self.context.UpdateAllDesignPoints(
             DesignPoints=[designPoint], 
             Parameters=None, 

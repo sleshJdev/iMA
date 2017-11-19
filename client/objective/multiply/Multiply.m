@@ -13,15 +13,13 @@ classdef Multiply
             self.targets = targets;
         end
         function result = getValue(self, outParamValues)
-            minValue = min(outParamValues);
-            normalized = (outParamValues - minValue) / minValue;
-            result = 1;
-            for i = 1 : length(normalized)
+            result = 1;            
+            for i = 1 : length(outParamValues)
                 if isequal(self.targets{i}, 'min')
-                    result = result * self.weights(i) * normalized(i);
+                    result = result * self.weights(i) * outParamValues(i);
                 elseif isequal(self.targets{i}, 'max')
-                    if normalized(i) ~= 0
-                        result = result * self.weights(i) * 1 / normalized(i);
+                    if outParamValues(i) ~= 0
+                        result = result * (self.weights(i) * (1 / outParamValues(i)));
                     end                    
                 end
             end

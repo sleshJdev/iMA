@@ -13,6 +13,10 @@ classdef JsonUtils
     end
     
     methods(Static)
+        function printOutoutParametersInfo()
+            
+        end
+        
         function paramsMap = createParametersMap(jsonParams)
             paramsMap = containers.Map('KeyType', 'char', 'ValueType', 'any');
             for i = 1 : jsonParams.length()
@@ -43,17 +47,17 @@ classdef JsonUtils
         end
         function string = getString(source, propertyName)
             string = char(source.getString(propertyName));
-        end  
-        function vector = mapArrayToNumbers(jsonArray, propertyName)            
+        end
+        function vector = mapArrayToNumbers(jsonArray, propertyName)
             vector = zeros(1, jsonArray.length());
             for i = 1 : jsonArray.length()
                 item = jsonArray.getJSONObject(i - 1);
                 if ~item.isNull(propertyName)
                     vector(i) = item.getDouble(propertyName);
                 end
-            end           
+            end
         end
-        function vector = mapArrayToStrings(jsonArray, propertyName)            
+        function vector = mapArrayToStrings(jsonArray, propertyName)
             vector = cell(1, jsonArray.length());
             for i = 1 : jsonArray.length()
                 item = jsonArray.getJSONObject(i - 1);
@@ -62,7 +66,7 @@ classdef JsonUtils
                 else
                     vector{i} = char(item.getString(propertyName));
                 end
-            end            
+            end
         end
         function sortedParams = sortParams(params)
             indexes = zeros(params.length(), 1);

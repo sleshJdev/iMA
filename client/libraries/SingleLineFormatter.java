@@ -14,10 +14,10 @@ public final class SingleLineFormatter extends Formatter {
 
         String message = formatMessage(record);
         sb.append(new Date(record.getMillis()))
-            .append(" ")
-            .append(record.getLevel().getLocalizedName())
-            .append(": ")
-            .append(formatMessage(record));
+                .append(" ")
+                .append(record.getLevel().getLocalizedName())
+                .append(": ")
+                .append(formatMessage(record));
         if (!message.endsWith(LINE_SEPARATOR)) {
             sb.append(LINE_SEPARATOR);
         }

@@ -64,7 +64,7 @@ classdef Rosenbrock < handle
 %                         optimizedValue = iterationValues(:, end);
 %                         return;
 %                     end
-                    [status, nextValue] = computeNextValue(nextPoint);
+                    [status, nextValue, newOutputParams] = computeNextValue(nextPoint);
                     if status ~= 200
                         message = 'ERROR';
                         optimizedVector = iterationPoints(:, end);
@@ -77,8 +77,9 @@ classdef Rosenbrock < handle
                         stepSizes(dimension) = stepSizes(dimension) * self.scaleFactor;
                         optimizationPath(:, end + 1) = nextPoint;
                         optimizationValues(end + 1) = nextValue;
-                        log(['Successful attept on dimension ',num2str(dimension),...
+                        log(['Successful attept on dimension ', num2str(dimension),...
                             ', next point ', mat2str(nextPoint),...
+                            ', out params ', mat2str(newOutputParams),...
                             '(', num2str(nextValue), ')',...
                             ', new step sizes: ', mat2str(stepSizes)]);
                     else
@@ -143,7 +144,7 @@ classdef Rosenbrock < handle
                                 break;
                             else
                                 log(['Steps by all dimensions are not less than ', num2str(self.threshold),...
-                                    '. Begging next iteration from point ', mat2str(lastDimensionPoint),...
+                                    '. Start next iteration from the point ', mat2str(lastDimensionPoint),...
                                     '(',num2str(dimensionValues(numberDimensions + 1)),')']);
                                 dimensionPoints(:, 1) = lastDimensionPoint;
                             end

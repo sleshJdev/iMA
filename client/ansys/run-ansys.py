@@ -8,6 +8,8 @@ def launch_workbench_in_server_mode(host, port, showgui, ansys_project, workbenc
     if showgui != True:
         args.append("-nowindow")
         args.append("-B")
+    else:
+        args.append("-I")
     subprocess.Popen(args)
     time.sleep(45.0)
 

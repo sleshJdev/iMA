@@ -37,7 +37,7 @@ classdef WBClient < handle
             writer = 0;
             try
                 Logger.info('Connecting to Ansys...');
-                template = fileread([pwd, filesep, 'client', filesep, 'resources', filesep, 'Runner.py.template']);
+                template = fileread([pwd, filesep, 'client', filesep, 'resources', filesep, 'Runner.template.py']);
                 template = strrep(template, '${MEDIATOR_PATH}', self.mediatorPath);
                 runnerCode = strrep(template, '${WBCLIENT_VAR_NAME}', char(self.wbclientVarName));
                 delete(self.runnerPath);

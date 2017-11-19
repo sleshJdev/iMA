@@ -154,7 +154,7 @@ defaults = cell(1, inParamsMetaInfoMap.Count);
 for i = 1 : inParamsMetaInfoMap.Count
     paramJson = inParamsMetaInfoMap(paramNames{i});
     prompts{i} = [paramNames{i}, '(', char(paramJson.getString('displayText')),')',...
-                  ', Unit: ', char(paramJson.getString('unit'))];
+                  ', Unit: ', char(paramJson.optString('unit'))];
     default = org.json.JSONObject();
     default.put('Min', paramJson.getDouble('minValue'));
     default.put('Min', paramJson.getDouble('minValue'));

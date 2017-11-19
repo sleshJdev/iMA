@@ -3,8 +3,8 @@
     "settings": {
         "Max Fails": 3,
         "Break Factor": -0.5,
-        "Scale Factor": 1,
-        "Threshold": 0.6
+        "Scale Factor": 2,
+        "Threshold": 0.5
     },
     "className": "Rosenbrock"
 }
