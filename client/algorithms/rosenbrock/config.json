@@ -4,7 +4,7 @@
         "Max Fails": 3,
         "Break Factor": -0.5,
         "Scale Factor": 2,
-        "Threshold": 0.5
+        "Threshold": 0.3
     },
     "className": "Rosenbrock"
 }

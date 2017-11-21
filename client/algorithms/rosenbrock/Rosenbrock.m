@@ -11,7 +11,7 @@ classdef Rosenbrock < handle
     
     methods
         function self = Rosenbrock(settings, startPoint, initialValue,...
-                                   intialStepSizes, lowerBound, upperBound)
+                intialStepSizes, lowerBound, upperBound)
             % settings
             self.scaleFactor = settings.getDouble('Scale Factor');
             self.breakFactor = settings.getDouble('Break Factor');
@@ -44,19 +44,20 @@ classdef Rosenbrock < handle
             iterationValues(1) = self.initialValue;
             optimizationValues(1) = self.initialValue;
             
-            iterationsCounter = 1;
+            roundCounter = 0;
             failsCounter = 0;
             while ~self.isTerminated()
-                log(['>>> Next round(rotations = ', num2str(iterationsCounter), ')']);
+                roundCounter = roundCounter + 1;
+                log(['>>> Round ', num2str(roundCounter)]);
                 for dimension = 1 : numberDimensions
                     if self.isTerminated()
                         message = 'CANCELED';
                         optimizedVector = iterationPoints(:, end);
                         optimizedValue = iterationValues(:, end);
                         return;
-                    end                    
+                    end
                     [nextPoint, ~] = self.clamp(...
-                        dimensionPoints(:, dimension) + stepSizes(dimension) * directions(:, dimension));    
+                        dimensionPoints(:, dimension) + stepSizes(dimension) * directions(:, dimension));
                     
                     [status, nextValue, newOutputParams] = computeNextValue(nextPoint);
                     if status ~= 200
@@ -86,69 +87,55 @@ classdef Rosenbrock < handle
                             ', new step sizes: ', mat2str(stepSizes)]);
                     end
                 end
-                firstDimensionPoint = dimensionPoints(:, 1);
-                firstDimensionValue = dimensionValues(1);
-                lastDimensionPoint = dimensionPoints(:, end);
-                lastDimensionValue = dimensionValues(end);
-                log(['Iteration ', num2str(iterationsCounter), ' was finished'...
-                    ', start point is ', mat2str(dimensionPoints(:, 1)), '(', num2str(firstDimensionValue),')',...
-                    ', end point is ', mat2str(lastDimensionPoint), '(',num2str(lastDimensionValue),')']);
-                if lastDimensionValue < firstDimensionValue
-                    dimensionPoints(:, 1) = lastDimensionPoint;
-                    dimensionValues(1) = lastDimensionValue;
-                    log(['Iteration ', num2str(iterationsCounter), ' was successful. ',...
-                        'Starting a new iteration from point: ', mat2str(firstDimensionPoint)]);
-                elseif firstDimensionValue == lastDimensionValue
-                    lastIterationValue = iterationValues(iterationsCounter);
-                    log('All attepts were unsuccessful. Checking successfullness of iteration... ');
-                    if lastDimensionValue < lastIterationValue
-                        iterationPoints(:, iterationsCounter + 1) = lastDimensionPoint;
-                        iterationValues(iterationsCounter + 1) = lastDimensionValue;
-                        lastIterationPoint = iterationPoints(:, iterationsCounter + 1);
-                        prevIterationPoint = iterationPoints(:, iterationsCounter);
-                        offset = dist(transp(lastIterationPoint), prevIterationPoint);
+                if dimensionValues(end) < dimensionValues(1)                    
+                    log(['Round was successfull'...
+                        ', start point is ', mat2str(dimensionPoints(:, 1)), '(', num2str(dimensionValues(1)),')',...
+                        ', end point is ', mat2str(dimensionPoints(:, 1)), '(',num2str(dimensionValues(end)),')']);
+                    failsCounter = 0;
+                    dimensionPoints(:, 1) = dimensionPoints(:, end);
+                    dimensionValues(1) = dimensionValues(end);
+                elseif dimensionValues(end) == dimensionValues(1)
+                    failsCounter = failsCounter + 1;
+                    log('All attepts were unsuccessful. Checking successfullness of round... ');
+                    if dimensionValues(end) == iterationValues(end)
+                        if(failsCounter > self.maxFails)
+                            log(['The max number of attepts was achived, found point ',...
+                                mat2str(iterationPoints(:, end)), ', value: ', num2str(iterationValues(end))]);
+                            break;
+                        elseif sum(abs(stepSizes) <= self.threshold) == numberDimensions % is step less than threshold
+                            log(['Solution found(steps by all dimensions are less than', self.threshold, '): ',...
+                                mat2str(iterationPoints(end)), ', value: ', num2str(iterationValues(:, end))]);
+                            break;
+                        end
+                        dimensionPoints(:, 1) = dimensionPoints(:, end);
+                        dimensionValues(1) = dimensionValues(end);
+                        log('Start next raund');
+                    elseif dimensionValues(end) < iterationValues(end)
+                        iterationPoints(:, end + 1) = dimensionPoints(:, end);
+                        iterationValues(end + 1) = dimensionValues(end);
+                        offset = dist(transp(iterationPoints(:, end)), iterationPoints(:, end - 1));
                         if offset <= self.threshold
-                            log(['Solution found(offset is less than threshold): ', mat2str(lastDimensionPoint),...
-                                ', value: ', num2str(lastDimensionValue)]);
+                            log(['Solution found(offset is less than threshold): ', mat2str(iterationPoints(:, end)),...
+                                ', value: ', num2str(iterationValues(end))]);
                             break;
                         else
                             log(['The point offset by all dimension is not less than ', num2str(self.threshold),...
-                                '. Performing axes rorations']);
-                            log(['Current directions: ', mat2str(directions)]);
-                            directions = Rosenbrock.gsrotate(lastIterationPoint - prevIterationPoint, directions);
+                                '. Performing axes rorations. Current directions: ', mat2str(directions)]);
+                            directions = Rosenbrock.gsrotate(...
+                                iterationPoints(:, end) - iterationPoints(:, end - 1), directions);
                             stepSizes = self.intialStepSizes;
-                            dimensionPoints(:, 1) = lastIterationPoint;
-                            dimensionValues(1) = iterationValues(iterationsCounter + 1);
-                            iterationsCounter = iterationsCounter + 1;
+                            dimensionPoints(:, 1) = iterationPoints(:, end);
+                            dimensionValues(1) = iterationValues(end);
                             log(['New directions: ', mat2str(directions),...
-                                ', iteration ', num2str(iterationsCounter),...
                                 ', steps sizes: ', mat2str(stepSizes),...
                                 ', current point: ', mat2str(dimensionPoints(:, 1))]);
-                        end
-                    elseif lastDimensionValue == lastIterationValue
-                        failsCounter = failsCounter + 1;
-                        if(failsCounter > self.maxFails)
-                            log(['The max number of attepts was achived, found point ', mat2str(iterationPoints(:, iterationsCounter)), ', value: ', num2str(lastIterationValue)]);
-                            break;
-                        else
-                            stepLessThanThreshold = sum(abs(stepSizes) <= self.threshold) == numberDimensions;
-                            if stepLessThanThreshold
-                                log(['Solution found(steps by all dimensions are less than', self.threshold, '): ', mat2str(iterationPoints(:, iterationsCounter)),...
-                                    ', value: ', num2str(lastIterationValue)]);
-                                break;
-                            else
-                                log(['Steps by all dimensions are not less than ', num2str(self.threshold),...
-                                    '. Start next iteration from the point ', mat2str(lastDimensionPoint),...
-                                    '(',num2str(dimensionValues(numberDimensions + 1)),')']);
-                                dimensionPoints(:, 1) = lastDimensionPoint;
-                            end
                         end
                     end
                 end
             end
             message = 'OK';
-            optimizedVector = iterationPoints(:, iterationsCounter);
-            optimizedValue = iterationValues(:, iterationsCounter);
+            optimizedVector = iterationPoints(:, end);
+            optimizedValue = iterationValues(:, end);
         end
     end
     methods(Access = private)

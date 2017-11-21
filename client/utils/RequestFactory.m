@@ -23,7 +23,7 @@ classdef RequestFactory
                 paramJson = paramsJson{i};
                 param = org.json.JSONObject();
                 param.put('name', paramJson.getString('name'));
-                param.put('value', sprintf('%d [%s]', paramValues(i), char(paramJson.getString('unit'))));
+                param.put('value', sprintf('%d [%s]', paramValues(i), char(paramJson.optString('unit'))));
                 parameters.put(param);
             end
             payload = org.json.JSONObject();
