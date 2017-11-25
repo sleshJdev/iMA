@@ -59,38 +59,45 @@ classdef Rosenbrock < handle
                     [nextPoint, ~] = self.clamp(...
                         dimensionPoints(:, dimension) + stepSizes(dimension) * directions(:, dimension));
                     
-                    [status, nextValue, newOutputParams] = computeNextValue(nextPoint);
+                    [status, nextValue, newOutputParams] = computeNextValue(nextPoint);                    
                     if status ~= 200
                         message = 'ERROR';
                         optimizedVector = iterationPoints(:, end);
                         optimizedValue = iterationValues(:, end);
                         return;
                     end
+                    pointNumber = (roundCounter - 1) * numberDimensions + dimension;
+                    oldStepSizes = stepSizes;
                     if nextValue < dimensionValues(dimension)
                         dimensionPoints(:, dimension + 1) = nextPoint;
                         dimensionValues(dimension + 1) = nextValue;
                         stepSizes(dimension) = stepSizes(dimension) * self.scaleFactor;
                         optimizationPath(:, end + 1) = nextPoint;
                         optimizationValues(end + 1) = nextValue;
-                        log(['Successful attept on dimension ', num2str(dimension),...
-                            ', next point ', mat2str(nextPoint),...
-                            ', out params ', mat2str(newOutputParams),...
-                            '(', num2str(nextValue), ')',...
-                            ', new step sizes: ', mat2str(stepSizes)]);
+                        log(['Successful step from ', mat2str(nextPoint),...
+                            '(', num2str(nextValue), ')',...    
+                            ' on dimension ', num2str(dimension),...     
+                            ', point number ', num2str(pointNumber),...
+                            ', out params ', mat2str(newOutputParams),...                            
+                            ', step sizes: ', mat2str(oldStepSizes), '->', mat2str(stepSizes)]);
                     else
                         dimensionPoints(:, dimension + 1) = dimensionPoints(:, dimension);
                         dimensionValues(dimension + 1) = dimensionValues(dimension);
                         stepSizes(dimension) = stepSizes(dimension) * self.breakFactor;
-                        log(['Unsuccessful attept on dimension ',num2str(dimension),...
-                            ', current point ', mat2str(dimensionPoints(:, dimension)),...
-                            '(', num2str(dimensionValues(dimension)), ')',...
-                            ', new step sizes: ', mat2str(stepSizes)]);
+                        log(['Unsuccessful step from ', mat2str(nextPoint),... 
+                            '(', num2str(nextValue), ')',...
+                            ' on dimension ',num2str(dimension),...
+                            ', point number ', num2str(pointNumber),...
+                            ', out params ', mat2str(newOutputParams),... 
+                            ', stay in ', mat2str(dimensionPoints(:, dimension)),...
+                            '(', num2str(dimensionValues(dimension)), ')'...
+                            ', step sizes: ', mat2str(oldStepSizes), '->', mat2str(stepSizes)]);
                     end
                 end
                 if dimensionValues(end) < dimensionValues(1)                    
                     log(['Round was successfull'...
                         ', start point is ', mat2str(dimensionPoints(:, 1)), '(', num2str(dimensionValues(1)),')',...
-                        ', end point is ', mat2str(dimensionPoints(:, 1)), '(',num2str(dimensionValues(end)),')']);
+                        ', end point is ', mat2str(dimensionPoints(:, end)), '(',num2str(dimensionValues(end)),')']);
                     failsCounter = 0;
                     dimensionPoints(:, 1) = dimensionPoints(:, end);
                     dimensionValues(1) = dimensionValues(end);
@@ -167,11 +174,15 @@ classdef Rosenbrock < handle
             b = zeros(n);
             d = zeros(n);
             for i = 1 : n
-                ai = zeros(n, 1);
-                for j = i : n
-                    ai = ai + lamdas(j) * basises(:, j);
+                if lamdas(i) == 0
+                    a(:, i) = basises(:, i);
+                else 
+                    ai = zeros(n, 1);
+                    for j = i : n
+                        ai = ai + lamdas(j) * basises(:, j);
+                    end
+                    a(:, i) = ai;
                 end
-                a(:, i) = ai;
             end
             for i = 1 : n
                 if i == 1
