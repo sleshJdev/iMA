@@ -13,10 +13,10 @@ classdef Additivity
             self.targets = targets;
         end
         function result = getValue(self, outParamValues)
-            result = 1;            
+            result = 0;            
             for i = 1 : length(outParamValues)
                 if isequal(self.targets{i}, 'min')
-                    result = result * self.weights(i) * outParamValues(i);
+                    result = result + self.weights(i) * outParamValues(i);
                 elseif isequal(self.targets{i}, 'max')
                     if outParamValues(i) ~= 0
                         result = result + (self.weights(i) * (1 / outParamValues(i)));
