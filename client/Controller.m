@@ -47,6 +47,7 @@ classdef Controller < handle
             try
                 Logger.info('Fetching information about parameters...');
                 request = RequestFactory.createGetMetadataRequest();
+                self.wbclient.reset();
                 self.wbclient.execute(request);
                 metadataResponse = self.wbclient.waitForResponse();
                 if metadataResponse.getInt('status') ~= 200
