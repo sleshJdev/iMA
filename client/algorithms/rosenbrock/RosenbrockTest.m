@@ -7,7 +7,6 @@ startPoint = [8; 9];
 
 settings = org.json.JSONObject('{"Scale Factor": 2, "Break Factor": -0.5, "Max Fails": 13, "Threshold": 0.6}');
 logger = @(message)disp(message);
-algorithms = Algorithms();
 algorithm = Rosenbrock(settings, startPoint, initialValue, [1, 2], [-10, -10], [20, 20]);
 
 [message, optimizedVector, optimizedValue] = algorithm.start(f, logger);
